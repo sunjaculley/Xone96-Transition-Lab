@@ -141,11 +141,13 @@ body{height:100dvh;overflow:hidden}
 [data-id]{cursor:pointer}
 .expc{display:none}body.expm .expc{display:grid;grid-column:1/-1;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);column-gap:28px;align-content:start}.expc>*{grid-column:1}.expc>.tt,.expc>.exhint{grid-column:1/-1}.expc>#exth{grid-column:2;grid-row:2}.expc>.ext{grid-column:2;grid-row:3/7}.expc>.exu{grid-column:1}@media(max-width:959px){body.expm .expc{display:block}}body.expm .side>.card:not(.expc){display:none}
 body.expm .tr>:not(.seg){display:none}
+.exz{display:none;gap:4px}body.expm .exz{display:flex}.exz button{min-width:40px;min-height:40px;border-radius:6px;border:1px solid var(--ink);background:#fffe;font:600 16px "Barlow Semi Condensed",sans-serif;cursor:pointer}
+body.expm .fig{user-select:none;-webkit-user-select:none}body.expm .fig>svg{touch-action:none;cursor:grab}body.expm .fig>svg.drag{cursor:grabbing}
 .exl{display:none}body.expm .exl{display:inline}
 .exl>*{fill:#fff;fill-opacity:0;stroke:none;cursor:pointer;pointer-events:all;vector-effect:non-scaling-stroke}
 .exl>:hover{stroke:#e8700c;stroke-width:2;stroke-dasharray:5 4}
 .exl>.on{stroke:#1f8fe0;stroke-width:3;fill:#1f8fe0;fill-opacity:.1;stroke-dasharray:none}
-.expc h2{font-size:22px;margin:2px 0 0}.exs{color:var(--mute);font-size:13px;margin:0 0 8px}.exd{font-size:16px;margin:0 0 8px;max-width:70ch}
+.expc h2{font-size:22px;margin:2px 0 0}.extag{display:inline-block;justify-self:start;margin:4px 0 2px;padding:2px 8px;border-radius:999px;background:#f1ece4;border:1px solid var(--line);font:600 12px "Barlow Semi Condensed",sans-serif;color:#6b5d4a}.exs{color:var(--mute);font-size:13px;margin:0 0 8px}.exd{font-size:16px;margin:0 0 8px;max-width:70ch}
 .ext{margin:0 0 8px;padding-left:20px;max-width:80ch}.ext li{margin:3px 0}.exhint{font-size:15px;max-width:70ch}
 .exu{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px;color:var(--mute)}.exu button{min-height:32px;padding:2px 10px;border-radius:6px;border:1px solid var(--line);background:#fff;font:600 13px "Barlow Semi Condensed",sans-serif;cursor:pointer}
 @media(prefers-reduced-motion:reduce){.bt i{transition:none}}
@@ -155,13 +157,13 @@ body.expm .tr>:not(.seg){display:none}
 <nav class="list" id="chips" aria-label="Techniques"></nav>
 <section class="stage">
 <div class="fig" id="fig"><svg id="rig" viewBox="0 0 1614 720" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Top-down drawing of two CDJ-3000 players either side of an Allen and Heath Xone:96 mixer"></svg></div>
-<div class="under"><div class="views" id="views" role="toolbar" aria-label="Zoom"></div><div class="pill" id="pill">Tap any control for its name and value</div></div>
+<div class="under"><div class="views" id="views" role="toolbar" aria-label="Zoom"></div><div class="exz" role="toolbar" aria-label="Zoom in Explore"><button id="exZo" aria-label="Zoom out">−</button><button id="exZi" aria-label="Zoom in">+</button><button id="exZf">Fit</button></div><div class="pill" id="pill">Tap any control for its name and value</div></div>
 </section>
 <aside class="side">
 <div class="card nowc"><div class="tt" id="tt"></div><p class="now" id="now" aria-live="polite"></p><ul class="chg" id="chg" aria-label="What changes in this step"></ul></div>
 <div class="card"><h2>Who owns each band</h2><div id="bands"></div>
 <div class="legend"><span><i style="background:var(--a)"></i>CDJ 1 → CH 2</span><span><i style="background:var(--b)"></i>CDJ 2 → CH 3</span></div></div>
-<div class="card expc" id="expc"><div class="tt">Explore the gear</div><p class="exhint" id="exhint">Tap any part of the mixer or either CDJ to see what it is called, what it does and how to use it in a set. Once a part is selected, ← → steps through the parts on the same device.</p><h2 id="exn"></h2><p class="exs" id="exs"></p><p class="exd" id="exd"></p><h3 id="exth" hidden>In a set</h3><ul class="ext" id="ext"></ul><p class="exu" id="exu"></p></div>
+<div class="card expc" id="expc"><div class="tt">Explore the gear</div><p class="exhint" id="exhint">Tap any part of the mixer or either CDJ to see what it is called, what it does and how to use it in a set. Drag to move around, scroll or pinch to zoom (or use + and −). Once a part is selected, ← → steps through the parts on the same device.</p><h2 id="exn"></h2><p class="extag" id="extag" hidden>Not used in this setup</p><p class="exs" id="exs"></p><p class="exd" id="exd"></p><h3 id="exth" hidden>In a set</h3><ul class="ext" id="ext"></ul><p class="exu" id="exu"></p></div>
 <div class="card stepsc"><p class="why" id="why"></p><p class="gear" id="gear"></p><p class="gear" id="cuesrc" hidden></p><h3>Steps (tap to jump)</h3><ol class="steps" id="steps"></ol>
 <p class="note">Band meter is a teaching model of the EQ and filter curves, not a measurement. No audio plays.</p></div>
 </aside>
@@ -717,13 +719,13 @@ const chips=$('chips');
 chips.innerHTML=TECH.map((x,i)=>(i===0?'<span class="g">Transitions</span>':i===5?'<span class="g">Low-end swaps</span>':'')+`<button class="chip" data-i="${i}" aria-pressed="false"><span>${x.g}${x.n}</span>${x.title}</button>`).join('');
 const bandsEl=$('bands');bandsEl.innerHTML=BANDS.map(b=>`<div class="row"><span>${b[0]}</span><div class="bt"><i class="ba"></i><i class="bb"></i></div><span class="fl"></span></div>`).join('');
 const rows=[...bandsEl.querySelectorAll('.row')].map(r=>({a:r.querySelector('.ba'),b:r.querySelector('.bb'),f:r.querySelector('.fl')}));
-const VB={rig:[0,0,RW,RH],mixer:[531,90,552,630],A:[0,0,521,RH],B:[1093,0,521,RH]};let customBox=null,snap=false;window.__lab={box(b){customBox=b;snap=true},clear(){customBox=null}};
+const VB={rig:[0,0,RW,RH],mixer:[531,90,552,630],A:[0,0,521,RH],B:[1093,0,521,RH]};let customBox=null,snap=false,exView=null;window.__lab={box(b){customBox=b;snap=true},clear(){customBox=null}};
 const narrowQ=matchMedia('(max-width:959px)'),DESK=matchMedia('(min-width:960px) and (min-height:560px)');
 let follow=true,userView='rig',vb=[...VB[userView]];
 const views=$('views');
 views.innerHTML=[['follow','Auto camera'],['rig','Rig'],['mixer','Mixer'],['A','CDJ 1'],['B','CDJ 2']].map(([k,l])=>`<button data-v="${k}">${l}</button>`).join('');
 function syncViews(){for(const b of views.children){const k=b.dataset.v;b.setAttribute('aria-pressed',k==='follow'?follow:(!follow&&k===userView))}}
-views.onclick=e=>{const k=e.target.dataset?.v;if(!k)return;customBox=null;if(k==='follow')follow=!follow;else{userView=k;follow=false}syncViews()};
+views.onclick=e=>{const k=e.target.dataset?.v;if(!k)return;customBox=null;exView=null;if(k==='follow')follow=!follow;else{userView=k;follow=false}syncViews()};
 let lastPrim=null,lastPrimT=null,measured=false,primSet=new Set(),curStep=-1,mode='anim',segEnd=null,chgSet=new Set();
 const ctlNum=(c,S)=>c.type==='btn'?+!!c.test(S[c.key],S):S[c.key];
 const KN={hi:'HI',hm:'HI MID',lm:'LO MID',lo:'LO',fader:'fader',fa:'FILTER assign',x:'XFADER assign',on:'ON',mode:'mode',freq:'FREQ',res:'RES',crunch:'CRUNCH',play:'play',loop:'loop',hot:'hot cue A'};
@@ -737,8 +739,8 @@ const prim=out.filter(o=>o[2]),cont=out.filter(o=>!o[2]);const ul=$('chg');ul.in
 function setPlayLabel(){$('play').textContent=mode==='step'&&!playing?(curStep<T.steps.length-1?'Next step':'From top'):playing?'Pause':'Play'}
 function goStep(j){j=Math.max(0,Math.min(T.steps.length-1,j));t=T.steps[j][0]+.001;segEnd=stepRange(j)[1];playing=true;setPlayLabel()}
 function setMode(m){const was=mode;mode=m;document.body.classList.toggle('stepm',m==='step');document.body.classList.toggle('expm',m==='explore');$('mAnim').setAttribute('aria-pressed',m==='anim');$('mStep').setAttribute('aria-pressed',m==='step');$('mExp').setAttribute('aria-pressed',m==='explore');
- if(was==='explore'&&m!=='explore')customBox=null;
- if(m==='explore'){playing=false;segEnd=null;setPlayLabel();return}if(m==='step')goStep(Math.max(0,curStep));else{segEnd=null;playing=true;setPlayLabel()}}
+ if(was==='explore'&&m!=='explore'){customBox=null;exView=null}
+ if(m==='explore'){if(was!=='explore'){follow=false;userView='rig';customBox=null;exView=null;syncViews()}playing=false;segEnd=null;setPlayLabel();return}if(m==='step')goStep(Math.max(0,curStep));else{segEnd=null;playing=true;setPlayLabel()}}
 const figEl=$('fig');
 function measure(){const m=svg.getScreenCTM();if(!m)return;svg.classList.add('measuring');const inv=m.inverse(),P=(x,y)=>new DOMPoint(x,y).matrixTransform(inv);const rb=el=>{const r=el.getBoundingClientRect(),a=P(r.left,r.top),b=P(r.right,r.bottom);return[a.x,a.y,b.x,b.y]},U=(p,q)=>[Math.min(p[0],q[0]),Math.min(p[1],q[1]),Math.max(p[2],q[2]),Math.max(p[3],q[3])];
 for(const c of CTL){let bb=rb(c.el);if((c.type==='fader'||c.type==='xf')&&c.cap){const keep=c.cap.getAttribute('transform');for(const v of[0,1]){c.cap.setAttribute('transform',c.type==='fader'?`translate(0 ${c.y0+(1-v)*c.len})`:`translate(${c.x0+v*c.len} ${c.y})`);bb=U(bb,rb(c.el))}c.cap.setAttribute('transform',keep||'')}c.bb=bb}svg.classList.remove('measuring')}
@@ -908,7 +910,7 @@ rows.forEach((r,i)=>{r.a.style.width=Math.min(100,lv.A[i]/REF*100).toFixed(1)+'%
 $('clock').innerHTML=`${Math.floor(t)+1}.${Math.floor((t%1)*4)+1} <small>of ${T.bars} bars</small>`;
 if(document.activeElement!==$('scrub'))$('scrub').value=t;
 let si=0;T.steps.forEach((s,j)=>{if(t>=s[0])si=j});if(si!==curStep){curStep=si;computeChanges(si);if(mode==='step')setPlayLabel();const st=T.steps[si];$('now').innerHTML=`<b>Step ${si+1} of ${T.steps.length} · Bar ${Math.floor(st[0])+1}</b>`;$('now').append(st[1]);[...$('steps').children].forEach((li,j)=>li.classList.toggle('cur',j===si));const li=$('steps').children[si],c=li&&li.closest('.stepsc');if(c&&c.scrollHeight>c.clientHeight)c.scrollTo({top:Math.max(0,li.offsetTop-2),behavior:'smooth'})}
-const target=customBox?fit(customBox):fit(follow?autoBox():VB[userView]);
+const target=exView&&mode==='explore'?exView:customBox?fit(customBox):fit(follow?autoBox():VB[userView]);
 for(let i=0;i<4;i++)vb[i]=snap?target[i]:vb[i]+(target[i]-vb[i])*Math.min(1,dt*3.5);snap=false;svg.setAttribute('viewBox',vb.map(v=>v.toFixed(1)).join(' '));
 $('pill').textContent=mode==='explore'?(exSel?EXI[exSel.role].n+' · '+exFill(EXI[exSel.role].s,exSel.c):'Tap any part to learn it'):fmtSel(S);
 requestAnimationFrame(frame)}
@@ -918,9 +920,9 @@ requestAnimationFrame(frame)}
 const EXI={
 /* ---- Xone:96 channels 1-4 ---- */
 src:{n:'Input select',s:'Channel {c} · Xone:96',d:'Picks what feeds the channel: USB 1, PHONO, LINE or USB 2. Your CDJs come in on LINE (CDJ 1 on CH 2, CDJ 2 on CH 3).',t:['Check this first when a channel is silent. A CDJ on a channel set to PHONO comes out far too loud and distorted.','USB 1 and USB 2 are the two built-in soundcards, for a laptop or a second DJ’s laptop.']},
-send1:{n:'SEND 1',s:'Channel {c} · Xone:96',d:'Sets how much of the channel goes out to an external effect on the SND 1 output (and USB 9/10). The PRE button below makes the send pre-fader.',t:['Nothing is connected to the sends in this rig, so leave it at ∞. Turning it up changes nothing you can hear.','With an FX unit plugged in, a pre-fader send lets an echo tail keep ringing after you pull the fader down.']},
-pre:{n:'SEND 1 PRE',s:'Channel {c} · Xone:96',d:'Switches SEND 1 between post-fader (follows the channel fader) and pre-fader (ignores it).',t:['Leave it off in this rig: there is no effect on the send.']},
-send2:{n:'SEND 2',s:'Channel {c} · Xone:96',d:'A second, post-fader effect send on the SND 2 output. It can also be recorded over USB 11/12.',t:['Not used in this rig, so keep it at ∞.']},
+send1:{n:'SEND 1',s:'Channel {c} · Xone:96',d:'Sets how much of the channel goes out to an external effect on the SND 1 output (and USB 9/10). The PRE button below makes the send pre-fader.',u:1,t:["In a dub or hypnotic techno set, patch a delay or tape echo to SND 1 and flick SEND 1 up on a single stab or clap for a dub throw that repeats into the next bar.", "Send the outgoing track into a long reverb as you pull its fader, and the room hears it dissolve rather than stop."]},
+pre:{n:'SEND 1 PRE',s:'Channel {c} · Xone:96',d:'Switches SEND 1 between post-fader (follows the channel fader) and pre-fader (ignores it).',u:1,t:["With an FX unit patched in, turn PRE on, send the outgoing track to a delay and pull its fader: only the echo tail is left to carry the transition."]},
+send2:{n:'SEND 2',s:'Channel {c} · Xone:96',d:'A second, post-fader effect send on the SND 2 output. It can also be recorded over USB 11/12.',u:1,t:["Keep a second effect on SEND 2, for example reverb on 2 and delay on 1, so you can wash a breakdown without losing your echo.", "SEND 2 can also go to a laptop over USB 11/12, to record one channel on its own."]},
 gain:{n:'GAIN',s:'Channel {c} · Xone:96',d:'Input level, set before the EQ. If the PK! LED above it lights, turn it down.',t:['Gain-stage before you mix: play each track with EQ flat and fader up, and set GAIN so the channel meter peaks around 0.','Match loudness with GAIN, not the fader. Then both faders can sit fully up during a blend and a swap is a level-for-level trade.','For the filters, keep channel levels between −6 and +6 dB: that is where CRUNCH drives best.']},
 pk:{n:'PK! LED',s:'Channel {c} · Xone:96',d:'Lights when the channel input is close to clipping.',t:['If it flickers on kicks, turn GAIN down a little. If it stays lit, turn it down a lot.']},
 hi:{n:'HI EQ',s:'Channel {c} · 4-band EQ',d:'Treble: hats, rides and air. +6 dB boost fully clockwise, a full kill fully anticlockwise.',t:['Swap hats the same way you swap lows: one track’s HI comes in as the other’s goes out.','A small HI cut on the incoming track hides it during the first bars of a blend.']},
@@ -933,18 +935,19 @@ cue:{n:'CUE',s:'Channel {c} · Xone:96',d:'Sends the channel to the headphones a
 fader:{n:'Channel fader',s:'Channel {c} · Xone:96',d:'A 60 mm VCA fader setting the channel’s level in the mix. Its response curve is set by the CHANNEL FADER curve switch.',t:['In a long techno blend, the incoming fader goes up gradually while EQ does the real work.','Pull the outgoing fader down over a phrase, not in one move, unless you are cutting on purpose.']},
 meter:{n:'Channel meter',s:'Channel {c} · Xone:96',d:'Shows the channel’s level after the EQ and before the fader, so you see EQ moves even with the fader down.',t:['Use it to match the two tracks’ levels before the incoming fader goes up.','If a cut or boost makes the meter jump, you’ll hear the same jump in the room.']},
 /* ---- channels A/B ---- */
-asrc:{n:'Input select',s:'Channel {c} · Xone:96',d:'Picks the source for this extra stereo channel: USB 1, MIC, RTN (a return input) or USB 2.',t:['Not used in this rig. Handy for a mic, a drum machine or a third player.']},
-again:{n:'GAIN',s:'Channel {c} · Xone:96',d:'Input level for channel {c}, set before its EQ.',t:['Same rule as channels 1–4: set level here so the meter sits around 0.']},
-ahi:{n:'HI EQ',s:'Channel {c} · 3-band parametric EQ',d:'Treble for channel {c}: +6 dB boost to a full kill.',t:['Not used in this rig.']},
-afreq:{n:'Parametric FREQ',s:'Channel {c} · 3-band parametric EQ',d:'Chooses the centre frequency the MID knob acts on, from 190 Hz to 2.75 kHz.',t:['Sweep it with MID cut to find and remove a harsh frequency in a mic or synth.']},
-amid:{n:'MID EQ',s:'Channel {c} · 3-band parametric EQ',d:'Boost (+10 dB) or cut (−24 dB) at the frequency set by FREQ.',t:['Not used in this rig.']},
-alo:{n:'LO EQ',s:'Channel {c} · 3-band parametric EQ',d:'Bass for channel {c}: +6 dB boost to a full kill.',t:['Not used in this rig.']},
-afa:{n:'FILTER assign',s:'Channel {c} · Xone:96',d:'Sends channel {c} through FILTER 1, FILTER 2 or neither.',t:['Not used in this rig.']},
-afader:{n:'Channel fader',s:'Channel {c} · Xone:96',d:'Level for channel {c}. Unlike channels 1–4 this is a fully analogue fader, and it cannot be assigned to the crossfader.',t:['Keep it down when nothing is plugged in.']},
+asrc:{n:'Input select',s:'Channel {c} · Xone:96',d:'Picks the source for this extra stereo channel: USB 1, MIC, RTN (a return input) or USB 2.',u:1,t:["In a hybrid techno set, plug a drum machine (a TR-8S or Analog Rytm) into RTN and play live percussion over the CDJs.", "Set MIC for an MC or a vocalist."]},
+again:{n:'GAIN',s:'Channel {c} · Xone:96',d:'Input level for channel {c}, set before its EQ.',u:1,t:["Set the drum machine or synth level here so it sits as loud as the CDJ channels before you bring it in."]},
+ahi:{n:'HI EQ',s:'Channel {c} · 3-band parametric EQ',d:'Treble for channel {c}: +6 dB boost to a full kill.',u:1,t:["On a live hi-hat pattern, trim HI so it sits under the record’s hats instead of fighting them."]},
+afreq:{n:'Parametric FREQ',s:'Channel {c} · 3-band parametric EQ',d:'Chooses the centre frequency the MID knob acts on, from 190 Hz to 2.75 kHz.',u:1,t:["Sweep FREQ with MID cut to find and remove a harsh resonance in a live acid line or synth stab."]},
+amid:{n:'MID EQ',s:'Channel {c} · 3-band parametric EQ',d:'Boost (+10 dB) or cut (−24 dB) at the frequency set by FREQ.',u:1,t:["Boost MID slightly at the frequency of a live synth line to push it through a busy techno groove."]},
+alo:{n:'LO EQ',s:'Channel {c} · 3-band parametric EQ',d:'Bass for channel {c}: +6 dB boost to a full kill.',u:1,t:["Kill LO on a drum machine and layer only its percussion over the record, so its kick never clashes with the track’s."]},
+afa:{n:'FILTER assign',s:'Channel {c} · Xone:96',d:'Sends channel {c} through FILTER 1, FILTER 2 or neither.',u:1,t:["Assign a drum machine to a filter and sweep it with the outgoing track, so live parts and record move together."]},
+afader:{n:'Channel fader',s:'Channel {c} · Xone:96',d:'Level for channel {c}. Unlike channels 1–4 this is a fully analogue fader, and it cannot be assigned to the crossfader.',u:1,t:["Ride this fader for live drum or synth layers, bringing a percussion loop in for 16 bars and out again."]},
 /* ---- returns C/D ---- */
-ron:{n:'Return ON/OFF',s:'Return {c} · Xone:96',d:'Switches the auxiliary return {c} (the RTN {c} input) in and out of the mix.',t:['Returns bring an external FX unit back into the mix. Nothing is connected here, so leave them off.']},
-rlevel:{n:'Return LEVEL',s:'Return {c} · Xone:96',d:'Level of return {c} into the mix. If its SIG LED glows red, turn it down.',t:['Not used in this rig.']},
-rcue:{n:'Return CUE',s:'Return {c} · Xone:96',d:'Sends return {c} to the headphones.',t:['Not used in this rig.']},
+ron:{n:'Return ON/OFF',s:'Return {c} · Xone:96',d:'Switches the auxiliary return {c} (the RTN {c} input) in and out of the mix.',u:1,t:["When an FX unit is on the sends, its output comes back here. Switch the return on for wet-only effects, like a reverb wash under a breakdown."]},
+rlevel:{n:'Return LEVEL',s:'Return {c} · Xone:96',d:'Level of return {c} into the mix. If its SIG LED glows red, turn it down.',u:1,t:["Bring the return up slowly at the end of a breakdown for a swell of reverb, then cut it on the drop."]},
+sig:{n:'SIG LED',s:'Return {c} · Xone:96',d:'Shows signal on return {c}: green when audio is present, red when it is too hot.',u:1,t:['With an FX unit on the sends, glance at it when you bring the return up: green means the effect is coming back, red means turn LEVEL down.']},
+rcue:{n:'Return CUE',s:'Return {c} · Xone:96',d:'Sends return {c} to the headphones.',u:1,t:["Cue the return to hear what the effect is doing before the room does."]},
 /* ---- filters ---- */
 crunch:{n:'CRUNCH',s:'Filter {c} · Xone:VCF',d:'Analogue harmonic distortion added before the filter: 0 is clean, 10 is heavy. The LED lights when it is active.',t:['Push CRUNCH with the filter on and RES up for an aggressive exit (T2).','It is louder than it looks: drop the channel fader a touch when you add a lot.']},
 res:{n:'RES',s:'Filter {c} · Xone:VCF',d:'Resonance: how much the filter emphasises the frequency it is set to, from MILD to WILD.',t:['Keep it near MILD for a clean sweep that just removes frequencies (L4).','Toward WILD the filter whistles and sings as you sweep. That is a moment, so use it on purpose.']},
@@ -954,12 +957,12 @@ lpf:{n:'LPF',s:'Filter {c} · Xone:VCF',d:'Low-pass mode: removes everything abo
 ffreq:{n:'FREQ',s:'Filter {c} · Xone:VCF',d:'The filter’s cutoff (or centre, in BPF). The ring of dots shows where it sits.',t:['Sweep in time, over 4, 8 or 16 bars, not at random.','Set FREQ before switching the filter on, so it doesn’t jump in at a bad setting.']},
 fon:{n:'FILTER ON',s:'Filter {c} · Xone:VCF',d:'Switches the filter in or out for every channel assigned to it. It switches softly, without a click.',t:['Switching on is a cue: do it on the 1, with FREQ already set.','Switch it off once the sweep is done, or the channel stays filtered.']},
 /* ---- USB / meters / master ---- */
-usbact:{n:'USB ACTIVE',s:'USB section · Xone:96',d:'These LEDs glow blue when a computer is connected and its USB port is enabled.',t:['Not used with CDJs. A laptop recording the mix shows up here.']},
-midi:{n:'MIDI 1 / 2',s:'USB section · Xone:96',d:'Turns MIDI on or off for each USB port, so the mixer’s faders and switches can control software.',t:['Leave them off unless a laptop needs MIDI from the mixer.']},
+usbact:{n:'USB ACTIVE',s:'USB section · Xone:96',d:'These LEDs glow blue when a computer is connected and its USB port is enabled.',u:1,t:["In a hybrid set with Ableton running a loop deck beside the CDJs, a laptop plugs in here and sends its audio to any channel set to USB."]},
+midi:{n:'MIDI {c}',s:'USB section · Xone:96',d:'Turns MIDI on or off for each USB port, so the mixer’s faders and switches can control software.',u:1,t:["Turn MIDI on so the mixer’s filter switches and faders can trigger or mute Ableton loops in a hybrid techno set."]},
 mmeter:{n:'Master meter',s:'Xone:96',d:'Shows the main mix level, left and right. When you press CUE it shows the cued channel instead. With SPLIT CUE on, the left side shows the cue and the right shows the mix (PRG).',t:['Keep the mix peaking around 0 and never in PK!. Clipping the master sounds worse than being a little quiet.','If it climbs during a blend, two tracks’ lows are stacking: kill one.']},
 mst1:{n:'MASTER 1',s:'Master · Xone:96',d:'Level of the main XLR output, usually feeding the club system.',t:['Ask the sound engineer before you touch it. Set your level with the channels instead.']},
-mst2:{n:'MASTER 2',s:'Master · Xone:96',d:'Level of the second main output (¼" jacks).',t:['Often feeds a recorder or a second system.']},
-usb1112:{n:'USB 11/12 source',s:'Master · Xone:96',d:'Chooses what goes out on USB 11/12: the master mix (MST) or SEND 2.',t:['Set to MST to record your set on a laptop.']},
+mst2:{n:'MASTER 2',s:'Master · Xone:96',d:'Level of the second main output (¼" jacks).',u:1,t:["Feed a recorder or a stream from MASTER 2 while MASTER 1 drives the club system."]},
+usb1112:{n:'USB 11/12 source',s:'Master · Xone:96',d:'Chooses what goes out on USB 11/12: the master mix (MST) or SEND 2.',u:1,t:["Set it to MST and record every set on a laptop, then listen back to your transitions."]},
 smono:{n:'BOOTH STEREO/MONO',s:'Booth · Xone:96',d:'Switches the booth monitor output between stereo and mono.',t:['Mono is safer in a booth where you hear only one speaker well.']},
 bhi:{n:'BOOTH HI',s:'Booth · Xone:96',d:'Booth-only treble, ±8 dB. It doesn’t change the main mix.',t:['Tame harsh booth speakers here, not with the channel EQ.']},
 bmid:{n:'BOOTH MID',s:'Booth · Xone:96',d:'Booth-only mids, ±8 dB.',t:['Cut a little if the booth sounds boxy.']},
@@ -974,9 +977,9 @@ split:{n:'SPLIT CUE',s:'Monitor · Xone:96',d:'Puts the cue in your left ear and
 cuemst:{n:'CUE · MST blend',s:'Monitor · Xone:96',d:'Blends the headphones between the cued channel (CUE) and the main mix (MST).',t:['Halfway lets you hear both tracks together, the same way the room will.']},
 mlevel:{n:'Headphone level',s:'Monitor · Xone:96',d:'Volume of the main headphone outputs.',t:['Start low and turn up slowly. Your ears tire long before the night ends.']},
 phones:{n:'Headphone jacks',s:'Monitor · Xone:96',d:'¼" and 3.5 mm headphone outputs for the main monitor section.',t:['Plug in before you start and check the level before cueing.']},
-p2sel:{n:'PHONES 2 source',s:'PHONES 2 · Xone:96',d:'A 9-way selector choosing what a second pair of headphones hears: MST, channels 1–4 or A–D. It doesn’t change anyone else’s cue.',t:['Made for back-to-back sets: the second DJ cues their own channel without fighting over CUE buttons.']},
-p2mix:{n:'PHONES 2 CUE · MST',s:'PHONES 2 · Xone:96',d:'Blends the second headphones between the selected source and the main mix.',t:['Same use as the main CUE · MST knob, for the second DJ.']},
-p2level:{n:'PHONES 2 level',s:'PHONES 2 · Xone:96',d:'Volume of the second headphone output.',t:['Turn it down when nobody is using it.']},
+p2sel:{n:'PHONES 2 source',s:'PHONES 2 · Xone:96',d:'A 9-way selector choosing what a second pair of headphones hears: MST, channels 1–4 or A–D. It doesn’t change anyone else’s cue.',u:1,t:["In a back-to-back techno set, the second DJ plugs in here and cues their own deck, so neither of you fights over the CUE buttons."]},
+p2mix:{n:'PHONES 2 CUE · MST',s:'PHONES 2 · Xone:96',d:'Blends the second headphones between the selected source and the main mix.',u:1,t:["The second DJ blends cue and master here, independently of your headphones."]},
+p2level:{n:'PHONES 2 level',s:'PHONES 2 · Xone:96',d:'Volume of the second headphone output.',u:1,t:["Each DJ sets their own headphone level in a back-to-back."]},
 xf:{n:'Crossfader',s:'Xone:96',d:'An innoFADER that fades between the channels assigned to X and those assigned to Y. Channels set to OFF ignore it.',t:['With every channel on OFF, the crossfader does nothing, which is how most techno DJs leave it.','For a cut: CH 2 on X, CH 3 on Y, curve sharp, then slam it across on the 1 (T5).']},
 /* ---- CDJ-3000 ---- */
 usb:{n:'USB port',s:'{c} · CDJ-3000',d:'Plug in the USB stick exported from rekordbox: tracks, grids, hot cues and memory cues.',t:['Bring two sticks with the same export, in case one fails.']},
@@ -1013,6 +1016,7 @@ master:{n:'MASTER',s:'{c} · CDJ-3000',d:'Makes this player the tempo master tha
 keysync:{n:'KEY SYNC',s:'{c} · CDJ-3000',d:'Shifts this track’s key to match the master player.',t:['Use with care: shifting key changes a track’s character. Mixing compatible keys (Camelot neighbours) is cleaner.']},
 range:{n:'TEMPO range',s:'{c} · CDJ-3000',d:'Sets how far the tempo fader reaches: ±6, ±10, ±16 % or WIDE.',t:['±6 gives the finest control for beat-matching techno tracks within a few BPM of each other.']},
 mtempo:{n:'MASTER TEMPO',s:'{c} · CDJ-3000',d:'Keeps the key the same when you change the tempo (key lock).',t:['Leave it on for big tempo changes, so the music doesn’t go up or down in pitch.']},
+treset:{n:'TEMPO RESET',s:'{c} · CDJ-3000',d:'While it is on, the track plays at its original tempo (0 %) whatever the tempo fader says.',t:['Handy at the end of a set or after a big tempo drift: reset, then move the fader to 0 before turning reset off, so nothing jumps.']},
 tempo:{n:'Tempo fader',s:'{c} · CDJ-3000',d:'Changes the playback speed. The green LED lights at 0 %.',t:['Match the incoming track’s BPM here before it goes in, then fine-tune with the jog ring.']},
 selector:{n:'Rotary selector',s:'{c} · CDJ-3000',d:'Turn to scroll lists, press to select or load.',t:['Load the next track early, never in a rush on the playing deck.']},
 back:{n:'BACK',s:'{c} · CDJ-3000',d:'Goes up one level in the browser.',t:[]},
@@ -1043,16 +1047,16 @@ EXCH.forEach((cx,i)=>{const n=i+1,o=cx-577;
  ex('ch'+L+'.src','mx','asrc',['c',120+o,365,34],L);ex('ch'+L+'.send1','mx','send1',['c',133+o,165,32],L);ex('ch'+L+'.pre','mx','pre',['c',120+o,215,15],L);
  ex('ch'+L+'.send2','mx','send2',['c',133+o,270,32],L);ex('ch'+L+'.gain','mx','again',['c',120+o,465,34],L);ex('ch'+L+'.hi','mx','ahi',['c',118+o,555,38],L);
  ex('ch'+L+'.freq','mx','afreq',['c',120+o,668,38],L);ex('ch'+L+'.mid','mx','amid',['c',118+o,775,38],L);ex('ch'+L+'.lo','mx','alo',['c',118+o,885,38],L);
- ex('ch'+L+'.fa','mx','afa',['r',80+o,946,82,28],L);ex('ch'+L+'.cue','mx','cue',['c',127+o,1053,24],L);ex('ch'+L+'.fader','mx','afader',['r',100+o,1110,66,370],L)});
+ ex('ch'+L+'.pk','mx','pk',['c',67+o,428,11],L);ex('ch'+L+'.meter','mx','meter',['r',52+o,1158,32,222],L);ex('ch'+L+'.fa','mx','afa',['r',80+o,946,82,28],L);ex('ch'+L+'.cue','mx','cue',['c',127+o,1053,24],L);ex('ch'+L+'.fader','mx','afader',['r',100+o,1110,66,370],L)});
 // returns C/D
-[['C',0],['D',310]].forEach(([L,o])=>{ex('rt'+L+'.on','mx','ron',['c',420,180+o,24],L);ex('rt'+L+'.level','mx','rlevel',['c',420,275+o,36],L);ex('rt'+L+'.cue','mx','rcue',['c',428,385+o,24],L)});
+[['C',0],['D',310]].forEach(([L,o])=>{ex('rt'+L+'.on','mx','ron',['c',420,180+o,24],L);ex('rt'+L+'.sig','mx','sig',['c',371,233+o,11],L);ex('rt'+L+'.level','mx','rlevel',['c',420,275+o,36],L);ex('rt'+L+'.cue','mx','rcue',['c',428,385+o,24],L)});
 // filters
 [[1,0],[2,762]].forEach(([n,o])=>{const f='f'+n;
  ex(f+'.crunch','mx','crunch',['c',420+o,838,40],n,f+'.crunch');ex(f+'.res','mx','res',['c',420+o+(n==2?3:0),950,44],n,f+'.res');
  ex(f+'.HPF','mx','hpf',['c',427+o+(n==2?1:0),1075,28],n,f+'.HPF');ex(f+'.BPF','mx','bpf',['c',427+o+(n==2?1:0),1173,28],n,f+'.BPF');ex(f+'.LPF','mx','lpf',['c',427+o+(n==2?1:0),1273,28],n,f+'.LPF');
  ex(f+'.freq','mx','ffreq',['c',420+o,1405,52],n,f+'.freq');ex(f+'.on','mx','fon',['c',427+o+(n==2?1:0),1540,32],n,f+'.on')});
 // USB, meters, master column, monitor, phones 2, crossfader
-ex('usb.act','mx','usbact',['r',1110,160,130,30]);ex('usb.midi','mx','midi',['r',1110,215,130,45]);ex('mm','mx','mmeter',['r',1110,410,130,310]);
+ex('usb.act','mx','usbact',['r',1110,160,130,30]);ex('usb.midi1','mx','midi',['c',1133,237,37],1);ex('usb.midi2','mx','midi',['c',1218,237,37],2);ex('mm','mx','mmeter',['r',1110,410,130,310]);
 ex('mst1','mx','mst1',['c',1350,175,38]);ex('mst2','mx','mst2',['c',1350,285,38]);ex('usb1112','mx','usb1112',['c',1333,395,24]);ex('smono','mx','smono',['c',1333,462,22]);
 ex('bhi','mx','bhi',['c',1350,530,32]);ex('bmid','mx','bmid',['c',1350,612,32]);ex('blo','mx','blo',['c',1350,690,32]);ex('blevel','mx','blevel',['c',1350,795,36]);ex('bmute','mx','bmute',['c',1335,880,22]);
 ex('chcurve','mx','chcurve',['r',1290,940,90,40]);ex('curve','mx','curve',['r',1290,1000,90,40],null,'curve');ex('cueact','mx','cueact',['c',1306,1078,14]);
@@ -1071,10 +1075,13 @@ for(const d of'AB'){const c=d==='A'?'CDJ 1':'CDJ 2';const E=(id,role,shape,ctl)=
  E('cuecall','cuecall',['r',1060,710,120,85]);E('del','del',['c',1240,760,30]);E('memory','memory',['c',1313,760,30]);
  E('vinylspeed','vinylspeed',['r',1390,595,110,120]);E('jogmode','jogmode',['r',1373,740,145,55]);
  E('beatsync','beatsync',['r',1373,825,70,80]);E('master','master',['r',1450,860,68,50]);E('keysync','keysync',['r',1395,925,100,45]);
- E('range','range',['r',1395,1025,100,80]);E('mtempo','mtempo',['r',1395,1125,100,75]);E('tempo','tempo',['r',1398,1222,96,512]);
+ E('treset','treset',['r',1288,1440,72,108]);E('range','range',['r',1395,1025,100,80]);E('mtempo','mtempo',['r',1395,1125,100,75]);E('tempo','tempo',['r',1398,1222,96,512]);
  E('selector','selector',['c',1420,343,62]);E('back','back',['c',1384,222,26]);E('tagtrack','tagtrack',['c',1450,222,26]);E('trkfilter','trkfilter',['c',1386,470,26]);E('shortcut','shortcut',['c',1449,467,26]);
  E('tabs','tabs',['r',490,68,820,40]);E('header','header',['r',508,138,550,60]);E('touchkeys','touchkeys',['r',1060,138,236,60]);E('phrase','phrase',['r',600,205,540,42]);
  E('wave','wave',['r',508,255,788,150]);E('info','info',['r',508,415,788,72]);E('overview','overview',['r',580,488,640,72])}
+/* hit areas snapped to the drawn controls (audited against the drawings) */
+const EXFIX={"c1.src":["c",570,366,32],"c1.send1":["c",586,165,34],"c1.pre":["c",578,222,17],"c1.send2":["c",586,270,34],"c1.pk":["c",518,428,11],"c1.gain":["c",571,465,34],"c1.hi":["c",579,555,37],"c1.hm":["c",579,665,37],"c1.lm":["c",579,775,37],"c1.lo":["c",579,885,37],"c1.cue":["c",583,1096,41],"c2.src":["c",721,366,32],"c2.send1":["c",737,165,34],"c2.pre":["c",729,222,17],"c2.send2":["c",737,270,34],"c2.pk":["c",669,428,11],"c2.gain":["c",722,465,34],"c2.hi":["c",730,555,37],"c2.hm":["c",730,665,37],"c2.lm":["c",730,775,37],"c2.lo":["c",730,885,37],"c2.cue":["c",734,1096,41],"c3.src":["c",871,366,32],"c3.send1":["c",887,165,34],"c3.pre":["c",879,222,17],"c3.send2":["c",887,270,34],"c3.pk":["c",819,428,11],"c3.gain":["c",872,465,34],"c3.hi":["c",880,555,37],"c3.hm":["c",880,665,37],"c3.lm":["c",880,775,37],"c3.lo":["c",880,885,37],"c3.cue":["c",884,1096,41],"c4.src":["c",1022,366,32],"c4.send1":["c",1038,165,34],"c4.pre":["c",1030,222,17],"c4.send2":["c",1038,270,34],"c4.pk":["c",970,428,11],"c4.gain":["c",1023,465,34],"c4.hi":["c",1031,555,37],"c4.hm":["c",1031,665,37],"c4.lm":["c",1031,775,37],"c4.lo":["c",1031,885,37],"c4.cue":["c",1035,1096,41],"chA.src":["c",119,366,32],"chA.send1":["c",135,165,34],"chA.pre":["c",127,222,17],"chA.send2":["c",135,270,34],"chA.hi":["c",123,555,38],"chA.freq":["c",123,668,31],"chA.mid":["c",123,775,38],"chA.lo":["c",123,885,38],"chA.cue":["c",127,1056,41],"chB.src":["c",269,366,32],"chB.send1":["c",285,165,34],"chB.pre":["c",277,222,17],"chB.send2":["c",285,270,34],"chB.hi":["c",273,555,38],"chB.freq":["c",273,668,31],"chB.mid":["c",273,775,38],"chB.lo":["c",273,885,38],"chB.cue":["c",277,1056,41],"rtC.on":["c",420,180,38],"rtC.level":["c",420,275,34],"rtC.cue":["c",428,385,41],"rtD.on":["c",420,490,38],"rtD.level":["c",420,585,34],"rtD.cue":["c",428,695,41],"f1.crunch":["c",420,838,30],"f1.res":["c",420,950,37],"f1.HPF":["c",427,1075,41],"f1.BPF":["c",427,1173,41],"f1.LPF":["c",427,1273,41],"f1.freq":["c",420,1405,62],"f1.on":["c",427,1540,41],"f2.crunch":["c",1182,838,30],"f2.res":["c",1185,950,37],"f2.HPF":["c",1190,1075,41],"f2.BPF":["c",1190,1173,41],"f2.LPF":["c",1190,1273,41],"f2.freq":["c",1182,1405,62],"f2.on":["c",1190,1540,41],"mst1":["c",1350,160,29],"mst2":["c",1350,290,29],"usb1112":["c",1333,385,17],"smono":["c",1333,453,17],"bhi":["c",1350,530,34],"bmid":["c",1350,612,34],"blo":["c",1350,690,34],"blevel":["c",1350,795,29],"bmute":["c",1335,880,35],"cueact":["c",1303,1086,16],"posteq":["c",1333,1136,17],"split":["c",1333,1191,17],"cuemst":["c",1350,1262,35],"mlevel":["c",1350,1385,29],"p2sel":["c",112,1640,33],"p2level":["c",305,1640,29],"A.usbstop":["c",395,236,30],"A.slip":["r",273,523,60,44],"A.calldel":["r",273,643,100,54],"A.in":["c",317,767,38],"A.out":["c",418,767,38],"A.bl4":["c",317,873,29],"A.bl8":["c",418,873,29],"A.cue":["c",357,1505,74],"A.play":["c",357,1690,74],"A.jogdisp":["c",902,1230,140],"A.del":["c",1240,767,33],"A.memory":["c",1313,767,22],"A.selector":["c",1440,343,76],"A.back":["c",1398,221,34],"A.tagtrack":["r",1425,187,76,68],"A.trkfilter":["c",1400,471,36],"A.shortcut":["c",1466,471,36],"B.usbstop":["c",395,236,30],"B.slip":["r",273,523,60,44],"B.calldel":["r",273,643,100,54],"B.in":["c",317,767,38],"B.out":["c",418,767,38],"B.bl4":["c",317,873,29],"B.bl8":["c",418,873,29],"B.cue":["c",357,1505,74],"B.play":["c",357,1690,74],"B.jogdisp":["c",902,1230,140],"B.del":["c",1240,767,33],"B.memory":["c",1313,767,22],"B.selector":["c",1440,343,76],"B.back":["c",1398,221,34],"B.tagtrack":["r",1425,187,76,68],"B.trkfilter":["c",1400,471,36],"B.shortcut":["c",1466,471,36],"chcurve":["r",1300,940,62,40],"curve":["r",1302,1013,62,40],"A.quantize":["r",328,523,110,44],"A.tabs":["r",478,66,848,44],"B.quantize":["r",328,523,110,44],"B.tabs":["r",478,66,848,44],"A.beatsync":["r",1366,857,74,56],"A.master":["r",1436,857,96,56],"A.keysync":["r",1383,929,134,40],"B.beatsync":["r",1366,857,74,56],"B.master":["r",1436,857,96,56],"B.keysync":["r",1383,929,134,40]};
+for(const e of EXL)if(EXFIX[e.id])e.shape=EXFIX[e.id];
 const EXR={mx:MX,A:DA,B:DB};
 function exShape(e){const s=e.shape;if(s[0]==='c')return`<circle data-ex="${e.id}" cx="${s[1]}" cy="${s[2]}" r="${s[3]}"/>`;
  if(s[0]==='ring')return`<path data-ex="${e.id}" fill-rule="evenodd" d="M${s[1]-s[3]} ${s[2]}a${s[3]} ${s[3]} 0 1 0 ${2*s[3]} 0a${s[3]} ${s[3]} 0 1 0 ${-2*s[3]} 0ZM${s[1]-s[4]} ${s[2]}a${s[4]} ${s[4]} 0 1 1 ${2*s[4]} 0a${s[4]} ${s[4]} 0 1 1 ${-2*s[4]} 0Z"/>`;
@@ -1087,13 +1094,42 @@ function exShow(id){const e=EXL.find(x=>x.id===id);if(!e)return;exSel=e;const I=
  for(const el of svg.querySelectorAll('.exl .on'))el.classList.remove('on');const el=svg.querySelector(`[data-ex="${CSS.escape(id)}"]`);el&&el.classList.add('on');
  const used=exUsed(e);
  $('exn').textContent=I.n;$('exs').textContent=exFill(I.s,e.c);$('exd').textContent=exFill(I.d,e.c);
- $('ext').innerHTML=I.t.map(()=>'<li></li>').join('');[...$('ext').children].forEach((li,i)=>li.textContent=exFill(I.t[i],e.c));$('exth').hidden=!I.t.length;
+ const spare=e.dev==='mx'&&/^c[14]\./.test(e.id),unused=!!I.u||spare;
+ const tips=(spare?[`Channel ${e.c} has nothing plugged in here. In a 3- or 4-deck techno set, a third CDJ or a drum machine lives on this channel, layering a percussion loop or a drone under the main blend.`]:[]).concat(I.t);
+ $('extag').hidden=!unused;$('exth').textContent=unused?'In other techno sets':'In a set';
+ $('ext').innerHTML=tips.map(()=>'<li></li>').join('');[...$('ext').children].forEach((li,i)=>li.textContent=exFill(tips[i],e.c));$('exth').hidden=!tips.length;
  $('exu').innerHTML=used.length?'Used in: '+used.map(T=>`<button data-t="${TECH.indexOf(T)}">${T.g}${T.n} · ${auEsc(T.title)}</button>`).join(''):'';
  $('exhint').hidden=true;
  // frame the part with room around it
  if(el){const m=svg.getScreenCTM();if(m){const r=el.getBoundingClientRect(),inv=m.inverse(),a=new DOMPoint(r.left,r.top).matrixTransform(inv),b=new DOMPoint(r.right,r.bottom).matrixTransform(inv);
-  const cx=(a.x+b.x)/2,cy=(a.y+b.y)/2,w=Math.max(300,(b.x-a.x)*2.2),h=Math.max(220,(b.y-a.y)*2.2);customBox=[cx-w/2,cy-h/2,w,h]}}}
-svg.addEventListener('click',e=>{if(mode!=='explore')return;const h=e.target.closest('[data-ex]');if(h)exShow(h.dataset.ex)});
+  const cx=(a.x+b.x)/2,cy=(a.y+b.y)/2,w=Math.max(300,(b.x-a.x)*2.2),h=Math.max(220,(b.y-a.y)*2.2);customBox=[cx-w/2,cy-h/2,w,h];exView=null}}}
+svg.addEventListener('click',e=>{if(mode!=='explore'||exDragged)return;const h=e.target.closest('[data-ex]');if(h)exShow(h.dataset.ex)},true);
+/* pan and zoom: drag to move, wheel / pinch / buttons to zoom. Works on the live viewBox. */
+let exDragged=false;const exPts=new Map();let exG=null;
+const exCur=()=>exView||[...vb];
+function exSet(v){let[x,y,w,h]=v;const a=figEl.clientWidth/Math.max(1,figEl.clientHeight);w=Math.min(Math.max(w,110),RW*1.25);h=w/a;
+ x=Math.min(Math.max(x,-w*.5),RW-w*.5);y=Math.min(Math.max(y,-h*.5),RH-h*.5);exView=[x,y,w,h];customBox=null;snap=true}
+function exZoom(f,px,py){const v=exCur(),r=svg.getBoundingClientRect();const fx=px==null?.5:(px-r.left)/r.width,fy=py==null?.5:(py-r.top)/r.height;
+ const w=v[2]*f,h=v[3]*f;exSet([v[0]+(v[2]-w)*fx,v[1]+(v[3]-h)*fy,w,h])}
+svg.addEventListener('wheel',e=>{if(mode!=='explore')return;e.preventDefault();
+ const mouse=!e.ctrlKey&&e.deltaX===0&&Math.abs(e.deltaY)>=50;
+ if(e.ctrlKey||mouse)exZoom(Math.exp(Math.max(-1,Math.min(1,e.deltaY*(e.ctrlKey?.01:.0025)))),e.clientX,e.clientY);
+ else{const v=exCur(),k=v[2]/svg.getBoundingClientRect().width;exSet([v[0]+e.deltaX*k,v[1]+e.deltaY*k,v[2],v[3]])}},{passive:false});
+svg.addEventListener('pointerdown',e=>{if(mode!=='explore')return;exPts.set(e.pointerId,{x:e.clientX,y:e.clientY});exDragged=false;
+ const P=[...exPts.values()];exG={v:exCur(),P:P.map(p=>({...p})),sx:e.clientX,sy:e.clientY}});
+svg.addEventListener('pointermove',e=>{if(mode!=='explore'||!exPts.has(e.pointerId)||!exG)return;exPts.set(e.pointerId,{x:e.clientX,y:e.clientY});
+ const r=svg.getBoundingClientRect(),P=[...exPts.values()],v=exG.v,k=v[2]/r.width;
+ if(P.length===1){const dx=e.clientX-exG.sx,dy=e.clientY-exG.sy;if(!exDragged&&Math.hypot(dx,dy)<6)return;
+  if(!exDragged){exDragged=true;svg.setPointerCapture(e.pointerId);svg.classList.add('drag')}exSet([v[0]-dx*k,v[1]-dy*k,v[2],v[3]])}
+ else if(P.length>=2&&exG.P.length>=2){exDragged=true;const d0=Math.hypot(exG.P[0].x-exG.P[1].x,exG.P[0].y-exG.P[1].y),d1=Math.hypot(P[0].x-P[1].x,P[0].y-P[1].y);
+  const c0={x:(exG.P[0].x+exG.P[1].x)/2,y:(exG.P[0].y+exG.P[1].y)/2},c1={x:(P[0].x+P[1].x)/2,y:(P[0].y+P[1].y)/2},f=d0/Math.max(20,d1);
+  const fx=(c0.x-r.left)/r.width,fy=(c0.y-r.top)/r.height,w=v[2]*f,h=v[3]*f;exSet([v[0]+(v[2]-w)*fx-(c1.x-c0.x)*w/r.width,v[1]+(v[3]-h)*fy-(c1.y-c0.y)*h/r.height,w,h])}});
+const exUp=e=>{if(!exPts.has(e.pointerId))return;exPts.delete(e.pointerId);svg.classList.remove('drag');
+ if(exPts.size){exG={v:exCur(),P:[...exPts.values()].map(p=>({...p})),sx:[...exPts.values()][0].x,sy:[...exPts.values()][0].y}}else exG=null;
+ if(exDragged)setTimeout(()=>{exDragged=false},0)};
+svg.addEventListener('pointerup',exUp);svg.addEventListener('pointercancel',exUp);
+$('exZi').onclick=()=>exZoom(1/1.4);$('exZo').onclick=()=>exZoom(1.4);$('exZf').onclick=()=>{exView=null;customBox=null;userView='rig';follow=false;syncViews()};
+document.addEventListener('keydown',e=>{if(mode!=='explore'||/INPUT|SELECT/.test(document.activeElement.tagName))return;if(e.key==='+'||e.key==='=')exZoom(1/1.25);else if(e.key==='-'||e.key==='_')exZoom(1.25)});
 $('exu').onclick=e=>{const b=e.target.closest('button[data-t]');if(!b)return;customBox=null;setMode('anim');pick(+b.dataset.t)};
 document.addEventListener('keydown',e=>{if(mode!=='explore'||!exSel||!/^(ArrowRight|ArrowLeft)$/.test(e.key))return;e.preventDefault();e.stopImmediatePropagation();
  const L=EXL.filter(x=>x.dev===exSel.dev),i=L.indexOf(exSel);exShow(L[(i+(e.key==='ArrowRight'?1:-1)+L.length)%L.length].id)},true);
