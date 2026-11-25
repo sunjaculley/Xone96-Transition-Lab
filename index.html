@@ -154,7 +154,8 @@ body.trym .side #tryc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,
 .libsteps{margin:0;padding-left:20px;font-size:14px;display:grid;gap:6px}.libst{font-weight:600;margin:4px 0}
 .libf{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px}.libf input[type=search],.libf select{min-height:38px;border:1px solid var(--line);border-radius:6px;padding:0 10px;font:14px Barlow,sans-serif}.libf input[type=search]{flex:1 1 200px}
 .liblist{list-style:none;margin:0;padding:0;overflow-y:auto;flex:1;min-height:120px;border-top:1px solid var(--line)}.liblist li{display:flex;gap:10px;align-items:center;padding:6px 2px;border-bottom:1px solid #eee;font-size:14px}.liblist li.off{opacity:.45}.liblist .lt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.liblist .lm{color:var(--mute);font-size:12.5px;white-space:nowrap}.liblist button{min-height:32px;padding:2px 10px;border-radius:6px;border:1px solid var(--line);background:#fff;font:600 13px Barlow,sans-serif;cursor:pointer;margin-left:4px}.liblist .more{color:var(--mute);justify-content:center}
-#libBtn{min-height:36px;padding:4px 12px;border-radius:8px;border:1px solid var(--ink);background:#fff;font:600 13px Barlow,sans-serif;cursor:pointer}
+#libBtn,#miBtn{min-height:36px;padding:4px 12px;border-radius:8px;border:1px solid var(--ink);background:#fff;font:600 13px Barlow,sans-serif;cursor:pointer}#miBtn.on{background:var(--ink);color:#fff}
+.mipanel{position:fixed;right:16px;top:64px;z-index:45;width:min(460px,calc(100vw - 32px));max-height:80vh;overflow:auto;background:#fff;border:1px solid var(--ink);border-radius:8px;padding:12px 16px;box-shadow:0 8px 30px #0003}.mipanel[hidden]{display:none}.mist{font-weight:600;margin:6px 0}.mimap{margin:4px 0 8px;padding-left:18px;font-size:13px;display:grid;gap:2px}body.milearn #rig [data-id]{outline:2px dashed var(--b)}
 .expc{display:none}
 @media(max-width:1320px){.tr .kn:last-of-type,#real{display:none}}@media(max-height:820px){.trynow{font-size:15px;margin:0 0 4px}.trynext{font-size:13px;margin:0 0 4px}.tryctl{margin:2px 0 4px}}body.beatm .side #beatc{column-count:2;column-gap:28px}body.beatm .list{opacity:.45}#beatc>*{break-inside:avoid}body.expm .expc{display:grid;grid-column:1/-1;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);column-gap:28px;align-content:start}.expc>*{grid-column:1}.expc>.tt,.expc>.exhint{grid-column:1/-1}.expc>#exth{grid-column:2;grid-row:2}.expc>.ext{grid-column:2;grid-row:3/7}.expc>.exu{grid-column:1}@media(max-width:959px){body.expm .expc{display:block}}body.expm .side>.card:not(.expc){display:none}
 body.expm .tr>:not(.seg){display:none}
@@ -170,7 +171,14 @@ body.expm .fig{user-select:none;-webkit-user-select:none}body.expm .fig>svg{touc
 @media(prefers-reduced-motion:reduce){.bt i{transition:none}}
 </style></head><body>
 <div class="app">
-<header class="hd"><h1>Xone:96 + CDJ-3000 transition lab</h1><div class="snd"><button id="sndBtn" aria-pressed="false" title="Play the techniques on real audio">Sound off</button><label>CDJ 1 <select id="trkA" aria-label="Track on CDJ 1"></select></label><label>CDJ 2 <select id="trkB" aria-label="Track on CDJ 2"></select></label><button id="libBtn" title="Load tracks from your rekordbox collection">Rekordbox library</button><span id="sndSt"></span></div><p class="sub">CDJ 1 → CH 2 · CDJ 2 → CH 3 · no send FX · 16-bar demos, time compressed · Space play/pause · ← → steps</p></header>
+<header class="hd"><h1>Xone:96 + CDJ-3000 transition lab</h1><div class="snd"><button id="sndBtn" aria-pressed="false" title="Play the techniques on real audio">Sound off</button><label>CDJ 1 <select id="trkA" aria-label="Track on CDJ 1"></select></label><label>CDJ 2 <select id="trkB" aria-label="Track on CDJ 2"></select></label><button id="miBtn" title="Connect a MIDI controller such as the DDJ-FLX4">MIDI</button><button id="libBtn" title="Load tracks from your rekordbox collection">Rekordbox library</button><span id="sndSt"></span></div><p class="sub">CDJ 1 → CH 2 · CDJ 2 → CH 3 · no send FX · 16-bar demos, time compressed · Space play/pause · ← → steps</p></header>
+<div class="mipanel" id="mipanel" hidden role="dialog" aria-label="MIDI controller"><div class="libhd"><b>MIDI controller</b><button id="miclose" aria-label="Close">✕</button></div>
+<p class="mist" id="mist">Looking for controllers…</p>
+<p class="exs">Chrome or Edge. Quit rekordbox first so it doesn’t react to the same moves. The DDJ-FLX4 is mapped automatically: deck 1 drives CDJ 1 / CH 2, deck 2 drives CDJ 2 / CH 3. Moves play in Practice → Try it and the Beatmatch trainer; in Explore, touching a control shows what it is.</p>
+<ul class="mimap"><li><b>Faders, crossfader</b> as on the Xone</li><li><b>EQ HI / LOW</b> → HI / LO · <b>EQ MID</b> → both mids together</li><li><b>CFX</b> → that channel’s Xone filter: left LPF, right HPF, centre off</li><li><b>PLAY, CUE, LOOP IN / OUT, RELOOP/EXIT, CUE/LOOP CALL ◀ ▶</b> → loop ½ and ×2</li><li><b>Pads</b> hot cue mode → hot cues A–H · beat loop mode → loops</li><li><b>Deck 2 tempo slider and jog</b> → Beatmatch trainer · <b>BEAT SYNC</b> ignored on purpose</li><li><b>Channel CUE, HEADPHONES MIXING</b> → headphone cue (needs the option below)</li></ul>
+<label class="trych"><input type="checkbox" id="mihp"> Headphone cue on the FLX4’s headphone output (set the FLX4 as the computer’s sound output first)</label>
+<label class="trych"><input type="checkbox" id="miinv"> Tempo slider feels backwards: invert it</label>
+<div class="tryctl"><button id="milearn">MIDI learn (other controllers)</button><button id="miclear">Clear learned</button></div></div>
 <div class="libdlg" id="libdlg" hidden role="dialog" aria-label="Rekordbox library"><div class="libbox">
 <div class="libhd"><b>Rekordbox library</b><button id="libclose" aria-label="Close">✕</button></div>
 <ol class="libsteps"><li>In rekordbox: <b>File → Export Collection in xml format</b>, then open that file here: <input type="file" id="libxml" accept=".xml,text/xml"></li>
@@ -930,7 +938,7 @@ function auCh(){const c=AU.ctx,bq=(type,f,q)=>{const b=c.createBiquadFilter();b.
  n.in.gain.value=.8;n.shp.curve=auCurve();n.an.fftSize=2048;n.an.smoothingTimeConstant=.6;n.wet.gain.value=0;
  n.in.connect(n.lo);n.lo.connect(n.lm);n.lm.connect(n.hm);n.hm.connect(n.hi);n.hi.connect(n.dry);n.hi.connect(n.cDry);n.hi.connect(n.drive);n.drive.connect(n.shp);n.shp.connect(n.cWet);
  n.cDry.connect(n.mix);n.cWet.connect(n.mix);n.mix.connect(n.flt);n.flt.connect(n.wet);n.dry.connect(n.fad);n.wet.connect(n.fad);n.fad.connect(n.an);n.an.connect(AU.master);return n}
-function auGraph(){const c=AU.ctx=new (window.AudioContext||window.webkitAudioContext)();AU.master=c.createGain();AU.master.gain.value=.85;AU.man=c.createAnalyser();AU.man.fftSize=1024;const lim=c.createDynamicsCompressor();lim.threshold.value=-2;lim.ratio.value=20;lim.attack.value=.002;lim.release.value=.12;AU.master.connect(AU.man);AU.man.connect(lim);lim.connect(c.destination);AU.ch.A=auCh();AU.ch.B=auCh()}
+function auGraph(){const c=AU.ctx=new (window.AudioContext||window.webkitAudioContext)();AU.master=c.createGain();AU.master.gain.value=.85;AU.man=c.createAnalyser();AU.man.fftSize=1024;const lim=c.createDynamicsCompressor();lim.threshold.value=-2;lim.ratio.value=20;lim.attack.value=.002;lim.release.value=.12;AU.master.connect(AU.man);AU.man.connect(lim);lim.connect(c.destination);AU.lim=lim;AU.ch.A=auCh();AU.ch.B=auCh()}
 function auSet(p,v){if(p._v===undefined||Math.abs(p._v-v)>1e-4){p.setTargetAtTime(v,AU.ctx.currentTime,.012);p._v=v}}
 const AU_FT={HPF:'highpass',BPF:'bandpass',LPF:'lowpass'};
 /* --- per-frame: parameters and transport --- */
@@ -963,7 +971,7 @@ function auScreenInfo(d){const tr=AU.trk[d];if(!tr)return;const m=tr.meta,s=Math
  SC_REAL[d]=tr;delete SC_WC[d];sc_refresh(d)}
 async function auAssign(d,id){const meta=AU.lib.find(m=>m.id===id);if(!meta)return;auStatus('Loading '+(meta.title||meta.file)+'…');
  try{const tr=await auLoad(meta);AU.trk[d]=tr;auStop(d);const A=AU.trk.A,B=AU.trk.B;AU.rate.B=A&&B?A.bpm/B.bpm:1;AU.rate.A=1;if(AU.on)P.barSec=240/(A?A.bpm:130);
-  for(const k of'AB')auScreenInfo(k);cueSrc();auStatus(AU.on?'':'Sound is off');}catch(e){auStatus('Could not load '+(meta.title||meta.file)+': '+e.message)}}
+  for(const k of'AB')auScreenInfo(k);cueSrc();miLeds();auStatus(AU.on?'':'Sound is off');}catch(e){auStatus('Could not load '+(meta.title||meta.file)+': '+e.message)}}
 function auStatus(s){const el=$('sndSt');if(el)el.textContent=s}
 function auLock(on){const P0=AU.p0||(AU.p0={speed:P.speed,barSec:P.barSec});if(on){P.speed=1;P.barSec=240/(AU.trk.A?AU.trk.A.bpm:130)}else{P.speed=P0.speed;P.barSec=P0.barSec;AU.p0=null}
  for(const id of['spd','bar','real']){const el=$(id);if(el)el.disabled=on}$('spd').value=P.speed;$('spdo').textContent=P.speed.toFixed(2)+'×';$('bar').value=P.barSec;$('baro').textContent=P.barSec.toFixed(2)+' s'}
@@ -1179,6 +1187,76 @@ function libInit(){$('libBtn').onclick=()=>{$('libdlg').hidden=false;libRender()
  $('libcompat').onchange=e=>{LIB.compat=e.target.checked;libRender()};$('liblist').onclick=e=>{const b=e.target.closest('button[data-d]');if(b)libLoad(b.dataset.d,+b.dataset.i)}}
 libInit();
 /* ==== REGION library END ==== */
+/* ==== REGION midi ==== */
+/* MIDI controllers through Web MIDI (Chrome / Edge). Built-in map for the Pioneer DDJ-FLX4
+   (message numbers from the Mixxx DDJ-FLX4 mapping), plus MIDI learn for anything else.
+   FLX4 deck 1 = CDJ 1 / CH 2, deck 2 = CDJ 2 / CH 3. Moves act in Practice; in Explore they select the part. */
+const MI={acc:null,ins:[],outs:[],msb:{},shift:{0:false,1:false},learn:null,map:{},inv:false,hp:false,last:'',flx:false,cfxOn:{0:false,1:false}};
+try{MI.map=JSON.parse(localStorage.getItem('xl_midimap')||'{}');MI.inv=localStorage.getItem('xl_tinv')==='1'}catch(e){}
+const MI_CH=['c2','c3'],MI_D=['A','B'],MI_F=['f1','f2'];
+function miStatus(s){MI.last=s;const el=$('mist');if(el)el.textContent=s}
+async function miInit(){if(!navigator.requestMIDIAccess){miStatus('This browser has no Web MIDI. Use Chrome or Edge.');return}
+ try{MI.acc=await navigator.requestMIDIAccess({sysex:false})}catch(e){miStatus('MIDI access was blocked: '+e.message);return}
+ const scan=()=>{MI.ins=[...MI.acc.inputs.values()];MI.outs=[...MI.acc.outputs.values()];for(const i of MI.ins)i.onmidimessage=miMsg;
+  MI.flx=MI.ins.some(i=>/flx4/i.test(i.name));miStatus(MI.ins.length?`Connected: ${MI.ins.map(i=>i.name).join(', ')}${MI.flx?' · DDJ-FLX4 map active':' · use MIDI learn to map it'}`:'No MIDI controller found. Plug it in (quit rekordbox first).');$('miBtn').classList.toggle('on',MI.ins.length>0);miLeds()};
+ MI.acc.onstatechange=scan;scan()}
+function miOut(a,b,c){for(const o of MI.outs)if(!MI.flx||/flx4/i.test(o.name))try{o.send([a,b,c])}catch(e){}}
+function miLeds(){if(!MI.flx)return;for(const d of[0,1]){const tr=AU.trk[MI_D[d]],h=tr&&tr.meta.hotcues||{};for(let i=0;i<8;i++)miOut(0x97+2*d,i,h['ABCDEFGH'[i]]?0x7F:0)}}
+/* value helpers */
+const mi14=(st,lo,v)=>{const k=st+':'+lo;return((MI.msb[k]||0)<<7|v)/16383};
+function miAct(kind,d,arg,f){
+ if(mode==='explore'){const ids={hi:MI_CH[d]+'.hi',mid:MI_CH[d]+'.hm',lo:MI_CH[d]+'.lo',fader:MI_CH[d]+'.fader',xf:'xf',cfx:MI_F[d]+'.freq',play:MI_D[d]+'.play',cue:MI_D[d]+'.cue',in:MI_D[d]+'.in',out:MI_D[d]+'.out',exit:MI_D[d]+'.exit',pad:MI_D[d]+'.hotcues',tempo:MI_D[d]+'.tempo',jog:MI_D[d]+'.jog',half:MI_D[d]+'.half',dbl:MI_D[d]+'.dbl'};const id=ids[kind];if(id&&EXL.find(e=>e.id===id))exShow(id);return}
+ if(PR.kind==='beat'){if(d===1&&kind==='tempo'){PR.beat.pB=Math.round(f/.02)*.02}else if(d===1&&kind==='jog'){PR.beat.spinV=Math.max(-.08,Math.min(.08,(PR.beat.spinV||0)+f*.004))}else if(kind==='play'&&d===1)PR.beat.start();return}
+ if(mode!=='try'){if(!miAct.warned){miAct.warned=true;miStatus(MI.last.split(' · Moves')[0]+' · Moves only play in Practice → Try it (Explore shows what you touched).')}return}
+ if(!PR.live){if(kind==='play'&&d===0){prTryStart()}return}
+ const ch=MI_CH[d],dk=MI_D[d];
+ if(kind==='hi')prSet(ch+'.hi',invN('eqHL',f));else if(kind==='lo')prSet(ch+'.lo',invN('eqHL',f));else if(kind==='mid'){prSet(ch+'.hm',invN('eqM',f));prSet(ch+'.lm',invN('eqM',f))}
+ else if(kind==='fader')prSet(ch+'.fader',f);else if(kind==='xf')prSet('xf',f);
+ else if(kind==='cfx'){const fl=MI_F[d],a=f-.5;if(Math.abs(a)<.03){prSet(fl+'.on',0)}else{prSet(ch+'.fa',d+1);prSet(fl+'.mode',a<0?'LPF':'HPF');prSet(fl+'.freq',a<0?1-Math.min(1,-a*2)*.85:Math.min(1,a*2)*.8);prSet(fl+'.on',1)}}
+ else if(kind==='play')prDeck(dk,'play');else if(kind==='in')prDeck(dk,'in');else if(kind==='out')prDeck(dk,'out');else if(kind==='exit')prDeck(dk,'exit');
+ else if(kind==='half'){const k=PR.deck[dk];if(k&&k.L>0)k.L/=2;else prDeck(dk,'bl4')}else if(kind==='dbl'){const k=PR.deck[dk];if(k&&k.L>0)k.L*=2;else prDeck(dk,'bl8')}
+ else if(kind==='pad')prDeck(dk,'pad','ABCDEFGH'[arg]);else if(kind==='bloop'){const k=PR.deck[dk];if(!k)return;const L=[.0625,.125,.25,.5,1,2,4,8][arg];if(k.L===L)k.L=0;else{k.li=Math.floor(k.pos*4+1e-6)/4;k.L=L;k.last={L,li:k.li}}}
+ else if(kind==='cue'){/* CUE on a playing deck returns to the cue point and pauses */const k=PR.deck[dk];if(k&&k.play){k.play=false;k.pos=startBar(dk);k.L=0}}}
+function miMsg(e){const[st,d1,v=0]=e.data;const type=st&0xF0,chn=st&0x0F;
+ /* MIDI learn: next message binds to the chosen lab control */
+ if(MI.learn&&(type===0xB0||(type===0x90&&v>0))){const key=(type===0xB0?'cc':'nt')+':'+chn+':'+d1;MI.map[key]=MI.learn;try{localStorage.setItem('xl_midimap',JSON.stringify(MI.map))}catch(err){}miStatus(`Mapped ${type===0xB0?'CC':'note'} ${d1} (channel ${chn+1}) to ${keyName(MI.learn)||MI.learn}.`);MI.learn=null;document.body.classList.remove('milearn');return}
+ const lk=(type===0xB0?'cc':'nt')+':'+chn+':'+d1;if(MI.map[lk]){const k=MI.map[lk];if(mode==='try'&&PR.live){const c=CTL.find(c=>c.key===k);if(type===0xB0&&c){prSet(k,c.type==='knob'?invN(c.kind,v/127):v/127)}else if(type===0x90&&v>0){const cur=prVal(k);prSet(k,typeof cur==='number'?(cur?0:1):cur)}}return}
+ if(!MI.flx)return;
+ if(type===0xB0){const deck=st===0xB0?0:st===0xB1?1:null;
+  if(d1<0x20){MI.msb[st+':'+(d1+0x20)]=v;/* MSB only: act now with coarse value, LSB refines */}
+  const lsb=d1>=0x20&&d1<0x40,base=lsb?d1-0x20:d1,f=lsb?mi14(st,d1,v):v/127;
+  if(deck!==null){if(base===0x13)miAct('fader',deck,0,f);else if(base===0x07)miAct('hi',deck,0,f);else if(base===0x0B)miAct('mid',deck,0,f);else if(base===0x0F)miAct('lo',deck,0,f);
+   else if(base===0x00&&lsb){const pct=(f*2-1)*10*(MI.inv?-1:1);miAct('tempo',deck,0,pct)}
+   else if(d1===0x21||d1===0x22||d1===0x23)miAct('jog',deck,0,v-64)}
+  else if(st===0xB6){if(base===0x1F)miAct('xf',0,0,f);else if(base===0x17)miAct('cfx',0,0,f);else if(base===0x18)miAct('cfx',1,0,f);else if(base===0x0C&&lsb){MI.hpMix=f;auHpMix()}}
+  return}
+ if(type===0x90||type===0x80){const on=type===0x90&&v>0;
+  if(st===0x90||st===0x91||(type===0x80&&(chn===0||chn===1))){const deck=chn;if(d1===0x3F){MI.shift[deck]=on;return}if(!on)return;
+   const m={0x0B:'play',0x0C:'cue',0x10:'in',0x11:'out',0x4D:'exit',0x51:'half',0x53:'dbl',0x54:'chcue'}[d1];
+   if(m==='chcue'){MI.cue=MI.cue||[false,false];MI.cue[deck]=!MI.cue[deck];miOut(0x90+deck,0x54,MI.cue[deck]?0x7F:0);auCueSet();return}
+   if(d1===0x58){miStatus(MI.last.split(' · ')[0]+' · BEAT SYNC is ignored here on purpose: match by ear.');return}if(m)miAct(m,deck);return}
+  if(!on)return;if(st===0x97||st===0x99){const deck=st===0x97?0:1;if(d1<8)miAct('pad',deck,d1);else if(d1>=0x60&&d1<0x68)miAct('bloop',deck,d1-0x60)}}}
+/* headphone cue on the FLX4's second stereo output (channels 3-4) */
+function auHpSetup(on){if(!AU.ctx)auGraph();const c=AU.ctx,dst=c.destination;
+ if(on&&dst.maxChannelCount<4){miStatus(`Your sound output has ${dst.maxChannelCount} channels. Set the DDJ-FLX4 as the computer’s sound output, reload the lab and try again.`);$('mihp').checked=false;MI.hp=false;return false}
+ if(!AU.hp){const sp=c.createChannelSplitter(2),mg=c.createChannelMerger(4),cue=c.createGain(),mst=c.createGain(),ph=c.createGain(),sp2=c.createChannelSplitter(2);
+  AU.hp={sp,mg,cue,mst,ph,sp2,taps:{}};AU.hp.lim=AU.lim;cue.connect(ph);mst.connect(ph);ph.connect(sp2);sp2.connect(mg,0,2);sp2.connect(mg,1,3);sp.connect(mg,0,0);sp.connect(mg,1,1);AU.master.connect(mst)
+  for(const d of'AB'){const g=c.createGain();g.gain.value=0;AU.ch[d].hi.connect(g);g.connect(cue);AU.hp.taps[d]=g}}
+ const lim=AU.lim;try{lim.disconnect()}catch(e){}try{AU.hp.mg.disconnect()}catch(e){}
+ if(on){dst.channelCount=4;dst.channelInterpretation='discrete';lim.connect(AU.hp.sp);AU.hp.mg.connect(dst);auCueSet();auHpMix();miStatus('Headphones: cued channels and the CUE/MASTER mix now play on the FLX4’s headphone output.')}
+ else{dst.channelCount=2;dst.channelInterpretation='speakers';lim.connect(dst)}return true}
+function auCueSet(){if(!AU.hp)return;const q=MI.cue||[false,false];auSet(AU.hp.taps.A.gain,q[0]?.8:0);auSet(AU.hp.taps.B.gain,q[1]?.8:0)}
+function auHpMix(){if(!AU.hp)return;const m=MI.hpMix??.5;auSet(AU.hp.cue.gain,Math.cos(m*Math.PI/2));auSet(AU.hp.mst.gain,Math.sin(m*Math.PI/2))}
+/* panel */
+function miPanel(){$('miBtn').onclick=()=>{const p=$('mipanel');p.hidden=!p.hidden;if(!MI.acc&&!p.hidden)miInit()};$('miclose').onclick=()=>{$('mipanel').hidden=true};
+ $('miinv').checked=MI.inv;$('miinv').onchange=e=>{MI.inv=e.target.checked;try{localStorage.setItem('xl_tinv',MI.inv?'1':'0')}catch(err){}};
+ $('mihp').onchange=e=>{MI.hp=e.target.checked;if(!auHpSetup(MI.hp))e.target.checked=false};
+ $('milearn').onclick=()=>{document.body.classList.add('milearn');miStatus('MIDI learn: click a control on the drawing, then move the controller knob, fader or button for it.');MI.pick=true};
+ $('miclear').onclick=()=>{MI.map={};try{localStorage.removeItem('xl_midimap')}catch(err){}miStatus('Learned mappings cleared.')}}
+svg.addEventListener('click',e=>{if(!MI.pick)return;const g=e.target.closest('[data-id]'),c=g&&CTL.find(x=>x.id===g.dataset.id);if(!c)return;MI.pick=false;MI.learn=c.key;miStatus(`Now move the controller part for ${keyName(c.key)}.`)},true);
+miPanel();
+/* ==== REGION midi END ==== */
+
 
 
 /* render */
