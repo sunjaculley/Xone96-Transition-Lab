@@ -4,6 +4,7 @@
 // Optional: a JSON file with the same base name next to a track overrides any field, e.g.
 //   tracks/My Artist - My Track.mp3
 //   tracks/My Artist - My Track.json  -> {"bpm":128,"firstBeat":0.42,"key":"8A","cues":{"mixOut":96,"mixIn":0,"drop":32,"kickIntro":0}}
+// Names like "8A - 128 - Title - Artist.mp3" set key and BPM from the name; a sidecar can also fix title/artist.
 // Usage: node scripts/build-manifest.mjs [siteRoot]
 import { readdirSync, readFileSync, writeFileSync, existsSync, statSync } from 'node:fs';
 import { join, extname, basename } from 'node:path';
@@ -18,14 +19,17 @@ if (existsSync(dir)) {
     const ext = extname(f).toLowerCase();
     if (!AUDIO.has(ext) || f.startsWith('.')) continue;
     const base = basename(f, extname(f));
-    // "Artist - Title" file names fill artist and title; anything else becomes the title.
-    const m = base.match(/^(.+?)\s+[-–]\s+(.+)$/);
+    // "8A - 128 - Title - Artist" (rekordbox-style key and BPM prefix) fills key, bpm, title and artist.
+    // "Artist - Title" fills artist and title; anything else becomes the title.
+    const k = base.match(/^(\d{1,2}[AB])\s+[-–]\s+(\d{2,3}(?:\.\d+)?)\s+[-–]\s+(.+?)\s+[-–]\s+(.+)$/i);
+    const m = k ? null : base.match(/^(.+?)\s+[-–]\s+(.+)$/);
     const entry = {
       file: 'tracks/' + encodeURIComponent(f).replace(/%2F/g, '/'),
-      title: (m ? m[2] : base).replace(/[_]+/g, ' ').trim(),
-      artist: m ? m[1].trim() : '',
+      title: (k ? k[3] : m ? m[2] : base).replace(/[_]+/g, ' ').trim(),
+      artist: k ? k[4].trim() : m ? m[1].trim() : '',
       bytes: statSync(join(dir, f)).size,
     };
+    if (k) { entry.key = k[1].toUpperCase(); entry.bpm = +k[2]; }
     const side = join(dir, base + '.json');
     if (existsSync(side)) {
       try {

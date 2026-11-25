@@ -1,4 +1,69 @@
 {
-  "generated": "2026-11-24T23:00:32.483Z",
-  "tracks": []
+  "generated": "2026-11-25T00:24:53.896Z",
+  "tracks": [
+    {
+      "file": "tracks/3A%20-%20135%20-%20DJ%20Zank%20-%20Icarusians%20(Techno%202000).mp3",
+      "title": "Icarusians (Techno 2000)",
+      "artist": "DJ Zank",
+      "bytes": 14708294,
+      "key": "3A",
+      "bpm": 135
+    },
+    {
+      "file": "tracks/3A%20-%20137%20-%20Wildians%20-%20DJ%20Zank.mp3",
+      "title": "Wildians",
+      "artist": "DJ Zank",
+      "bytes": 8267875,
+      "key": "3A",
+      "bpm": 137
+    },
+    {
+      "file": "tracks/4A%20-%20136%20-%20Dusk%20Pt.2%20-%20Oliver%20Ho.mp3",
+      "title": "Dusk Pt.2",
+      "artist": "Oliver Ho",
+      "bytes": 11634646,
+      "key": "4A",
+      "bpm": 136
+    },
+    {
+      "file": "tracks/4A%20-%20137%20-%20Move%20Ya%20Body%20-%20Joel%20Mull.mp3",
+      "title": "Move Ya Body",
+      "artist": "Joel Mull",
+      "bytes": 11640190,
+      "key": "4A",
+      "bpm": 137
+    },
+    {
+      "file": "tracks/5A%20-%20133%20-%20Deepbreth%20-%20Beto%20Cerutti.mp3",
+      "title": "Deepbreth",
+      "artist": "Beto Cerutti",
+      "bytes": 16042717,
+      "key": "5A",
+      "bpm": 133
+    },
+    {
+      "file": "tracks/5A%20-%20138%20-%20Foldback%20-%20Photosynthesis.mp3",
+      "title": "Foldback",
+      "artist": "Photosynthesis",
+      "bytes": 17471572,
+      "key": "5A",
+      "bpm": 138
+    },
+    {
+      "file": "tracks/6A%20-%20135%20-%20Ayrosians%20-%20DJ%20Zank.mp3",
+      "title": "Ayrosians",
+      "artist": "DJ Zank",
+      "bytes": 13864002,
+      "key": "6A",
+      "bpm": 135
+    },
+    {
+      "file": "tracks/6A%20-%20135%20-%20Pedanians%20-%20DJ%20Zank.mp3",
+      "title": "Pedanians",
+      "artist": "DJ Zank",
+      "bytes": 15527637,
+      "key": "6A",
+      "bpm": 135
+    }
+  ]
 }

@@ -850,7 +850,7 @@ async function auToggle(){if(!AU.ctx)auGraph();AU.on=!AU.on;const b=$('sndBtn');
  if(AU.on){try{await AU.ctx.resume()}catch(e){}AU.lastCtx=AU.ctx.currentTime;auLock(true);auStatus('')}else{auStop('A');auStop('B');auLock(false);auStatus('Sound is off')}}
 function audioDt(dt){if(!AU.on||!AU.ctx)return dt;const ct=AU.ctx.currentTime,d=Math.min(.1,Math.max(0,ct-AU.lastCtx));AU.lastCtx=ct;return d}
 async function auInit(){AU.lib=AU_DEMO.map(m=>({...m}));let man=[];try{const r=await fetch('tracks/manifest.json',{cache:'no-store'});if(r.ok){const j=await r.json();man=(j.tracks||j||[]).filter(x=>x&&x.file).map((x,i)=>({id:'t'+i+':'+x.file,...x}))}}catch(e){}
- AU.lib.push(...man);const opt=AU.lib.map(m=>`<option value="${auEsc(m.id)}">${auEsc((m.demo?'Demo · ':'')+(m.title||m.file))}</option>`).join('');
+ AU.lib.push(...man);const opt=AU.lib.map(m=>`<option value="${auEsc(m.id)}">${auEsc((m.demo?'Demo · ':'')+(m.title||m.file)+(m.artist&&!m.demo?' · '+m.artist:'')+(m.key||m.bpm?' ('+[m.key,m.bpm].filter(Boolean).join(' · ')+')':''))}</option>`).join('');
  for(const d of'AB'){const s=$('trk'+d);s.innerHTML=opt;s.onchange=()=>auAssign(d,s.value)}
  const pick=man.length>=2?[man[0].id,man[1].id]:man.length===1?[man[0].id,'demo-beta']:['demo-alpha','demo-beta'];$('trkA').value=pick[0];$('trkB').value=pick[1];
  $('sndBtn').onclick=auToggle;auStatus('Analysing tracks…');await auAssign('A',pick[0]);await auAssign('B',pick[1]);if(!AU.on)auStatus('Sound is off')}
