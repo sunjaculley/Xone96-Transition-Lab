@@ -707,21 +707,22 @@ const views=$('views');
 views.innerHTML=[['follow','Auto camera'],['rig','Rig'],['mixer','Mixer'],['A','CDJ 1'],['B','CDJ 2']].map(([k,l])=>`<button data-v="${k}">${l}</button>`).join('');
 function syncViews(){for(const b of views.children){const k=b.dataset.v;b.setAttribute('aria-pressed',k==='follow'?follow:(!follow&&k===userView))}}
 views.onclick=e=>{const k=e.target.dataset?.v;if(!k)return;if(k==='follow')follow=!follow;else{userView=k;follow=false}syncViews()};
-let primSet=new Set(),curStep=-1,mode='anim',segEnd=null,chgSet=new Set();
+let lastPrim=null,lastPrimT=null,measured=false,primSet=new Set(),curStep=-1,mode='anim',segEnd=null,chgSet=new Set();
 const ctlNum=(c,S)=>c.type==='btn'?+!!c.test(S[c.key],S):S[c.key];
 const KN={hi:'HI',hm:'HI MID',lm:'LO MID',lo:'LO',fader:'fader',fa:'FILTER assign',x:'XFADER assign',on:'ON',mode:'mode',freq:'FREQ',res:'RES',crunch:'CRUNCH',play:'play',loop:'loop',hot:'hot cue A'};
 function keyName(k){if(k==='xf')return'Crossfader';if(k==='curve')return'Crossfader curve';const[a,b]=k.split('.');const who=a[0]==='c'?'CH '+a.slice(1):a[0]==='f'?'Filter '+a.slice(1):a==='A'?'CDJ 1':'CDJ 2';return who+' '+(KN[b]||b)}
 function fmtV(k,v){const b=k.split('.')[1]||k;if(/^(hi|lo|hm|lm)$/.test(b))return v<=-39.5?'full kill':(v>0?'+':'')+Math.round(v)+' dB';if(b==='fader')return(v*10).toFixed(1)+'/10';if(b==='freq')return hz(v);if(b==='res'||b==='crunch')return Math.round(v*100)+'%';if(b==='fa')return v?'Filter '+v:'off';if(b==='on')return v?'on':'off';if(b==='play')return v?'playing':'paused';if(b==='loop'){if(!(v>0))return'off';const bt=v*4;return bt>=1?bt+' beats':'1/'+Math.round(1/bt)+' beat'}if(b==='hot')return v?'set':'none';if(k==='xf')return v<.05?'full X':v>.95?'full Y':Math.round(v*100)+'% to Y';return String(v)}
 function stepRange(j){const a=T.steps[j][0],b=(T.steps[j+1]?T.steps[j+1][0]:T.bars)-.002;return[a,b]}
 function computeChanges(j){const[a,b]=stepRange(j),Sa=state(Math.max(0,a-.04)),Sb=state(b);chgSet=new Set(CTL.filter(c=>ctlNum(c,Sa)!==ctlNum(c,Sb)).map(c=>c.id));
-const starts=k=>{const tr=T.tracks[k];return!!tr&&tr.some(f=>f[0]>=a-.05&&f[0]<b)};primSet=new Set(CTL.filter(c=>chgSet.has(c.id)&&starts(c.key)).map(c=>c.id));if(!primSet.size)primSet=chgSet;
-const out=[];for(const k in DEF){const x=Sa[k],y=Sb[k];if(typeof x==='number'?Math.abs(x-y)>.005:x!==y){const cls=/^(c2|A|f1)/.test(k)?'':/^(c3|B|f2)/.test(k)?'b':'n';out.push([cls,`${keyName(k)}: ${fmtV(k,x)} → ${fmtV(k,y)}`,(T.tracks[k]||[]).some(f=>f[0]>=a-.05&&f[0]<b)])}}
+const starts=k=>{const tr=T.tracks[k];if(!tr)return false;const st=STEPK.test(k);return tr.some((f,i)=>f[0]>=a-.05&&f[0]<b&&(st||typeof f[1]!=='number'?(i>0&&tr[i-1][1]!==f[1])||(i===0&&f[1]!==(k in T.setup?T.setup[k]:DEF[k])):(i+1<tr.length&&Math.abs(tr[i+1][1]-f[1])>1e-6)))};primSet=new Set(CTL.filter(c=>chgSet.has(c.id)&&starts(c.key)).map(c=>c.id));if(!primSet.size)primSet=chgSet;if(!primSet.size&&lastPrim&&lastPrimT===T.id)primSet=lastPrim;if(primSet.size){lastPrim=primSet;lastPrimT=T.id}
+const out=[];for(const k in DEF){const x=Sa[k],y=Sb[k];if(typeof x==='number'?Math.abs(x-y)>.005:x!==y){const cls=/^(c2|A|f1)/.test(k)?'':/^(c3|B|f2)/.test(k)?'b':'n';out.push([cls,`${keyName(k)}: ${fmtV(k,x)} → ${fmtV(k,y)}`,starts(k)])}}
 const prim=out.filter(o=>o[2]),cont=out.filter(o=>!o[2]);const ul=$('chg');ul.innerHTML=prim.map(o=>`<li class="${o[0]}"></li>`).join('')+(cont.length?'<li class="cont"></li>':'');[...ul.children].forEach((li,i)=>li.textContent=i<prim.length?prim[i][1]:'Still moving: '+cont.map(o=>o[1].split(':')[0]).join(', '))}
 function setPlayLabel(){$('play').textContent=mode==='step'&&!playing?(curStep<T.steps.length-1?'Next step':'From top'):playing?'Pause':'Play'}
 function goStep(j){j=Math.max(0,Math.min(T.steps.length-1,j));t=T.steps[j][0]+.001;segEnd=stepRange(j)[1];playing=true;setPlayLabel()}
 function setMode(m){mode=m;document.body.classList.toggle('stepm',m==='step');$('mAnim').setAttribute('aria-pressed',m==='anim');$('mStep').setAttribute('aria-pressed',m==='step');if(m==='step')goStep(Math.max(0,curStep));else{segEnd=null;playing=true;setPlayLabel()}}
 const figEl=$('fig');
-function measure(){const m=svg.getScreenCTM();if(!m)return;svg.classList.add('measuring');const inv=m.inverse(),P=(x,y)=>new DOMPoint(x,y).matrixTransform(inv);for(const c of CTL){const r=c.el.getBoundingClientRect(),a=P(r.left,r.top),b=P(r.right,r.bottom);c.bb=[a.x,a.y,b.x,b.y]}svg.classList.remove('measuring')}
+function measure(){const m=svg.getScreenCTM();if(!m)return;svg.classList.add('measuring');const inv=m.inverse(),P=(x,y)=>new DOMPoint(x,y).matrixTransform(inv);const rb=el=>{const r=el.getBoundingClientRect(),a=P(r.left,r.top),b=P(r.right,r.bottom);return[a.x,a.y,b.x,b.y]},U=(p,q)=>[Math.min(p[0],q[0]),Math.min(p[1],q[1]),Math.max(p[2],q[2]),Math.max(p[3],q[3])];
+for(const c of CTL){let bb=rb(c.el);if((c.type==='fader'||c.type==='xf')&&c.cap){const keep=c.cap.getAttribute('transform');for(const v of[0,1]){c.cap.setAttribute('transform',c.type==='fader'?`translate(0 ${c.y0+(1-v)*c.len})`:`translate(${c.x0+v*c.len} ${c.y})`);bb=U(bb,rb(c.el))}c.cap.setAttribute('transform',keep||'')}c.bb=bb}svg.classList.remove('measuring')}
 function autoBox(){const cs=CTL.filter(c=>primSet.has(c.id)&&c.bb);if(!cs.length)return VB.mixer;let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;for(const c of cs){x0=Math.min(x0,c.bb[0]);y0=Math.min(y0,c.bb[1]);x1=Math.max(x1,c.bb[2]);y1=Math.max(y1,c.bb[3])}x0-=24;y0-=24;x1+=24;y1+=24;let w=Math.max(190,x1-x0),h=Math.max(140,y1-y0);const cx=(x0+x1)/2,cy=(y0+y1)/2;w=Math.min(RW,w);h=Math.min(RH,h);return[Math.max(0,Math.min(RW-w,cx-w/2)),Math.max(0,Math.min(RH-h,cy-h/2)),w,h]}
 function fit(v){const r=figEl.clientWidth/Math.max(1,figEl.clientHeight);let[x,y,w,h]=v;if(DESK.matches){const pd=h*.17;y-=pd;h+=pd}if(w/h<r){const nw=Math.min(RW,h*r),cx=x+w/2;x=Math.max(0,Math.min(RW-nw,cx-nw/2));w=nw}else if(w/h>r){const nh=Math.min(RH*1.2,w/r),cy=y+h/2;y=cy-nh/2;h=nh}return[x,y,w,h]}
 function pick(i){T=TECH[i];t=0;curStep=-1;for(const c of CTL)c.last=undefined;for(const b of chips.querySelectorAll('.chip'))b.setAttribute('aria-pressed',b.dataset.i==i);
@@ -869,6 +870,7 @@ else if(c.type==='btn')c.el.classList.toggle('on',!!c.test(v,S));
 else if(c.type==='xf')c.cap.setAttribute('transform',`translate(${(c.x0+v*c.len).toFixed(1)} ${c.y})`);
 const num=c.type==='btn'?+!!c.test(v,S):v;if(c.last!==undefined&&num!==c.last)c.moved=now;c.last=num;
 c.halo.style.opacity=Math.max(c.moved?Math.max(0,.9*(1-(now-c.moved)/450)):0,mode==='step'&&chgSet.has(c.id)?.85:0)}
+if(!measured){measure();measured=true}
 for(const f of[1,2])$('hz'+f).textContent=S[`f${f}.on`]?hz(S[`f${f}.freq`]):'off';$('cvt').textContent=S.curve;
 for(const d of'AB'){updScreen(d,D[d],S);updDeck(d,D[d],S)}
 const pulse={A:Math.exp(-((D.A.pos*4)%1)*5),B:Math.exp(-((D.B.pos*4)%1)*5)};
@@ -885,7 +887,7 @@ const target=customBox?fit(customBox):fit(follow?autoBox():VB[userView]);
 for(let i=0;i<4;i++)vb[i]=snap?target[i]:vb[i]+(target[i]-vb[i])*Math.min(1,dt*3.5);snap=false;svg.setAttribute('viewBox',vb.map(v=>v.toFixed(1)).join(' '));
 $('pill').textContent=fmtSel(S);
 requestAnimationFrame(frame)}
-measure();syncViews();pick(0);requestAnimationFrame(frame);auInit();
+syncViews();pick(0);requestAnimationFrame(frame);auInit();
 }
 </script>
 </body></html>
