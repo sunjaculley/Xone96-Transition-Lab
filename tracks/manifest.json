@@ -1,5 +1,5 @@
 {
-  "generated": "2026-11-25T00:24:53.896Z",
+  "generated": "2026-11-25T00:42:13.691Z",
   "tracks": [
     {
       "file": "tracks/3A%20-%20135%20-%20DJ%20Zank%20-%20Icarusians%20(Techno%202000).mp3",
@@ -7,7 +7,55 @@
       "artist": "DJ Zank",
       "bytes": 14708294,
       "key": "3A",
-      "bpm": 135
+      "bpm": 134.66,
+      "firstBeat": 14.4196,
+      "cues": {
+        "mixOut": 176,
+        "mixIn": 0,
+        "bassSwap": 0,
+        "kickIntro": 0,
+        "drop": 112
+      },
+      "hotcues": {
+        "A": {
+          "bar": 0,
+          "name": "First kick"
+        },
+        "B": {
+          "bar": 0,
+          "name": "Mix in 8",
+          "loop": 8
+        },
+        "C": {
+          "bar": 8,
+          "name": "Play"
+        },
+        "D": {
+          "bar": 104,
+          "name": "Break"
+        },
+        "E": {
+          "bar": 112,
+          "name": "Drop"
+        },
+        "H": {
+          "bar": 176,
+          "name": "Mix out 8",
+          "loop": 8
+        }
+      },
+      "memory": {
+        "Bass in": 0,
+        "Bass out": 192
+      },
+      "energy": "E2",
+      "prep": {
+        "method": "rekordbox-track-prep",
+        "bars": 197,
+        "lastKickBar": 192,
+        "gridDriftMs": 19.7,
+        "notes": []
+      }
     },
     {
       "file": "tracks/3A%20-%20137%20-%20Wildians%20-%20DJ%20Zank.mp3",
@@ -15,7 +63,57 @@
       "artist": "DJ Zank",
       "bytes": 8267875,
       "key": "3A",
-      "bpm": 137
+      "bpm": 137.15,
+      "firstBeat": 7.0857,
+      "cues": {
+        "mixOut": 80,
+        "mixIn": 0,
+        "bassSwap": 0,
+        "kickIntro": 2,
+        "drop": 56
+      },
+      "hotcues": {
+        "A": {
+          "bar": 0,
+          "name": "First kick"
+        },
+        "B": {
+          "bar": 0,
+          "name": "Mix in 8",
+          "loop": 8
+        },
+        "C": {
+          "bar": 8,
+          "name": "Play"
+        },
+        "D": {
+          "bar": 52,
+          "name": "Break"
+        },
+        "E": {
+          "bar": 56,
+          "name": "Drop"
+        },
+        "H": {
+          "bar": 96,
+          "name": "Mix out 8",
+          "loop": 8
+        }
+      },
+      "memory": {
+        "Bass in": 0,
+        "Bass out": 96
+      },
+      "energy": "E4",
+      "prep": {
+        "method": "rekordbox-track-prep",
+        "bars": 113,
+        "lastKickBar": 112,
+        "gridDriftMs": 6.8,
+        "notes": [
+          "PHRASE? break bars 52-56 sit off the 8-count from A (cue kept where the kick stops/returns)"
+        ]
+      }
     },
     {
       "file": "tracks/4A%20-%20136%20-%20Dusk%20Pt.2%20-%20Oliver%20Ho.mp3",
@@ -23,7 +121,51 @@
       "artist": "Oliver Ho",
       "bytes": 11634646,
       "key": "4A",
-      "bpm": 136
+      "bpm": 135.76,
+      "firstBeat": 0.1859,
+      "cues": {
+        "mixOut": 144,
+        "mixIn": 0,
+        "bassSwap": 0,
+        "kickIntro": 2,
+        "drop": 8
+      },
+      "hotcues": {
+        "A": {
+          "bar": 0,
+          "name": "First kick"
+        },
+        "B": {
+          "bar": 0,
+          "name": "Mix in 8",
+          "loop": 8
+        },
+        "C": {
+          "bar": 8,
+          "name": "Play"
+        },
+        "E": {
+          "bar": 80,
+          "name": "Jump"
+        },
+        "H": {
+          "bar": 144,
+          "name": "Mix out 8",
+          "loop": 8
+        }
+      },
+      "memory": {
+        "Bass in": 0,
+        "Bass out": 161
+      },
+      "energy": "E3",
+      "prep": {
+        "method": "rekordbox-track-prep",
+        "bars": 163,
+        "lastKickBar": 161,
+        "gridDriftMs": 16.9,
+        "notes": []
+      }
     },
     {
       "file": "tracks/4A%20-%20137%20-%20Move%20Ya%20Body%20-%20Joel%20Mull.mp3",
@@ -31,7 +173,66 @@
       "artist": "Joel Mull",
       "bytes": 11640190,
       "key": "4A",
-      "bpm": 137
+      "bpm": 137,
+      "firstBeat": 0.4778,
+      "cues": {
+        "mixOut": 120,
+        "mixIn": 0,
+        "bassSwap": 0,
+        "kickIntro": 1,
+        "drop": 50
+      },
+      "hotcues": {
+        "A": {
+          "bar": 0,
+          "name": "First kick"
+        },
+        "B": {
+          "bar": 0,
+          "name": "Mix in 8",
+          "loop": 8
+        },
+        "C": {
+          "bar": 8,
+          "name": "Play"
+        },
+        "D": {
+          "bar": 40,
+          "name": "Break 1"
+        },
+        "E": {
+          "bar": 50,
+          "name": "Drop 1"
+        },
+        "F": {
+          "bar": 136,
+          "name": "Break 2"
+        },
+        "G": {
+          "bar": 140,
+          "name": "Drop 2"
+        },
+        "H": {
+          "bar": 144,
+          "name": "Mix out 8",
+          "loop": 8
+        }
+      },
+      "memory": {
+        "Bass in": 0,
+        "Bass out": 156
+      },
+      "energy": "E2",
+      "prep": {
+        "method": "rekordbox-track-prep",
+        "bars": 165,
+        "lastKickBar": 152,
+        "gridDriftMs": 47.7,
+        "notes": [
+          "PHRASE? break bars 40-50 sit off the 8-count from A (cue kept where the kick stops/returns)",
+          "PHRASE? break bars 136-140 sit off the 8-count from A (cue kept where the kick stops/returns)"
+        ]
+      }
     },
     {
       "file": "tracks/5A%20-%20133%20-%20Deepbreth%20-%20Beto%20Cerutti.mp3",
@@ -39,7 +240,55 @@
       "artist": "Beto Cerutti",
       "bytes": 16042717,
       "key": "5A",
-      "bpm": 133
+      "bpm": 132.78,
+      "firstBeat": 0.463,
+      "cues": {
+        "mixOut": 200,
+        "mixIn": 0,
+        "bassSwap": 0,
+        "kickIntro": 2,
+        "drop": 136
+      },
+      "hotcues": {
+        "A": {
+          "bar": 0,
+          "name": "First kick"
+        },
+        "B": {
+          "bar": 0,
+          "name": "Mix in 8",
+          "loop": 8
+        },
+        "C": {
+          "bar": 8,
+          "name": "Play"
+        },
+        "D": {
+          "bar": 128,
+          "name": "Break"
+        },
+        "E": {
+          "bar": 136,
+          "name": "Drop"
+        },
+        "H": {
+          "bar": 200,
+          "name": "Mix out 8",
+          "loop": 8
+        }
+      },
+      "memory": {
+        "Bass in": 0,
+        "Bass out": 216
+      },
+      "energy": "E1",
+      "prep": {
+        "method": "rekordbox-track-prep",
+        "bars": 221,
+        "lastKickBar": 216,
+        "gridDriftMs": 20.7,
+        "notes": []
+      }
     },
     {
       "file": "tracks/5A%20-%20138%20-%20Foldback%20-%20Photosynthesis.mp3",
@@ -47,7 +296,67 @@
       "artist": "Photosynthesis",
       "bytes": 17471572,
       "key": "5A",
-      "bpm": 138
+      "bpm": 137.86,
+      "firstBeat": 41.8664,
+      "cues": {
+        "mixOut": 176,
+        "mixIn": 0,
+        "bassSwap": 120,
+        "kickIntro": 18,
+        "drop": 72
+      },
+      "hotcues": {
+        "A": {
+          "bar": 0,
+          "name": "First kick"
+        },
+        "B": {
+          "bar": 0,
+          "name": "Mix in 8",
+          "loop": 8
+        },
+        "C": {
+          "bar": 8,
+          "name": "Play"
+        },
+        "D": {
+          "bar": 64,
+          "name": "Break 1"
+        },
+        "E": {
+          "bar": 72,
+          "name": "Drop 1"
+        },
+        "F": {
+          "bar": 160,
+          "name": "Break 2"
+        },
+        "G": {
+          "bar": 168,
+          "name": "Drop 2"
+        },
+        "H": {
+          "bar": 184,
+          "name": "Mix out 8",
+          "loop": 8
+        }
+      },
+      "memory": {
+        "Bass in": 120,
+        "Bass out": 184
+      },
+      "energy": "E5",
+      "prep": {
+        "method": "rekordbox-track-prep",
+        "bars": 225,
+        "lastKickBar": 214,
+        "gridDriftMs": 73.2,
+        "notes": [
+          "PHRASE? break bars 96-102 sit off the 8-count from A (cue kept where the kick stops/returns)",
+          "PHRASE? break bars 138-142 sit off the 8-count from A (cue kept where the kick stops/returns)",
+          "PHRASE? break bars 151-156 sit off the 8-count from A (cue kept where the kick stops/returns)"
+        ]
+      }
     },
     {
       "file": "tracks/6A%20-%20135%20-%20Ayrosians%20-%20DJ%20Zank.mp3",
@@ -55,7 +364,66 @@
       "artist": "DJ Zank",
       "bytes": 13864002,
       "key": "6A",
-      "bpm": 135
+      "bpm": 135.46,
+      "firstBeat": 0.1425,
+      "cues": {
+        "mixOut": 176,
+        "mixIn": 0,
+        "bassSwap": 0,
+        "kickIntro": 0,
+        "drop": 32
+      },
+      "hotcues": {
+        "A": {
+          "bar": 0,
+          "name": "First kick"
+        },
+        "B": {
+          "bar": 0,
+          "name": "Mix in 8",
+          "loop": 8
+        },
+        "C": {
+          "bar": 8,
+          "name": "Play"
+        },
+        "D": {
+          "bar": 24,
+          "name": "Break 1"
+        },
+        "E": {
+          "bar": 32,
+          "name": "Drop 1"
+        },
+        "F": {
+          "bar": 128,
+          "name": "Break 2"
+        },
+        "G": {
+          "bar": 140,
+          "name": "Drop 2"
+        },
+        "H": {
+          "bar": 176,
+          "name": "Mix out 8",
+          "loop": 8
+        }
+      },
+      "memory": {
+        "Bass in": 0,
+        "Bass out": 192
+      },
+      "energy": "E3",
+      "prep": {
+        "method": "rekordbox-track-prep",
+        "bars": 195,
+        "lastKickBar": 192,
+        "gridDriftMs": 18.6,
+        "notes": [
+          "PHRASE? break bars 56-60 sit off the 8-count from A (cue kept where the kick stops/returns)",
+          "PHRASE? break bars 127-140 sit off the 8-count from A (cue kept where the kick stops/returns)"
+        ]
+      }
     },
     {
       "file": "tracks/6A%20-%20135%20-%20Pedanians%20-%20DJ%20Zank.mp3",
@@ -63,7 +431,55 @@
       "artist": "DJ Zank",
       "bytes": 15527637,
       "key": "6A",
-      "bpm": 135
+      "bpm": 134.65,
+      "firstBeat": 0.1417,
+      "cues": {
+        "mixOut": 200,
+        "mixIn": 0,
+        "bassSwap": 0,
+        "kickIntro": 0,
+        "drop": 136
+      },
+      "hotcues": {
+        "A": {
+          "bar": 0,
+          "name": "First kick"
+        },
+        "B": {
+          "bar": 0,
+          "name": "Mix in 8",
+          "loop": 8
+        },
+        "C": {
+          "bar": 8,
+          "name": "Play"
+        },
+        "D": {
+          "bar": 128,
+          "name": "Break"
+        },
+        "E": {
+          "bar": 136,
+          "name": "Drop"
+        },
+        "H": {
+          "bar": 200,
+          "name": "Mix out 8",
+          "loop": 8
+        }
+      },
+      "memory": {
+        "Bass in": 0,
+        "Bass out": 216
+      },
+      "energy": "E4",
+      "prep": {
+        "method": "rekordbox-track-prep",
+        "bars": 217,
+        "lastKickBar": 216,
+        "gridDriftMs": 26.7,
+        "notes": []
+      }
     }
   ]
 }

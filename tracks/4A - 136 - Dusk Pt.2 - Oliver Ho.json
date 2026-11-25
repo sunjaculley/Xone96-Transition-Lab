@@ -1,0 +1,47 @@
+{
+  "firstBeat": 0.1859,
+  "cues": {
+    "mixOut": 144,
+    "mixIn": 0,
+    "bassSwap": 0,
+    "kickIntro": 2,
+    "drop": 8
+  },
+  "hotcues": {
+    "A": {
+      "bar": 0,
+      "name": "First kick"
+    },
+    "B": {
+      "bar": 0,
+      "name": "Mix in 8",
+      "loop": 8
+    },
+    "C": {
+      "bar": 8,
+      "name": "Play"
+    },
+    "E": {
+      "bar": 80,
+      "name": "Jump"
+    },
+    "H": {
+      "bar": 144,
+      "name": "Mix out 8",
+      "loop": 8
+    }
+  },
+  "memory": {
+    "Bass in": 0,
+    "Bass out": 161
+  },
+  "energy": "E3",
+  "prep": {
+    "method": "rekordbox-track-prep",
+    "bars": 163,
+    "lastKickBar": 161,
+    "gridDriftMs": 16.9,
+    "notes": []
+  },
+  "bpm": 135.76
+}

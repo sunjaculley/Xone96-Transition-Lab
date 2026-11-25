@@ -1,0 +1,63 @@
+{
+  "firstBeat": 41.8664,
+  "cues": {
+    "mixOut": 176,
+    "mixIn": 0,
+    "bassSwap": 120,
+    "kickIntro": 18,
+    "drop": 72
+  },
+  "hotcues": {
+    "A": {
+      "bar": 0,
+      "name": "First kick"
+    },
+    "B": {
+      "bar": 0,
+      "name": "Mix in 8",
+      "loop": 8
+    },
+    "C": {
+      "bar": 8,
+      "name": "Play"
+    },
+    "D": {
+      "bar": 64,
+      "name": "Break 1"
+    },
+    "E": {
+      "bar": 72,
+      "name": "Drop 1"
+    },
+    "F": {
+      "bar": 160,
+      "name": "Break 2"
+    },
+    "G": {
+      "bar": 168,
+      "name": "Drop 2"
+    },
+    "H": {
+      "bar": 184,
+      "name": "Mix out 8",
+      "loop": 8
+    }
+  },
+  "memory": {
+    "Bass in": 120,
+    "Bass out": 184
+  },
+  "energy": "E5",
+  "prep": {
+    "method": "rekordbox-track-prep",
+    "bars": 225,
+    "lastKickBar": 214,
+    "gridDriftMs": 73.2,
+    "notes": [
+      "PHRASE? break bars 96-102 sit off the 8-count from A (cue kept where the kick stops/returns)",
+      "PHRASE? break bars 138-142 sit off the 8-count from A (cue kept where the kick stops/returns)",
+      "PHRASE? break bars 151-156 sit off the 8-count from A (cue kept where the kick stops/returns)"
+    ]
+  },
+  "bpm": 137.86
+}

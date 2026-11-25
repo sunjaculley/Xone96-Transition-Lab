@@ -1,0 +1,53 @@
+{
+  "firstBeat": 7.0857,
+  "cues": {
+    "mixOut": 80,
+    "mixIn": 0,
+    "bassSwap": 0,
+    "kickIntro": 2,
+    "drop": 56
+  },
+  "hotcues": {
+    "A": {
+      "bar": 0,
+      "name": "First kick"
+    },
+    "B": {
+      "bar": 0,
+      "name": "Mix in 8",
+      "loop": 8
+    },
+    "C": {
+      "bar": 8,
+      "name": "Play"
+    },
+    "D": {
+      "bar": 52,
+      "name": "Break"
+    },
+    "E": {
+      "bar": 56,
+      "name": "Drop"
+    },
+    "H": {
+      "bar": 96,
+      "name": "Mix out 8",
+      "loop": 8
+    }
+  },
+  "memory": {
+    "Bass in": 0,
+    "Bass out": 96
+  },
+  "energy": "E4",
+  "prep": {
+    "method": "rekordbox-track-prep",
+    "bars": 113,
+    "lastKickBar": 112,
+    "gridDriftMs": 6.8,
+    "notes": [
+      "PHRASE? break bars 52-56 sit off the 8-count from A (cue kept where the kick stops/returns)"
+    ]
+  },
+  "bpm": 137.15
+}

@@ -1,1 +1,53 @@
-{"title":"Icarusians (Techno 2000)","artist":"DJ Zank"}
+{
+  "title": "Icarusians (Techno 2000)",
+  "artist": "DJ Zank",
+  "firstBeat": 14.4196,
+  "cues": {
+    "mixOut": 176,
+    "mixIn": 0,
+    "bassSwap": 0,
+    "kickIntro": 0,
+    "drop": 112
+  },
+  "hotcues": {
+    "A": {
+      "bar": 0,
+      "name": "First kick"
+    },
+    "B": {
+      "bar": 0,
+      "name": "Mix in 8",
+      "loop": 8
+    },
+    "C": {
+      "bar": 8,
+      "name": "Play"
+    },
+    "D": {
+      "bar": 104,
+      "name": "Break"
+    },
+    "E": {
+      "bar": 112,
+      "name": "Drop"
+    },
+    "H": {
+      "bar": 176,
+      "name": "Mix out 8",
+      "loop": 8
+    }
+  },
+  "memory": {
+    "Bass in": 0,
+    "Bass out": 192
+  },
+  "energy": "E2",
+  "prep": {
+    "method": "rekordbox-track-prep",
+    "bars": 197,
+    "lastKickBar": 192,
+    "gridDriftMs": 19.7,
+    "notes": []
+  },
+  "bpm": 134.66
+}
