@@ -139,7 +139,24 @@ body{height:100dvh;overflow:hidden}
 .halo{stroke-width:2.6;stroke-dasharray:5 3}
 #hz1,#hz2,#cvt{fill:#8a8a8a!important;font-style:italic;font-weight:500!important}
 [data-id]{cursor:pointer}
-.expc{display:none}body.expm .expc{display:grid;grid-column:1/-1;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);column-gap:28px;align-content:start}.expc>*{grid-column:1}.expc>.tt,.expc>.exhint{grid-column:1/-1}.expc>#exth{grid-column:2;grid-row:2}.expc>.ext{grid-column:2;grid-row:3/7}.expc>.exu{grid-column:1}@media(max-width:959px){body.expm .expc{display:block}}body.expm .side>.card:not(.expc){display:none}
+.prc{display:none}body.trym #tryc,body.beatm #beatc{display:block;grid-column:1/-1}body.trym .side>.card:not(#tryc),body.beatm .side>.card:not(#beatc){display:none}
+.sub{display:none}body:not(.prm):not(.expm) .subL{display:flex}body.prm .subP{display:flex}body.prm .tr>:not(.seg){display:none}
+body.trym .side #tryc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:28px;align-content:start}#tryc>*{grid-column:1}#tryc>.tryres{grid-column:2;grid-row:1/9}
+.trynow{font-size:17px;margin:2px 0 6px;max-width:70ch}.trynext{font-size:14px;color:var(--mute);margin:0 0 8px;max-width:70ch}
+.tryctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:4px 0 8px}.tryctl button,.tryctl select{min-height:40px;padding:4px 14px;border-radius:8px;border:1px solid var(--line);background:#fff;font:600 14px Barlow,sans-serif;cursor:pointer}.tryctl button.pri{background:var(--ink);color:#fff;border-color:var(--ink)}
+.trych{font:600 14px Barlow,sans-serif;display:flex;gap:6px;align-items:center}
+.trykeys{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:13px;color:var(--mute);margin:2px 0 6px}.trykeys kbd{font:600 12px ui-monospace,monospace;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;color:var(--ink);background:#fff}
+.tryres h3{display:flex;gap:10px;align-items:baseline}.tryres h3 b{font-size:26px;color:var(--ink)}#trylist{list-style:none;padding:0;margin:6px 0;display:grid;gap:4px}#trylist li{font-size:13.5px;padding:4px 8px;border-radius:6px;border-left:4px solid #bbb;background:#f7f5f1}#trylist li.ok{border-color:#2fae4e}#trylist li.mid{border-color:#e0a000}#trylist li.bad{border-color:#d0281e}
+.bmtempo{font:700 18px "Barlow Semi Condensed",sans-serif;margin:2px 0}.bmbar{position:relative;height:14px;border-radius:7px;background:#eee;margin:6px 0;max-width:520px}.bmbar i{position:absolute;left:50%;top:-3px;bottom:-3px;width:2px;background:var(--ink)}.bmbar b{position:absolute;top:1px;width:12px;height:12px;margin-left:-6px;border-radius:50%;background:var(--b)}.bmstat{font-weight:600}.bmhist{margin:0;padding-left:18px;font-size:13px}
+.libdlg{position:fixed;inset:0;background:#0006;z-index:50;display:flex;align-items:center;justify-content:center;padding:16px}.libdlg[hidden]{display:none}
+.libbox{background:#fff;border:1px solid var(--ink);border-radius:8px;width:min(860px,100%);max-height:90vh;display:flex;flex-direction:column;padding:14px 18px;gap:6px}
+.libhd{display:flex;justify-content:space-between;align-items:center;font-size:18px}.libhd button{min-width:40px;min-height:40px;border:1px solid var(--line);border-radius:8px;background:#fff;cursor:pointer}
+.libsteps{margin:0;padding-left:20px;font-size:14px;display:grid;gap:6px}.libst{font-weight:600;margin:4px 0}
+.libf{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-size:14px}.libf input[type=search],.libf select{min-height:38px;border:1px solid var(--line);border-radius:6px;padding:0 10px;font:14px Barlow,sans-serif}.libf input[type=search]{flex:1 1 200px}
+.liblist{list-style:none;margin:0;padding:0;overflow-y:auto;flex:1;min-height:120px;border-top:1px solid var(--line)}.liblist li{display:flex;gap:10px;align-items:center;padding:6px 2px;border-bottom:1px solid #eee;font-size:14px}.liblist li.off{opacity:.45}.liblist .lt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.liblist .lm{color:var(--mute);font-size:12.5px;white-space:nowrap}.liblist button{min-height:32px;padding:2px 10px;border-radius:6px;border:1px solid var(--line);background:#fff;font:600 13px Barlow,sans-serif;cursor:pointer;margin-left:4px}.liblist .more{color:var(--mute);justify-content:center}
+#libBtn{min-height:36px;padding:4px 12px;border-radius:8px;border:1px solid var(--ink);background:#fff;font:600 13px Barlow,sans-serif;cursor:pointer}
+.expc{display:none}
+@media(max-width:1320px){.tr .kn:last-of-type,#real{display:none}}@media(max-height:820px){.trynow{font-size:15px;margin:0 0 4px}.trynext{font-size:13px;margin:0 0 4px}.tryctl{margin:2px 0 4px}}body.beatm .side #beatc{column-count:2;column-gap:28px}body.beatm .list{opacity:.45}#beatc>*{break-inside:avoid}body.expm .expc{display:grid;grid-column:1/-1;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);column-gap:28px;align-content:start}.expc>*{grid-column:1}.expc>.tt,.expc>.exhint{grid-column:1/-1}.expc>#exth{grid-column:2;grid-row:2}.expc>.ext{grid-column:2;grid-row:3/7}.expc>.exu{grid-column:1}@media(max-width:959px){body.expm .expc{display:block}}body.expm .side>.card:not(.expc){display:none}
 body.expm .tr>:not(.seg){display:none}
 .exz{display:none;gap:4px}body.expm .exz{display:flex}.exz button{min-width:40px;min-height:40px;border-radius:6px;border:1px solid var(--ink);background:#fffe;font:600 16px "Barlow Semi Condensed",sans-serif;cursor:pointer}
 body.expm .fig{user-select:none;-webkit-user-select:none}body.expm .fig>svg{touch-action:none;cursor:grab}body.expm .fig>svg.drag{cursor:grabbing}
@@ -153,7 +170,14 @@ body.expm .fig{user-select:none;-webkit-user-select:none}body.expm .fig>svg{touc
 @media(prefers-reduced-motion:reduce){.bt i{transition:none}}
 </style></head><body>
 <div class="app">
-<header class="hd"><h1>Xone:96 + CDJ-3000 transition lab</h1><div class="snd"><button id="sndBtn" aria-pressed="false" title="Play the techniques on real audio">Sound off</button><label>CDJ 1 <select id="trkA" aria-label="Track on CDJ 1"></select></label><label>CDJ 2 <select id="trkB" aria-label="Track on CDJ 2"></select></label><span id="sndSt"></span></div><p class="sub">CDJ 1 → CH 2 · CDJ 2 → CH 3 · no send FX · 16-bar demos, time compressed · Space play/pause · ← → steps</p></header>
+<header class="hd"><h1>Xone:96 + CDJ-3000 transition lab</h1><div class="snd"><button id="sndBtn" aria-pressed="false" title="Play the techniques on real audio">Sound off</button><label>CDJ 1 <select id="trkA" aria-label="Track on CDJ 1"></select></label><label>CDJ 2 <select id="trkB" aria-label="Track on CDJ 2"></select></label><button id="libBtn" title="Load tracks from your rekordbox collection">Rekordbox library</button><span id="sndSt"></span></div><p class="sub">CDJ 1 → CH 2 · CDJ 2 → CH 3 · no send FX · 16-bar demos, time compressed · Space play/pause · ← → steps</p></header>
+<div class="libdlg" id="libdlg" hidden role="dialog" aria-label="Rekordbox library"><div class="libbox">
+<div class="libhd"><b>Rekordbox library</b><button id="libclose" aria-label="Close">✕</button></div>
+<ol class="libsteps"><li>In rekordbox: <b>File → Export Collection in xml format</b>, then open that file here: <input type="file" id="libxml" accept=".xml,text/xml"></li>
+<li>Choose the folder your music lives in (subfolders included). Files play from your disk and are never uploaded: <input type="file" id="libdir" webkitdirectory multiple></li></ol>
+<p class="libst" id="libst"></p>
+<div class="libf"><input type="search" id="libq" placeholder="Search title, artist, genre"><select id="libpl" aria-label="Playlist"><option value="all">Whole collection</option></select><label><input type="checkbox" id="libcompat"> Fits CDJ 1 (key ±1, BPM ±6 %)</label></div>
+<ul class="liblist" id="liblist"></ul><p class="exs">Hot cues, memory cues, beat grid, BPM and key come from rekordbox, so your own cue layout shows on the CDJ screens and sets where the lab starts each deck. Re-export the XML when your library changes.</p></div></div>
 <nav class="list" id="chips" aria-label="Techniques"></nav>
 <section class="stage">
 <div class="fig" id="fig"><svg id="rig" viewBox="0 0 1614 720" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Top-down drawing of two CDJ-3000 players either side of an Allen and Heath Xone:96 mixer"></svg></div>
@@ -163,12 +187,24 @@ body.expm .fig{user-select:none;-webkit-user-select:none}body.expm .fig>svg{touc
 <div class="card nowc"><div class="tt" id="tt"></div><p class="now" id="now" aria-live="polite"></p><ul class="chg" id="chg" aria-label="What changes in this step"></ul></div>
 <div class="card"><h2>Who owns each band</h2><div id="bands"></div>
 <div class="legend"><span><i style="background:var(--a)"></i>CDJ 1 → CH 2</span><span><i style="background:var(--b)"></i>CDJ 2 → CH 3</span></div></div>
+<div class="card prc" id="tryc"><div class="tt" id="trytt">Try it</div>
+<div class="tryctl"><button class="pri" id="trygo">Start</button><label class="trych"><input type="checkbox" id="tryhint" checked> Hints</label></div><p class="trynow" id="trynow"></p><p class="trynext" id="trynext"></p>
+<div class="trykeys" id="trykeys"></div><p class="exs">Drag knobs and faders on the drawing, click switches and CDJ buttons, or use the keys. Sound turns on automatically.</p>
+<div class="tryres" id="tryres" hidden><h3>Result <b id="trysc"></b></h3><p id="trysum"></p><ul id="trylist"></ul></div></div>
+<div class="card prc" id="beatc"><div class="tt">Beatmatching trainer</div><p class="trynow">CDJ 2 starts at the wrong tempo and out of phase. Match it to CDJ 1 by ear: tempo fader first, then nudge the jog.</p>
+<div class="tryctl"><button class="pri" id="bmgo">New round</button><select id="bmlv" aria-label="Level"><option value="easy">Easy (meter on)</option><option value="medium">Medium (meter off)</option><option value="hard">Hard (big offset)</option></select><button id="bmmeter">Show meter</button></div>
+<p class="bmtempo" id="bmtempo"></p><div class="bmbar"><i></i><b id="bmph"></b></div><p id="bmread"></p><p class="bmstat" id="bmstat"></p>
+<div class="trykeys"><span><kbd>↑ ↓</kbd> move the tempo fader (↓ = faster, Shift = coarse)</span><span><kbd>← →</kbd> hold to nudge slower / faster</span><span><kbd>Space</kbd> new round</span><span>or drag CDJ 2’s tempo fader and spin its jog wheel</span></div>
+<div class="tryctl"><button id="bmslow">◀ Nudge slower</button><button id="bmfast">Nudge faster ▶</button><button id="bmdn">− 0.02 %</button><button id="bmup">+ 0.02 %</button></div>
+<h3>Rounds</h3><ul class="bmhist" id="bmhist"></ul></div>
 <div class="card expc" id="expc"><div class="tt">Explore the gear</div><p class="exhint" id="exhint">Tap any part of the mixer or either CDJ to see what it is called, what it does and how to use it in a set. Drag to move around, scroll or pinch to zoom (or use + and −). Once a part is selected, ← → steps through the parts on the same device.</p><h2 id="exn"></h2><p class="extag" id="extag" hidden>Not used in this setup</p><p class="exs" id="exs"></p><p class="exd" id="exd"></p><h3 id="exth" hidden>In a set</h3><ul class="ext" id="ext"></ul><p class="exu" id="exu"></p></div>
 <div class="card stepsc"><p class="why" id="why"></p><p class="gear" id="gear"></p><p class="gear" id="cuesrc" hidden></p><h3>Steps (tap to jump)</h3><ol class="steps" id="steps"></ol>
 <p class="note">With sound off, the band meter is a teaching model of the EQ and filter curves. With sound on, it is measured from the audio.</p></div>
 </aside>
 <footer class="tr">
-<div class="seg" role="group" aria-label="Mode"><button id="mAnim" aria-pressed="true">Animate</button><button id="mStep" aria-pressed="false">Step through</button><button id="mExp" aria-pressed="false" title="Tap any part of the gear to learn it">Explore</button></div>
+<div class="seg" role="group" aria-label="Section"><button id="pLearn" aria-pressed="true">Learn</button><button id="pPrac" aria-pressed="false">Practice</button><button id="mExp" aria-pressed="false" title="Tap any part of the gear to learn it">Explore</button></div>
+<div class="seg sub subL" role="group" aria-label="Learn mode"><button id="mAnim" aria-pressed="true">Animate</button><button id="mStep" aria-pressed="false">Step through</button></div>
+<div class="seg sub subP" role="group" aria-label="Practice mode"><button id="mTry" aria-pressed="false">Try it</button><button id="mBeat" aria-pressed="false">Beatmatch</button></div>
 <button id="prev" aria-label="Previous step">◀</button>
 <button class="pri" id="play">Pause</button>
 <button id="next" aria-label="Next step">▶</button>
@@ -187,7 +223,7 @@ const A_C='#1f8fe0',B_C='#e8700c',F1_C='#1f8fe0',F2_C='#e8700c';
 const PARAMS={speed:{min:.25,max:2,def:1,step:.05},barSec:{min:.5,max:2.5,def:1,step:.05}};
 const P={speed:PARAMS.speed.def,barSec:PARAMS.barSec.def};
 const DEF={xf:.5,curve:'smooth','f1.on':0,'f1.mode':'HPF','f1.freq':0,'f1.res':.2,'f1.crunch':0,'f2.on':0,'f2.mode':'LPF','f2.freq':1,'f2.res':.2,'f2.crunch':0,
-'A.play':1,'A.loop':0,'A.hot':0,'B.play':1,'B.loop':0,'B.hot':0};
+'A.play':1,'A.loop':0,'A.hot':0,'B.play':1,'B.loop':0,'B.hot':0,tempo:0,'A.spd':1,'B.spd':1};
 for(const n of [1,2,3,4])Object.assign(DEF,{[`c${n}.hi`]:0,[`c${n}.hm`]:0,[`c${n}.lm`]:0,[`c${n}.lo`]:0,[`c${n}.fader`]:n===2?.8:0,[`c${n}.fa`]:0,[`c${n}.x`]:'off'});
 const STEPK=/(\.fa|\.x|\.on|\.mode|\.play|\.loop|\.hot|^curve)$/;
 const cut=(b,a,z)=>[[b,a],[b+.03,z]];
@@ -252,14 +288,57 @@ why:'A looped kick-only bar works like a test signal: you hear the new kick agai
 gear:'CDJ 2 hot cue + BEAT LOOP 4 + RELOOP/EXIT, LO EQ, jog for nudging.',
 setup:{'c3.lo':-40,'B.hot':1},
 tracks:{'B.loop':[[0,1],[8,0]],'c3.fader':fadeIn,'c2.lo':cut(4,0,-40),'c3.lo':cut(4,-40,0),'c2.fader':[[10,.8],[12,0]]},
-steps:[[0,'CDJ 2: hot cue on a kick-only bar near the intro, BEAT LOOP 4 (one bar) engaged. CH 3 up with LO killed.','B'],[4,'Swap the lows to the looped kick. The room hears the new kick under the old track’s tops. Check phase and weight now, and nudge the jog if it flams.'],[8,'Hit RELOOP/EXIT on CDJ 2 on a downbeat. The new track runs on from the bar after the loop, so its phrase count has shifted: if its phrases no longer land with CDJ 1’s, BEAT JUMP by a bar to line them up.','B'],[10,'Fade CH 2 out.']]}
+steps:[[0,'CDJ 2: hot cue on a kick-only bar near the intro, BEAT LOOP 4 (one bar) engaged. CH 3 up with LO killed.','B'],[4,'Swap the lows to the looped kick. The room hears the new kick under the old track’s tops. Check phase and weight now, and nudge the jog if it flams.'],[8,'Hit RELOOP/EXIT on CDJ 2 on a downbeat. The new track runs on from the bar after the loop, so its phrase count has shifted: if its phrases no longer land with CDJ 1’s, BEAT JUMP by a bar to line them up.','B'],[10,'Fade CH 2 out.']]},
+{id:'p1',g:'P',n:1,title:'Long slow EQ blend',start:{A:32,B:0},bars:32,roles:{A:'mixOut',B:'mixIn'},
+why:'Techno blends can run for minutes. Bringing the new track in one band at a time, slowly, lets the room barely notice the handover. Here the blend takes 32 bars; in a club it can run longer.',
+gear:'4-band EQ on CH 2 and CH 3, channel faders.',
+setup:{'c3.hi':-40,'c3.hm':-27,'c3.lm':-27,'c3.lo':-40},
+tracks:{'c3.fader':[[0,0],[2,.8]],'c3.hm':[[2,-27],[18,0]],'c3.lm':[[2,-27],[18,0]],'c2.hi':[[18,0],[24,-12],[29,-12],[31,-40]],'c3.hi':[[18,-40],[24,-6],[27,0]],'c2.lo':[[24,0],[27,-40]],'c3.lo':[[24,-40],[27,0]],'c2.fader':[[27,.8],[29,.6],[32,0]],'c2.hm':[[29,0],[30,5],[32,-27]]},
+steps:[[0,'CDJ 2 starts on the phrase with every CH 3 band killed or scooped. Bring its fader up: you hear nothing yet.'],[2,'Over 16 bars, slowly turn the CH 3 mids up to centre. The new track’s stabs and percussion fade in under the old one.'],[18,'Over 6 bars, trade the hats: CH 2 HI comes down part way while CH 3 HI comes up.'],[24,'Over 3 bars, cross the lows: CH 2 LO goes out as CH 3 LO comes in. The new kick and bass take over.'],[27,'Pull the CH 2 fader back a little. The old track is now just mids and a little top.'],[29,'Final fade: kill CH 2 HI, give its mids a small boost so the last stabs ring out, then close the fader and the mids together.']]},
+{id:'p2',g:'P',n:2,title:'Swap on the breakdown',start:{A:24,B:0},roles:{A:'preBreak',B:'bassSwap'},
+why:'When the outgoing track’s own bass drops out for a breakdown, there is a hole in the low end. Landing the new track’s bass in that hole makes the swap sound like part of the arrangement.',
+gear:'4-band EQ on CH 2 and CH 3, channel faders, the outgoing track’s breakdown (pad D on your prepped tracks).',
+setup:{'c3.hi':-40,'c3.hm':-27,'c3.lm':-27,'c3.lo':-40},
+tracks:{'c3.fader':[[0,0],[2,.8]],'c3.hi':[[2,-40],[6,0]],'c3.hm':[[2,-27],[6,0]],'c3.lm':[[2,-27],[6,0]],'c2.lo':cut(8,0,-40),'c3.lo':cut(8,-40,0),'c2.fader':[[12,.8],[16,0]]},
+steps:[[0,'CDJ 2 comes in on CH 3 with every band down. CDJ 1 is 8 bars before its breakdown.'],[2,'Raise CH 3 HI and mids over 4 bars, pausing part way. The new track sits on top of the old one.'],[8,'CDJ 1 hits its breakdown and its bass drops out. On that beat, kill CH 2 LO and bring CH 3 LO in, so the new bassline fills the gap.'],[12,'Let the old breakdown float over the new groove, then fade CH 2 out over 4 bars.']]},
+{id:'p3',g:'P',n:3,title:'Layer and return',start:{A:16,B:0},bars:32,roles:{A:'groove',B:'bassSwap'},
+why:'A transition doesn’t have to end with the new track. Here the new track’s kick and bass carry the old track’s synths for a while, then you hand the low end back. Two records become a third thing.',
+gear:'4-band EQ on CH 2 and CH 3, channel faders.',
+setup:{'c3.hi':-40,'c3.hm':-27,'c3.lm':-27,'c3.lo':-40},
+tracks:{'c3.hi':[[0,-40],[2,0],[26,0],[30,-40]],'c3.hm':[[2,-27],[3,0],[8,0],[10,-8],[26,-8],[30,-27]],'c3.lm':[[2,-27],[3,0]],'c2.lo':[[4,0],[8,-40],[24,-40],[24.05,0]],'c3.lo':[[4,-40],[8,0],[24,0],[24.05,-40]],'c2.hm':[[8,0],[10,4],[22,4],[24,0]],'c3.fader':[[0,0],[2,.8],[26,.8],[30,0]]},
+steps:[[0,'CDJ 2 in on CH 3 with its HI coming up as the fader opens, mids next.'],[4,'Over 4 bars, cross the lows: CH 2 LO out, CH 3 LO in. The new kick and bass now drive the old track.'],[8,'Hold the layer for 16 bars. Lift CH 2 HI MID a little and scoop CH 3’s, so the old synth line leads.'],[24,'On the phrase, hand the lows back: CH 2 LO in, CH 3 LO out in one move.'],[26,'Fade the new track’s top and mids out. The original track carries on as if it had never left.']]},
+{id:'p4',g:'P',n:4,title:'Double drop',start:{A:24,B:8},roles:{A:'preDrop',B:'preDrop'},
+why:'Both tracks are cued so their drops land on the same downbeat. Done right, the room hears two drops at once. One low end still rules, so it stays heavy rather than muddy.',
+gear:'Hot cues (8 bars before each drop), 4-band EQ, channel faders.',
+setup:{'c3.hi':-40,'c3.lo':-40,'c3.hm':-27},
+tracks:{'c3.fader':[[0,0],[2,.8]],'c3.hi':[[2,-40],[6,0]],'c3.hm':[[2,-27],[6,-8]],'c2.hm':[[8,0],[9,-12]],'c2.lo':cut(12,0,-40),'c3.lo':cut(12,-40,0),'c2.fader':[[13,.8],[16,0]]},
+steps:[[0,'Both decks start 8 bars before their drops, on the same phrase line. CH 3 comes in with LO killed.'],[2,'Bring CH 3 HI up and its mids part way during the build.'],[8,'Both drops land together. CH 2 keeps the low end; scoop CH 2 HI MID so CDJ 2’s lead can be heard.'],[12,'Four bars in, swap the lows so the new track takes over.'],[13,'Fade CH 2 out.']]},
+{id:'p5',g:'P',n:5,title:'Tempo ride',start:{A:32,B:0},roles:{A:'mixOut',B:'mixIn'},
+why:'A set can climb in tempo without anyone noticing if you move it in small steps during a blend. Both decks move together, so they stay beat-matched while the whole mix speeds up. By the end, CDJ 2 plays at its own tempo.',
+gear:'Tempo faders on both CDJs (or CDJ 2 as MASTER with BEAT SYNC on CDJ 1), LO EQ, channel faders.',
+setup:{'c3.lo':-40},
+tracks:{'c3.fader':fadeIn,'tempo':[[2,0],[14,1]],'c2.lo':cut(8,0,-40),'c3.lo':cut(8,-40,0),'c2.fader':[[12,.8],[14,0]]},
+steps:[[0,'CDJ 2 starts matched to CDJ 1’s tempo, which is below its own. CH 3 LO killed.'],[2,'Ease both tempo faders up a fraction each bar. With BEAT SYNC on CDJ 1 and CDJ 2 as MASTER, you only move CDJ 2’s fader (this needs the CDJs linked by LAN cable). Watch both tempo faders move.'],[8,'Swap the lows on the phrase, mid-ride.'],[12,'Fade CH 2 out.'],[14,'CDJ 2 is back at 0 %: its own tempo. The mix is now faster than where it started.']]},
+{id:'p6',g:'P',n:6,title:'Polyrhythmic loop',start:{A:32,B:0},roles:{A:'mixOut',B:'mixIn'},
+why:'A 3-beat loop over a 4-beat groove shifts against the bar and only lines up again every 3 bars. It turns a plain bit of percussion into a hypnotic, rolling pattern, a very techno move.',
+gear:'CDJ 1 LOOP IN / OUT (with QUANTIZE on), LO EQ, channel faders.',
+setup:{'c3.lo':-40},
+tracks:{'c3.fader':fadeIn,'c2.lo':cut(4,0,-40),'c3.lo':cut(4,-40,0),'A.loop':[[0,0],[4,.75],[13,0]],'c2.hi':[[4,0],[5,-6]],'c2.fader':[[12,.8],[12.05,0]]},
+steps:[[0,'CDJ 2 comes in under CDJ 1 with CH 3 LO killed.'],[4,'Swap the lows so CDJ 2’s kick runs the groove. At the same time, loop 3 beats of CDJ 1: LOOP IN on a beat, OUT exactly 3 beats later. QUANTIZE on keeps both presses on the grid.','A'],[5,'CDJ 1 is now a rolling 3-beat percussion pattern against CDJ 2’s 4. It lines up with the bar again every 3 bars.'],[12,'Cut CH 2 on a downbeat, then exit the loop.']]},
+{id:'p7',g:'P',n:7,title:'Brake stop',start:{A:32,B:16},roles:{A:'mixOut',B:'drop'},
+why:'A turntable-style slowdown is a deliberate, audible ending. On the CDJ the slowdown speed comes from VINYL SPEED ADJ. (TOUCH / BRAKE), and it lands hardest when the new track starts exactly on the next downbeat.',
+gear:'CDJ 1 VINYL SPEED ADJ. and PLAY/PAUSE, CDJ 2 hot cue and PLAY, channel faders.',
+setup:{'c3.fader':.8,'B.hot':1},
+tracks:{'A.spd':[[0,1],[7,1],[8,0]],'A.play':[[0,1],[8,0]],'B.play':[[0,0],[8,1]],'c2.fader':[[8,.8],[8.05,0]]},
+steps:[[0,'Turn VINYL SPEED ADJ. on CDJ 1 toward a long brake. CDJ 2 is paused on hot cue A at a drop, tempo matched, with CH 3 up.'],[7,'On beat 1 of the last bar, press PAUSE on CDJ 1. The brake winds the track down over the bar.','A'],[8,'On the next 1, press PLAY on CDJ 2 and close CH 2.']]}
+
 ];
-for(const T of TECH)T.bars=16;
+for(const T of TECH)T.bars=T.bars||16;
 let T=TECH[0],t=0,playing=true,repeat=true;
 const ease=x=>x*x*(3-2*x);
 function val(k,tt){const tr=T.tracks[k];if(tr){if(tt<=tr[0][0])return tr[0][1];for(let i=0;i<tr.length-1;i++){const[a,va]=tr[i],[b,vb]=tr[i+1];if(tt<b){if(STEPK.test(k)||typeof va!=='number')return va;return va+(vb-va)*ease((tt-a)/(b-a))}}return tr[tr.length-1][1]}return k in T.setup?T.setup[k]:DEF[k]}
 function state(tt){const S={};for(const k in DEF)S[k]=val(k,tt);return S}
-function deckAt(d,tt){let pos=startBar(d),li=null,pL=0;const st=1/64;for(let s=0;s<tt;s+=st){const dt=Math.min(st,tt-s),L=val(d+'.loop',s),pl=val(d+'.play',s);if(L>0&&pL===0)li=Math.floor(pos*4)/4;if(!(L>0))li=null;if(pl)pos+=dt;if(L>0&&li!==null&&pos>=li+L)pos=li+((pos-li)%L);pL=L}const L=val(d+'.loop',tt);return{pos,L,li:L>0?li??Math.floor(pos*4)/4:null}}
+function deckAt(d,tt){if(PR.live){const k=PR.deck[d];return{pos:k.pos,L:k.L,li:k.L>0?k.li:null}}let pos=startBar(d),li=null,pL=0;const st=1/64;for(let s=0;s<tt;s+=st){const dt=Math.min(st,tt-s),L=val(d+'.loop',s),pl=val(d+'.play',s);if(L>0&&pL===0)li=Math.floor(pos*4)/4;if(!(L>0))li=null;if(pl)pos+=dt*val(d+'.spd',s);if(L>0&&li!==null&&pos>=li+L)pos=li+((pos-li)%L);pL=L}const L=val(d+'.loop',tt);return{pos,L,li:L>0?li??Math.floor(pos*4)/4:null}}
 /* geometry */
 const pol=(r,a)=>{const q=(a-90)*Math.PI/180;return[r*Math.cos(q),r*Math.sin(q)]};
 function arcD(r,a0,a1){if(a1-a0<.5)a1=a0+.5;const[x0,y0]=pol(r,a0),[x1,y1]=pol(r,a1);return`M${x0.toFixed(2)} ${y0.toFixed(2)}A${r} ${r} 0 ${a1-a0>180?1:0} 1 ${x1.toFixed(2)} ${y1.toFixed(2)}`}
@@ -404,7 +483,7 @@ const SCR={};
 /* updScreen(d,x,S): per frame; only sets a few attributes, and only when the value changed */
 function updScreen(d,x,S){let k=SCR[d];if(!k){const I=SC_INFO[d];k=SCR[d]={g:$('sc_wg'+d),p:$('sc_wp'+d),c:$('sc_wc'+d),rl:$('sc_rl'+d),lp:$('sc_lp'+d),lr:$('sc_lr'+d),li:$('sc_li'+d),lo:$('sc_lo'+d),bn:$('sc_bn'+d),ph:$('sc_ph'+d),lt:$('sc_lt'+d),bk:$('sc_bk'+d),tm:$('sc_tm'+d),ms:$('sc_ms'+d),bl:1,hm:$('sc_hm'+d),oh:$('sc_oh'+d),op:$('sc_op'+d),ocr:$('sc_ocr'+d),ol:$('sc_ol'+d),tot:I.secs*(I.bpmNum||130)/240,pos:-1,ls:'',pl_:null,hot:null,tx:''}}
 const pos=x.pos;if(pos!==k.pos){k.pos=pos;const tr=`translate(${(SC_PX-pos*SC_BAR).toFixed(1)} 0)`;k.g.setAttribute('transform',tr);k.p.setAttribute('transform',tr);k.bn.setAttribute('transform',tr);k.c.setAttribute('transform',tr);k.rl.setAttribute('transform',`translate(${(SC_PX-pos*SC_RB).toFixed(1)} 0)`);
-const ox=SC_OV0+SC_OVW*Math.min(1,pos/k.tot);k.op.setAttribute('transform',`translate(${ox.toFixed(1)} 0)`);k.ocr.setAttribute('width',(ox-SC_OV0).toFixed(1));
+const ox=SC_OV0+SC_OVW*Math.max(0,Math.min(1,pos/k.tot));k.op.setAttribute('transform',`translate(${ox.toFixed(1)} 0)`);k.ocr.setAttribute('width',(ox-SC_OV0).toFixed(1));
 const I_=SC_INFO[d],ms=Math.max(0,Math.round(((I_.fb||0)+pos*240/(I_.bpmNum||130))*1000)),m=Math.floor(ms/60000),s=Math.floor(ms/1000)%60,t=(m<10?'0':'')+m+':'+(s<10?'0':'')+s;if(t!==k.tx){k.tx=t;k.tm.textContent=t}k.ms.textContent='.'+String(ms%1000).padStart(3,'0')}
 const ls=x.L>0?x.L+'@'+x.li:'';if(ls!==k.ls){k.ls=ls;if(x.L>0){const w=Math.max(3,x.L*SC_BAR),x0=x.li*SC_BAR;k.lp.setAttribute('transform','translate('+x0.toFixed(1)+' 0)');k.lr.setAttribute('width',w.toFixed(1));k.lo.setAttribute('x1',w.toFixed(1));k.lo.setAttribute('x2',w.toFixed(1));k.lp.style.display='';const ow=Math.max(4,SC_OVW*x.L/k.tot);k.ol.setAttribute('x',(SC_OV0+SC_OVW*x.li/k.tot).toFixed(1));k.ol.setAttribute('width',ow.toFixed(1));k.ol.style.display='';const bt=x.L*4;k.lt.textContent='LOOP '+(bt>=1?Math.round(bt)+(Math.round(bt)===1?' BEAT':' BEATS'):'1/'+Math.round(1/bt)+' BEAT');k.bk.setAttribute('class','lit')}else{k.lp.style.display='none';k.ol.style.display='none';k.lt.textContent='';k.bk.removeAttribute('class')}}
 const pl=!!S[d+'.play'];if(pl!==k.pl_){k.pl_=pl;k.ph.setAttribute('opacity',pl?1:.5);if(pl){k.tm.setAttribute('opacity',1);k.ms.setAttribute('opacity',1);k.bl=1}}
@@ -716,7 +795,8 @@ function nrm(k,v){if(k==='eqHL')return v>=0?.5+v/12:.5*(1-Math.min(40,-v)/40);if
 const hz=v=>{const f=20*Math.pow(1000,v);return f>=1000?(f/1000).toFixed(1)+' kHz':Math.round(f)+' Hz'};
 /* UI */
 const chips=$('chips');
-chips.innerHTML=TECH.map((x,i)=>(i===0?'<span class="g">Transitions</span>':i===5?'<span class="g">Low-end swaps</span>':'')+`<button class="chip" data-i="${i}" aria-pressed="false"><span>${x.g}${x.n}</span>${x.title}</button>`).join('');
+const GRP={T:'Transitions',L:'Low-end swaps',P:'Phrasing & performance'};
+chips.innerHTML=TECH.map((x,i)=>(i===0||TECH[i-1].g!==x.g?`<span class="g">${GRP[x.g]}</span>`:'')+`<button class="chip" data-i="${i}" aria-pressed="false"><span>${x.g}${x.n}</span>${x.title}</button>`).join('');
 const bandsEl=$('bands');bandsEl.innerHTML=BANDS.map(b=>`<div class="row"><span>${b[0]}</span><div class="bt"><i class="ba"></i><i class="bb"></i></div><span class="fl"></span></div>`).join('');
 const rows=[...bandsEl.querySelectorAll('.row')].map(r=>({a:r.querySelector('.ba'),b:r.querySelector('.bb'),f:r.querySelector('.fl')}));
 const VB={rig:[0,0,RW,RH],mixer:[531,90,552,630],A:[0,0,521,RH],B:[1093,0,521,RH]};let customBox=null,snap=false,exView=null;window.__lab={box(b){customBox=b;snap=true},clear(){customBox=null}};
@@ -729,8 +809,8 @@ views.onclick=e=>{const k=e.target.dataset?.v;if(!k)return;customBox=null;exView
 let lastPrim=null,lastPrimT=null,measured=false,primSet=new Set(),curStep=-1,mode='anim',segEnd=null,chgSet=new Set();
 const ctlNum=(c,S)=>c.type==='btn'?+!!c.test(S[c.key],S):S[c.key];
 const KN={hi:'HI',hm:'HI MID',lm:'LO MID',lo:'LO',fader:'fader',fa:'FILTER assign',x:'XFADER assign',on:'ON',mode:'mode',freq:'FREQ',res:'RES',crunch:'CRUNCH',play:'play',loop:'loop',hot:'hot cue A'};
-function keyName(k){if(k==='xf')return'Crossfader';if(k==='curve')return'Crossfader curve';const[a,b]=k.split('.');const who=a[0]==='c'?'CH '+a.slice(1):a[0]==='f'?'Filter '+a.slice(1):a==='A'?'CDJ 1':'CDJ 2';return who+' '+(KN[b]||b)}
-function fmtV(k,v){const b=k.split('.')[1]||k;if(/^(hi|lo|hm|lm)$/.test(b))return v<=-39.5?'full kill':(v>0?'+':'')+Math.round(v)+' dB';if(b==='fader')return(v*10).toFixed(1)+'/10';if(b==='freq')return hz(v);if(b==='res'||b==='crunch')return Math.round(v*100)+'%';if(b==='fa')return v?'Filter '+v:'off';if(b==='on')return v?'on':'off';if(b==='play')return v?'playing':'paused';if(b==='loop'){if(!(v>0))return'off';const bt=v*4;return bt>=1?bt+' beats':'1/'+Math.round(1/bt)+' beat'}if(b==='hot')return v?'set':'none';if(k==='xf')return v<.05?'full X':v>.95?'full Y':Math.round(v*100)+'% to Y';return String(v)}
+function keyName(k){if(k==='tempo')return'Mix tempo';if(/\.spd$/.test(k))return(k[0]==='A'?'CDJ 1':'CDJ 2')+' brake';if(k==='xf')return'Crossfader';if(k==='curve')return'Crossfader curve';const[a,b]=k.split('.');const who=a[0]==='c'?'CH '+a.slice(1):a[0]==='f'?'Filter '+a.slice(1):a==='A'?'CDJ 1':'CDJ 2';return who+' '+(KN[b]||b)}
+function fmtV(k,v){const b=k.split('.')[1]||k;if(k==='tempo')return'+'+((mixR()-1)*v*100).toFixed(1)+' %';if(b==='spd')return Math.round(v*100)+'% speed';if(/^(hi|lo|hm|lm)$/.test(b))return v<=-39.5?'full kill':(v>0?'+':'')+Math.round(v)+' dB';if(b==='fader')return(v*10).toFixed(1)+'/10';if(b==='freq')return hz(v);if(b==='res'||b==='crunch')return Math.round(v*100)+'%';if(b==='fa')return v?'Filter '+v:'off';if(b==='on')return v?'on':'off';if(b==='play')return v?'playing':'paused';if(b==='loop'){if(!(v>0))return'off';const bt=v*4;return bt>=1?bt+' beats':'1/'+Math.round(1/bt)+' beat'}if(b==='hot')return v?'set':'none';if(k==='xf')return v<.05?'full X':v>.95?'full Y':Math.round(v*100)+'% to Y';return String(v)}
 function stepRange(j){const a=T.steps[j][0],b=(T.steps[j+1]?T.steps[j+1][0]:T.bars)-.002;return[a,b]}
 function computeChanges(j){const[a,b]=stepRange(j),Sa=state(Math.max(0,a-.04)),Sb=state(b);chgSet=new Set(CTL.filter(c=>ctlNum(c,Sa)!==ctlNum(c,Sb)).map(c=>c.id));
 const starts=k=>{const tr=T.tracks[k];if(!tr)return false;const st=STEPK.test(k);return tr.some((f,i)=>f[0]>=a-.05&&f[0]<b&&(st||typeof f[1]!=='number'?(i>0&&tr[i-1][1]!==f[1])||(i===0&&f[1]!==(k in T.setup?T.setup[k]:DEF[k])):(i+1<tr.length&&Math.abs(tr[i+1][1]-f[1])>1e-6)))};primSet=new Set(CTL.filter(c=>chgSet.has(c.id)&&starts(c.key)).map(c=>c.id));if(!primSet.size)primSet=chgSet;if(!primSet.size&&lastPrim&&lastPrimT===T.id)primSet=lastPrim;if(primSet.size){lastPrim=primSet;lastPrimT=T.id}
@@ -738,7 +818,11 @@ const out=[];for(const k in DEF){const x=Sa[k],y=Sb[k];if(typeof x==='number'?Ma
 const prim=out.filter(o=>o[2]),cont=out.filter(o=>!o[2]);const ul=$('chg');ul.innerHTML=prim.map(o=>`<li class="${o[0]}"></li>`).join('')+(cont.length?'<li class="cont"></li>':'');[...ul.children].forEach((li,i)=>li.textContent=i<prim.length?prim[i][1]:'Still moving: '+cont.map(o=>o[1].split(':')[0]).join(', '))}
 function setPlayLabel(){$('play').textContent=mode==='step'&&!playing?(curStep<T.steps.length-1?'Next step':'From top'):playing?'Pause':'Play'}
 function goStep(j){j=Math.max(0,Math.min(T.steps.length-1,j));t=T.steps[j][0]+.001;segEnd=stepRange(j)[1];playing=true;setPlayLabel()}
-function setMode(m){const was=mode;mode=m;document.body.classList.toggle('stepm',m==='step');document.body.classList.toggle('expm',m==='explore');$('mAnim').setAttribute('aria-pressed',m==='anim');$('mStep').setAttribute('aria-pressed',m==='step');$('mExp').setAttribute('aria-pressed',m==='explore');
+function setMode(m){const was=mode;mode=m;const B=document.body.classList;B.toggle('stepm',m==='step');B.toggle('expm',m==='explore');B.toggle('trym',m==='try');B.toggle('beatm',m==='beat');B.toggle('prm',m==='try'||m==='beat');
+ for(const[id,on]of[['mAnim',m==='anim'],['mStep',m==='step'],['mExp',m==='explore'],['mTry',m==='try'],['mBeat',m==='beat'],['pLearn',m==='anim'||m==='step'],['pPrac',m==='try'||m==='beat']])$(id).setAttribute('aria-pressed',on);
+ if((was==='try'||was==='beat')&&m!==was){prLeave();if(m==='anim'||m==='step')pick(TECH.indexOf(T))}
+ if(m==='try'){PR.kind='try';PR.live=false;PR.last=null;$('tryres').hidden=true;playing=false;t=0;$('trytt').textContent=`Try it · ${T.g}${T.n} ${T.title}`;prLegend();setTryLabel();follow=true;syncViews();return}
+ if(m==='beat'){follow=false;userView='rig';syncViews();prBeatEnter();return}
  if(was==='explore'&&m!=='explore'){customBox=null;exView=null}
  if(m==='explore'){if(was!=='explore'){follow=false;userView='rig';customBox=null;exView=null;syncViews()}playing=false;segEnd=null;setPlayLabel();return}if(m==='step')goStep(Math.max(0,curStep));else{segEnd=null;playing=true;setPlayLabel()}}
 const figEl=$('fig');
@@ -751,9 +835,10 @@ $('tt').textContent=`${T.g}${T.n} · ${T.title}`;$('now').textContent='';$('why'
 $('steps').innerHTML=T.steps.map((s,j)=>`<li data-j="${j}"><b>Bar ${Math.floor(s[0])+1}${s[0]%1?'.'+(Math.floor((s[0]%1)*4)+1):''}</b><span></span></li>`).join('');
 [...$('steps').children].forEach((li,j)=>li.lastChild.textContent=T.steps[j][1]);
 $('scrub').max=T.bars;playing=true;if(mode==='step')goStep(0);else{segEnd=null;setPlayLabel()}}
-chips.onclick=e=>{const b=e.target.closest('.chip');if(b)pick(+b.dataset.i)};
+chips.onclick=e=>{const b=e.target.closest('.chip');if(!b)return;if(mode==='beat')setMode('try');if(mode==='try'){prLeave();pick(+b.dataset.i);setMode('try');return}pick(+b.dataset.i)};
 $('steps').onclick=e=>{const li=e.target.closest('li');if(!li)return;const j=+li.dataset.j;if(mode==='step')goStep(j);else t=T.steps[j][0]+.001};
-$('mAnim').onclick=()=>setMode('anim');$('mStep').onclick=()=>setMode('step');$('mExp').onclick=()=>setMode('explore');$('replay').onclick=()=>goStep(curStep);
+$('mAnim').onclick=()=>setMode('anim');$('mStep').onclick=()=>setMode('step');$('mExp').onclick=()=>setMode('explore');
+$('pLearn').onclick=()=>setMode('anim');$('pPrac').onclick=()=>setMode('try');$('mTry').onclick=()=>setMode('try');$('mBeat').onclick=()=>setMode('beat');$('replay').onclick=()=>goStep(curStep);
 $('play').onclick=()=>{if(mode==='step'&&!playing&&segEnd!==null&&t>=segEnd-.001){goStep(curStep<T.steps.length-1?curStep+1:0);return}if(!playing&&t>=T.bars)t=0;playing=!playing;setPlayLabel()};
 $('restart').onclick=()=>{t=0};
 const jump=d=>{if(mode==='step'){goStep(curStep+d);return}let j=Math.max(0,Math.min(T.steps.length-1,curStep+d));t=T.steps[j][0]+.001};$('prev').onclick=()=>jump(-1);$('next').onclick=()=>jump(1);
@@ -777,8 +862,8 @@ return`${who} · ${NM[b]||b}${txt?' · '+txt:''}`}
    (built by the GitHub Action from the files in tracks/) plus two synthesized demo tracks. */
 const AU={on:false,ctx:null,master:null,man:null,lib:[],trk:{A:null,B:null},ch:{},deck:{A:{},B:{}},rate:{A:1,B:1},lastCtx:0,met:{}};
 const AU_DEMO=[
- {id:'demo-alpha',title:'Demo Alpha (Lab Mix)',artist:'Synthesized in the browser',bpm:130,key:'Am',root:55,bars:96,demo:'alpha',cues:{mixOut:64,mixIn:0,drop:16,kickIntro:0}},
- {id:'demo-beta',title:'Demo Beta (Kick Intro Mix)',artist:'Synthesized in the browser',bpm:130,key:'Fm',root:43.65,bars:64,demo:'beta',cues:{mixOut:40,mixIn:0,drop:16,kickIntro:0}}];
+ {id:'demo-alpha',title:'Demo Alpha (Lab Mix)',artist:'Synthesized in the browser',bpm:130,key:'Am',root:55,bars:96,demo:'alpha',cues:{mixOut:64,mixIn:0,drop:16,kickIntro:0,preBreak:24,preDrop:32,groove:40}},
+ {id:'demo-beta',title:'Demo Beta (Kick Intro Mix)',artist:'Synthesized in the browser',bpm:130,key:'Fm',root:43.65,bars:64,demo:'beta',cues:{mixOut:40,mixIn:0,drop:16,kickIntro:0,preDrop:8,groove:16}}];
 const auEsc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 /* --- demo track synthesis (OfflineAudioContext, no files needed) --- */
 async function auRenderDemo(m){const sr=44100,bt=60/m.bpm,N=Math.ceil(sr*(m.bars*4*bt+1.5)),L=new Float32Array(N);
@@ -821,16 +906,23 @@ async function auLoad(meta){if(meta._c)return meta._c;let buf;
  if(meta.demo)buf=await auRenderDemo(meta);else{const r=await fetch(meta.file);if(!r.ok)throw new Error('could not load '+meta.file);buf=await new OfflineAudioContext(1,1,44100).decodeAudioData(await r.arrayBuffer())}
  const env=auAnalyse(buf);let bpm=+meta.bpm||0,fb=meta.firstBeat;if(meta.demo){bpm=meta.bpm;fb=0}else if(!bpm||fb==null){const d=auDetect(env,bpm||0);bpm=bpm||d.bpm;fb=fb??d.fb}
  const bars=Math.max(8,Math.floor((buf.duration-fb)*bpm/240)),c=meta.cues||{},q16=v=>Math.max(0,16*Math.floor(v/16));
- const cues={mixOut:c.mixOut??q16(Math.min(bars-24,bars*.55)),mixIn:c.mixIn??0,drop:c.drop??Math.min(16,bars-20),kickIntro:c.kickIntro??0,bassSwap:c.bassSwap??c.mixIn??0};
+ const hc=meta.hotcues||{},hb=k=>hc[k]?hc[k].bar:undefined;
+ const cues={mixOut:c.mixOut??q16(Math.min(bars-24,bars*.55)),mixIn:c.mixIn??0,drop:c.drop??Math.min(16,bars-20),kickIntro:c.kickIntro??0,bassSwap:c.bassSwap??c.mixIn??0,
+  preBreak:c.preBreak??(hb('D')!=null&&hb('D')>=8?hb('D')-8:undefined),preDrop:c.preDrop??(hb('E')!=null&&hb('E')>=8&&hb('D')!=null?hb('E')-8:undefined),groove:c.groove??hb('C')};
  return meta._c={meta,buf,env,bpm,fb,bars,dur:buf.duration,cues}}
 /* --- which bar each deck starts on for the current technique --- */
-const ROLE_TXT={mixOut:'kick and bass running, before the outro',mixIn:'the intro',bassSwap:'so its bass is in by bar 9, where the swap lands',kickIntro:'the barest kick bar before the bass',drop:'so the cut lands on the drop'};
+const ROLE_TXT={preBreak:'8 bars before its breakdown',preDrop:'8 bars before its drop',groove:'in its full groove (pad C)',mixOut:'kick and bass running, before the outro',mixIn:'the intro',bassSwap:'so its bass is in by bar 9, where the swap lands',kickIntro:'the barest kick bar before the bass',drop:'so the cut lands on the drop'};
 function cueSrc(){const el=$('cuesrc');if(!el)return;const A=AU.trk.A,B=AU.trk.B;if(!(A&&!A.meta.demo)&&!(B&&!B.meta.demo)){el.hidden=true;return}
- const role=d=>d==='A'?'mixOut':T.id==='t5'?'drop':T.id==='l5'?'kickIntro':/^l[1-4]$/.test(T.id)?'bassSwap':'mixIn';
+ const role=roleOf;
  const pad=(tr,b)=>{const h=tr.meta.hotcues||{};const k=Object.keys(h).find(k=>k!=='A'&&h[k].bar===b);return k?` (pad ${k} · ${h[k].name})`:''};
  const one=(d,tr)=>{if(!tr)return'';const b=startBar(d);return`CDJ ${d==='A'?1:2} starts at bar ${b+1}${pad(tr,b)}: ${ROLE_TXT[role(d)]}.`};
  el.textContent='On your tracks: '+[one('A',A),one('B',B)].filter(Boolean).join(' ');el.hidden=false}
-function startBar(d){const tr=AU.trk[d];if(!tr)return T.start[d];const role=d==='A'?'mixOut':T.id==='t5'?'drop':T.id==='l5'?'kickIntro':/^l[1-4]$/.test(T.id)?'bassSwap':'mixIn';return Math.max(0,Math.min(tr.bars-18,tr.cues[role]??tr.cues.mixIn))}
+function roleOf(d){if(T.roles&&T.roles[d])return T.roles[d];return d==='A'?'mixOut':T.id==='t5'?'drop':T.id==='l5'?'kickIntro':/^l[1-4]$/.test(T.id)?'bassSwap':'mixIn'}
+function startBar(d){const tr=AU.trk[d];if(!tr)return T.start[d];const c=tr.cues[roleOf(d)];return Math.max(0,Math.min(tr.bars-(T.bars+2),c??T.start[d]))}
+/* --- mix tempo: 'tempo' goes 0 → 1 from CDJ 1's tempo to CDJ 2's own (or +4 % when they match) --- */
+function mixR(){const A=AU.trk.A,B=AU.trk.B,r=A&&B?B.bpm/A.bpm:1;return Math.abs(r-1)>.005?r:1.04}
+function mixF(S){return 1+(S.tempo||0)*(mixR()-1)}
+function deckRate(d,S){if(PR.rate){const r=PR.rate(d);if(r!=null)return r}return AU.rate[d]*mixF(S)*(S[d+'.spd']??1)}
 /* --- graph --- */
 function auCurve(){const c=new Float32Array(1024);for(let i=0;i<1024;i++){const x=i/511.5-1;c[i]=Math.tanh(2.2*x)/Math.tanh(2.2)}return c}
 function auCh(){const c=AU.ctx,bq=(type,f,q)=>{const b=c.createBiquadFilter();b.type=type;b.frequency.value=f;if(q)b.Q.value=q;return b};
@@ -849,14 +941,16 @@ function auTick(S,D){const held=mode==='step'&&!playing&&segEnd!==null&&t>=segEn
   if(on){const ty=AU_FT[S[f+'.mode']]||'highpass';if(n.flt.type!==ty)n.flt.type=ty;auSet(n.flt.frequency,20*Math.pow(1000,S[f+'.freq']));auSet(n.flt.Q,.7+14*S[f+'.res']*S[f+'.res']);const cr=S[f+'.crunch'];auSet(n.cDry.gain,1-cr);auSet(n.cWet.gain,cr*.8);auSet(n.drive.gain,1+cr*9)}
   auSet(n.fad.gain,Math.pow(S[c+'.fader'],2)*xg(S,c));
   const x=D[d];let L=x.L,li=x.li;if(held&&!(L>0)){L=1;li=x.pos-1}
-  auDeck(d,!!AU.trk[d]&&(playing||held)&&!!S[d+'.play'],x.pos,L,li,held)}}
+  auDeck(d,!!AU.trk[d]&&(playing||held)&&!!S[d+'.play'],x.pos,L,li,held,deckRate(d,S))}}
 function auStop(d){const k=AU.deck[d];if(k.src){try{k.src.stop()}catch(e){}k.src.disconnect();k.src=null}}
-function auDeck(d,want,pos,L,li,held){const k=AU.deck[d],tr=AU.trk[d],ctx=AU.ctx;if(!want){auStop(d);return}
- const s2=b=>tr.fb+b*240/tr.bpm,rate=AU.rate[d],cfg=L>0?s2(li).toFixed(4)+':'+s2(li+L).toFixed(4):'';let T=s2(pos);
- if(k.src&&k.cfg===cfg){if(held)return;let cur=k.off+(ctx.currentTime-k.t0)*rate;if(cfg){const[a,b]=cfg.split(':').map(Number);if(cur>=b)cur=a+((cur-a)%(b-a))}if(Math.abs(cur-T)<.06)return}
- auStop(d);const s=ctx.createBufferSource();s.buffer=tr.buf;s.playbackRate.value=rate;
+function auDeck(d,want,pos,L,li,held,rate){const k=AU.deck[d],tr=AU.trk[d],ctx=AU.ctx;if(!want){auStop(d);return}
+ const s2=b=>tr.fb+b*240/tr.bpm,cfg=L>0?s2(li).toFixed(4)+':'+s2(li+L).toFixed(4):'',now=ctx.currentTime;let T=s2(pos);
+ if(k.src&&k.cfg===cfg){k.cur+=Math.max(0,now-k.tl)*k.r;k.tl=Math.max(now,k.tl);if(cfg){const[a,b]=cfg.split(':').map(Number);if(k.cur>=b)k.cur=a+((k.cur-a)%(b-a))}
+  if(Math.abs(k.r-rate)>1e-5){k.src.playbackRate.setValueAtTime(Math.max(0,rate),now);k.r=rate}
+  if(held)return;if(Math.abs(k.cur-T)<.06)return}
+ auStop(d);const s=ctx.createBufferSource();s.buffer=tr.buf;s.playbackRate.value=Math.max(0,rate);
  if(cfg){const[a,b]=cfg.split(':').map(Number);s.loop=true;s.loopStart=a;s.loopEnd=b;if(T>=b-.002||T<a)T=a}
- s.connect(AU.ch[d].in);const st=ctx.currentTime+.01,off=Math.max(0,Math.min(tr.dur-.02,T));s.start(st,off);Object.assign(k,{src:s,t0:st,off,cfg})}
+ s.connect(AU.ch[d].in);const st=ctx.currentTime+.01,off=Math.max(0,Math.min(tr.dur-.02,T));s.start(st,off);Object.assign(k,{src:s,t0:st,off,cur:off,tl:st,r:rate,cfg})}
 /* --- measured meters: band energies per channel, RMS for the LED ladders --- */
 const AU_BANDS=[[20,150],[150,500],[500,4000],[4000,16000]];
 function auMeters(){const out={A:[],B:[]};for(const d of'AB'){const n=AU.ch[d];if(!n)return null;const an=n.an,N=an.frequencyBinCount,f=AU.met[d+'f']||(AU.met[d+'f']=new Float32Array(N)),td=AU.met[d+'t']||(AU.met[d+'t']=new Float32Array(an.fftSize));an.getFloatFrequencyData(f);an.getFloatTimeDomainData(td);
@@ -884,11 +978,214 @@ async function auInit(){AU.lib=AU_DEMO.map(m=>({...m}));let man=[];try{const r=a
 window.__dbg=s=>eval(s);/* test hook: evaluates in the lab's scope */
 /* ==== REGION audio END ==== */
 
+/* ==== REGION practice ==== */
+/* Practice: "Try it" (you perform the technique on live audio, the lab grades you) and the beatmatching trainer.
+   Both run the decks from a live integrator (PR.deck) instead of the scripted timeline. */
+const DECKK=/^[AB]\.(play|loop|spd)$/;
+const PR={live:false,kind:null,deck:{A:null,B:null},user:{},rec:[],run:false,hints:true,keys:new Set(),rate:null,pct:null,beat:null,prevT:null,peak:0};
+const KILL={hi:-40,hm:-27,lm:-27,lo:-40};
+function prUserKeys(){return Object.keys(T.tracks).filter(k=>!DECKK.test(k)&&k!=='tempo'&&!/\.hot$/.test(k))}
+function prInitDeck(lead){const S0=state(0);for(const d of'AB')PR.deck[d]={pos:startBar(d)-lead*(S0[d+'.play']?1:0),play:!!S0[d+'.play'],L:0,li:null,spd:1,brake:null,lin:null,last:null,rel:1}}
+function prState(){const S=state(Math.max(0,t));if(PR.kind==='try')for(const k in PR.user)S[k]=PR.user[k];
+ for(const d of'AB'){const k=PR.deck[d];S[d+'.play']=k.play?1:0;S[d+'.loop']=k.L;S[d+'.spd']=k.spd}
+ if(PR.kind==='beat'){S['tempo']=0}return S}
+PR.state=prState;
+function prTick(adt){PR._dt=adt;if(!PR.run){PR.held();return}
+ const S=prState(),f=PR.kind==='beat'?1:mixF(S),db=adt*P.speed/P.barSec*f;t+=db;
+ for(const d of'AB'){const k=PR.deck[d];
+  if(k.brake!=null){k.spd=Math.max(0,1-(t-k.brake));if(k.spd<=0){k.play=false;k.brake=null;k.spd=1}}
+  if(k.play){k.pos+=db*k.spd*(PR.kind==='beat'&&d==='B'?PR.beat.rel():1);if(k.L>0&&k.pos>=k.li+k.L)k.pos=k.li+((k.pos-k.li)%k.L)}}
+ PR.held();
+ if(PR.kind==='try'){prRecord(S);if(t>=T.bars)prFinish()}
+ else if(PR.kind==='beat')PR.beat.tick(db)}
+PR.tick=prTick;
+/* keyboard-held moves (faders, filter FREQ) */
+const HOLD={e:['c2.fader',1],d:['c2.fader',-1],i:['c3.fader',1],k:['c3.fader',-1],t:['f1.freq',1],g:['f1.freq',-1],y:['f2.freq',1],h:['f2.freq',-1]};
+PR.held=()=>{if(PR.kind!=='try')return;const dt=PR._dt||0;for(const ch of PR.keys){const h=HOLD[ch];if(!h)continue;const[k,s]=h;prSet(k,Math.max(0,Math.min(1,prVal(k)+s*dt/(k.endsWith('fader')?2.5:3))))}};
+function prVal(k){return k in PR.user?PR.user[k]:state(Math.max(0,t))[k]}
+function prSet(k,v){if(PR.kind!=='try')return;PR.user[k]=v}
+/* deck actions, as on the CDJ-3000 */
+function prDeck(d,act,arg){const k=PR.deck[d];if(!k)return;const beat=Math.floor(k.pos*4+1e-6)/4;
+ if(act==='play'){if(k.play){if(T.tracks[d+'.spd'])k.brake=t;else k.play=false}else{k.play=true;k.spd=1;k.brake=null}}
+ else if(act==='hotA'){k.pos=startBar(d);k.play=true;k.L=0}
+ else if(act==='pad'){const tr=AU.trk[d],h=tr&&tr.meta.hotcues&&tr.meta.hotcues[arg];if(arg==='A'){prDeck(d,'hotA');return}
+  if(h){k.pos=h.bar;k.play=true;k.L=h.loop||0;k.li=h.loop?h.bar:null;k.last=h.loop?{L:h.loop,li:h.bar}:k.last}
+  else if(arg==='H'||arg==='B'){k.li=beat;k.L=8;k.last={L:8,li:beat}}}
+ else if(act==='bl4'){if(k.L>0){k.L/=2}else{k.li=beat;k.L=1}k.last={L:k.L,li:k.li}}
+ else if(act==='bl8'){if(k.L>0){k.L*=2}else{k.li=beat;k.L=2}k.last={L:k.L,li:k.li}}
+ else if(act==='in'){k.lin=beat}
+ else if(act==='out'){if(k.lin!=null&&beat>k.lin){k.li=k.lin;k.L=beat-k.lin;k.last={L:k.L,li:k.li}}}
+ else if(act==='exit'){if(k.L>0)k.L=0;else if(k.last){k.L=k.last.L;k.li=k.last.li;k.pos=k.li}}}
+/* recording and grading */
+function prRecord(S){const r={t};for(const k of PR.gkeys)r[k]=S[k];for(const d of'AB'){r[d+'.play']=S[d+'.play'];r[d+'.loop']=S[d+'.loop']}
+ r.lowA=chLow(S,'c2','A');r.lowB=chLow(S,'c3','B');PR.rec.push(r);if(AU.on&&AU.man){const a=AU.met.mt;if(a){let p=0;for(const v of a)p=Math.max(p,Math.abs(v));if(p>.99)PR.clips++}}}
+function chLow(S,c,d){return(S[d+'.play']?1:0)*Math.pow(S[c+'.fader'],1.3)*xg(S,c)*eqLin(S[c+'.lo'])*filt(S,c,60)}
+function prTol(k,target,v){const b=k.split('.')[1]||k;if(typeof target!=='number')return v===target;
+ if(b in KILL){if(target<=KILL[b]+.5)return v<=KILL[b]+8;return Math.abs(v-target)<=4}
+ if(b==='loop')return target>0?v>0&&Math.abs(v-target)<=target*.02:!(v>0);if(b==='play')return!!v===!!target;if(b==='fader'||k==='xf'){if(target>=.7)return v>=.65;if(target<=.05)return v<=.08}return Math.abs(v-target)<=.1}
+function prMoves(){const out=[];for(const k of PR.gkeys.concat(['A.play','B.play','A.loop','B.loop'])){const tr=T.tracks[k];if(!tr)continue;let prev=k in T.setup?T.setup[k]:DEF[k];
+  tr.forEach((f,i)=>{const[a,v]=f;if(i===0){if(v!==prev&&typeof v!=='number')out.push({k,a,b:a,from:prev,to:v});prev=v;return}
+   const[pa,pv]=tr[i-1];if(pv===v){prev=v;return}const step=typeof v!=='number'||STEPK.test(k)||a-pa<=.1;out.push({k,a:step?a:pa,b:a,from:pv,to:v,ramp:!step&&a-pa>=1.5});prev=v})}
+ return out.sort((x,y)=>x.b-y.b)}
+function prFinish(){PR.run=false;playing=false;const moves=prMoves(),rec=PR.rec,res=[];let score=0;
+ for(const m of moves){const nxt=moves.find(n=>n.k===m.k&&n.a>m.b+.01);const w0=m.a-1,w1=Math.min(nxt?nxt.a:T.bars+1,m.b+3);let hit=null,start=null;
+  for(const r of rec){if(r.t<w0||r.t>w1)continue;if(start===null&&!prTol(m.k,m.from,r[m.k]))start=r.t;if(prTol(m.k,m.to,r[m.k])){hit=r.t;break}}
+  const label=`${keyName(m.k)} → ${fmtV(m.k,m.to)}`;let g,cls,pts;
+  if(hit===null){g='missed';cls='bad';pts=0}else{let e=hit-m.b;if(m.ramp||m.b-m.a>=1){const lo=m.a+.35*(m.b-m.a),hi=m.b+.3;e=hit<lo?hit-lo:hit>hi?hit-hi:0}const beats=Math.round(Math.abs(e)*4);
+   if(Math.abs(e)<=.3){g='on time';cls='ok';pts=1}else if(Math.abs(e)<=1.05){g=(e<0?'early':'late')+` by ${beats} beat${beats===1?'':'s'}`;cls='mid';pts=.6}else{g=(e<0?'early':'late')+` by ${(Math.abs(e)).toFixed(1)} bars`;cls='bad';pts=.25}
+   if(m.ramp&&start!==null&&(hit-start)<(m.b-m.a)*.35){g+=`, but rushed: spread it over ${Math.round(m.b-m.a)} bars`;pts*=.7;if(cls==='ok')cls='mid'}}
+  score+=pts;res.push({b:m.b,label,g,cls})}
+ /* low-end checks against what the script itself does */
+ const scr=rec.map(r=>{const S=state(r.t);return{lowA:chLow(S,'c2','A'),lowB:chLow(S,'c3','B')}});
+ const over=(arr)=>{let o=0,prev=null;arr.forEach((x,i)=>{const dt=i?rec[i].t-rec[i-1].t:0;if(x.lowA>.22&&x.lowB>.22)o+=dt});return o};
+ const gap=(arr)=>{let g=0,cur=0;arr.forEach((x,i)=>{const dt=i?rec[i].t-rec[i-1].t:0;if(x.lowA<.04&&x.lowB<.04&&rec[i].t>0)cur+=dt;else cur=0;g=Math.max(g,cur)});return g};
+ const extra=[];const ou=over(rec),os=over(scr),gu=gap(rec),gs=gap(scr);
+ if(ou>os+.5)extra.push({cls:'bad',label:'Two low ends',g:`both kicks and basses played together for ${(ou-os).toFixed(1)} bars longer than the technique allows`});
+ else extra.push({cls:'ok',label:'Low end',g:'only one deck owned the lows at a time'});
+ if(gu>gs+1)extra.push({cls:'mid',label:'No kick',g:`the room had no kick for ${gu.toFixed(1)} bars`});
+ if(PR.clips>3)extra.push({cls:'bad',label:'Master clipping',g:`the master hit the top ${PR.clips} times: bring a fader or GAIN down`});
+ const Sf=prState(),Se=state(T.bars);for(const k of['c2.fader','c3.fader','f1.on','f2.on']){if(typeof Se[k]==='number'&&!prTol(k,Se[k],Sf[k])&&Math.abs(Sf[k]-Se[k])>.15)extra.push({cls:'mid',label:'End state',g:`${keyName(k)} is ${fmtV(k,Sf[k])}, it should finish ${fmtV(k,Se[k])}`})}
+ const pen=extra.filter(x=>x.cls==='bad').length*.08;const pct=Math.max(0,Math.round((moves.length?score/moves.length:1)*100*(1-pen)));
+ PR.last={pct,res,extra};prShowResults();setTryLabel()}
+function prShowResults(){const L=PR.last;if(!L)return;$('tryres').hidden=false;$('trysc').textContent=L.pct+'%';
+ $('trysum').textContent=L.pct>=85?'Clean. Try it at a different part of the tracks, or with other tracks.':L.pct>=60?'Close. Look at the late and missed moves below and run it again.':'Keep at it. Turn hints on and watch the highlighted controls.';
+ const ul=$('trylist');ul.innerHTML='';for(const r of L.extra.concat(L.res)){const li=document.createElement('li');li.className=r.cls;const b=document.createElement('b');b.textContent=(r.b!=null?`Bar ${Math.floor(r.b)+1} · `:'')+r.label;li.append(b,' ',r.g);ul.append(li)}}
+/* start / stop a Try it run */
+function prTryStart(){if(!AU.on)auToggle();PR.kind='try';PR.live=true;PR.user={};PR.gkeys=prUserKeys();const S0=state(0);for(const k of PR.gkeys)PR.user[k]=S0[k];
+ PR.rec=[];PR.clips=0;PR.last=null;$('tryres').hidden=true;t=-1;prInitDeck(1);PR.run=true;playing=true;curStep=-1;setTryLabel();prLegend()}
+function prTryStop(){PR.run=false;playing=false;setTryLabel()}
+function setTryLabel(){const b=$('trygo');if(b)b.textContent=PR.run?'Stop':PR.last?'Run again':'Start'}
+function prLegend(){const ks=new Set(Object.keys(T.tracks));const L=[];const has=k=>ks.has(k);
+ const row=(a,b)=>L.push(`<span><kbd>${a}</kbd> ${b}</span>`);
+ if(has('c2.hi')||has('c3.hi'))row('Q / P','HI kill CH 2 / CH 3');if(has('c2.hm')||has('c2.lm')||has('c3.hm')||has('c3.lm'))row('A / L','mids CH 2 / CH 3');if(has('c2.lo')||has('c3.lo'))row('Z / M','LO kill CH 2 / CH 3');
+ if(has('c2.fader')||has('c3.fader'))row('E D / I K','faders up/down');if(has('f1.on')||has('f1.freq'))row('R · T G','Filter 1 on · FREQ');if(has('f2.on')||has('f2.freq'))row('U · Y H','Filter 2 on · FREQ');
+ if(has('xf'))row('V / N','crossfader to X / Y');if(has('A.loop')||has('A.play'))row('1 2 3 4 5','CDJ 1: PLAY · 4 · 8 · EXIT · pad H');if(has('B.loop')||has('B.play'))row('7 8 9 0','CDJ 2: PLAY · 4 · 8 · EXIT');
+ $('trykeys').innerHTML=L.join('')||'<span>Use the mouse or touch on the drawing.</span>'}
+/* what to do next, with a countdown */
+function prCoach(){if(PR.kind!=='try')return;const st=T.steps;let i=0;st.forEach((s,j)=>{if(t>=s[0])i=j});const nx=st.find(s=>s[0]>t+.01);
+ const now=t<0?'Get ready: the run starts on the next bar.':st[i][1];$('trynow').textContent=now;
+ $('trynext').textContent=PR.run?(nx?`In ${Math.max(0,nx[0]-t).toFixed(1)} bars: ${nx[1]}`:'Last step. Finish the moves above.'):PR.last?'Run finished.':'Press Start (or Space). One bar of count-in, then the technique runs in real time.'}
+function prHint(c){if(PR.kind!=='try'||!PR.hints||!PR.run)return 0;const tr=T.tracks[c.key];if(!tr)return 0;
+ for(let i=0;i<tr.length;i++){const a=i?tr[i-1][0]:tr[i][0],b=tr[i][0];if(i&&tr[i-1][1]===tr[i][1])continue;if(t>=a-1&&t<=b+.1&&(i||tr[0][1]!==(c.key in T.setup?T.setup[c.key]:DEF[c.key])))return t>=a-.05?.9:.45}return 0}
+/* pointer control of the drawing */
+const invN=(kind,f)=>{f=Math.max(0,Math.min(1,f));if(kind==='eqHL')return f>=.5?(f-.5)*12:-40*(1-2*f);if(kind==='eqM')return f>=.5?(f-.5)*20:-27*(1-2*f);return f};
+let prDrag=null;
+function localPt(el,e){const m=el.getScreenCTM().inverse();return new DOMPoint(e.clientX,e.clientY).matrixTransform(m)}
+svg.addEventListener('pointerdown',e=>{if(!PR.live)return;const g=e.target.closest('[data-id]'),c=g&&CTL.find(x=>x.id===g.dataset.id);
+ const deckG=e.target.closest('g.phs');const dk=deckG===svg.children[0]?'A':deckG===svg.children[2]?'B':null;
+ if(dk){const p=localPt(deckG,e);
+  if(PR.kind==='beat'&&dk==='B'&&p.x>1385&&p.x<1505&&p.y>1215&&p.y<1740){prDrag={tempo:true,g:deckG};svg.setPointerCapture(e.pointerId);PR.beat.fader(p.y);e.preventDefault();return}
+  if(PR.kind==='beat'&&dk==='B'&&Math.hypot(p.x-902,p.y-1230)<440){prDrag={jog:true,g:deckG,x:p.x,y:p.y,a:Math.atan2(p.y-1230,p.x-902)};svg.setPointerCapture(e.pointerId);e.preventDefault();return}
+  if(PR.kind==='try'&&p.y>640&&p.y<700&&p.x>440&&p.x<1360&&!c){const i=Math.round((p.x-488)/118);prDeck(dk,'pad','ABCDEFGH'[Math.max(0,Math.min(7,i))]);return}}
+ if(!c||PR.kind!=='try')return;e.preventDefault();
+ const id=c.id,suf=id.split('.')[1];
+ if(c.type==='btn'){if(/^[AB]$/.test(id[0])&&id[1]==='.'){const map={in:'in',out:'out',exit:'exit',bl4:'bl4',bl8:'bl8',play:'play',cue:'cue',hot:'hotA'};if(map[suf]&&suf!=='cue')prDeck(id[0],map[suf]);return}
+  const f=id.split('.')[0];if(/^(HPF|BPF|LPF)$/.test(suf))prSet(f+'.mode',suf);else if(suf==='on')prSet(f+'.on',prVal(f+'.on')?0:1);return}
+ if(c.type==='sw'){const ks=Object.keys(c.map).sort((a,b)=>c.map[a]-c.map[b]);const cur=String(prVal(c.key));const p=localPt(c.el,e),dir=p.x<c.cx?-1:1;let i=ks.indexOf(cur);i=Math.max(0,Math.min(ks.length-1,i+dir));const v=ks[i];prSet(c.key,/^\d+$/.test(v)?+v:v);return}
+ prDrag={c,y:e.clientY,v0:nrm(c.kind,prVal(c.key)),g:c.el};svg.setPointerCapture(e.pointerId);prMove(e)},true);
+function prMove(e){const d=prDrag;if(!d)return;
+ if(d.tempo){PR.beat.fader(localPt(d.g,e).y);return}
+ if(d.jog){const p=localPt(d.g,e),a=Math.atan2(p.y-1230,p.x-902);let da=a-d.a;if(da>Math.PI)da-=2*Math.PI;if(da<-Math.PI)da+=2*Math.PI;d.a=a;PR.beat.spin(da);return}
+ const c=d.c;if(c.type==='knob'){prSet(c.key,(v=>Math.abs(v)<.8&&/^eq/.test(c.kind)?0:v)(invN(c.kind,d.v0+(d.y-e.clientY)/170)))}
+ else if(c.type==='fader'){const p=localPt(c.el,e);prSet(c.key,Math.max(0,Math.min(1,1-(p.y-c.y0)/c.len)))}
+ else if(c.type==='xf'){const p=localPt(c.el,e);prSet(c.key,Math.max(0,Math.min(1,(p.x-c.x0)/c.len)))}}
+svg.addEventListener('pointermove',e=>{if(prDrag)prMove(e)});
+const prUp=()=>{if(prDrag&&prDrag.jog)PR.beat.spin(0,true);prDrag=null};svg.addEventListener('pointerup',prUp);svg.addEventListener('pointercancel',prUp);
+document.addEventListener('keydown',e=>{if(!PR.live||/INPUT|SELECT/.test(document.activeElement.tagName))return;const k=e.key.toLowerCase();
+ if(PR.kind==='beat'){if(PR.beat.key(e,true)){e.preventDefault();e.stopImmediatePropagation()}return}
+ if(e.code==='Space'){e.preventDefault();e.stopImmediatePropagation();PR.run?prTryStop():prTryStart();return}
+ if(e.repeat){if(HOLD[k]){e.preventDefault();e.stopImmediatePropagation()}return}
+ const tog=(key,b)=>{const v=prVal(key);prSet(key,v>KILL[b]/2?KILL[b]:0)};
+ const act={q:()=>tog('c2.hi','hi'),p:()=>tog('c3.hi','hi'),z:()=>tog('c2.lo','lo'),m:()=>tog('c3.lo','lo'),a:()=>{tog('c2.hm','hm');tog('c2.lm','lm')},l:()=>{tog('c3.hm','hm');tog('c3.lm','lm')},
+  r:()=>prSet('f1.on',prVal('f1.on')?0:1),u:()=>prSet('f2.on',prVal('f2.on')?0:1),v:()=>prSet('xf',0),n:()=>prSet('xf',1),
+  '1':()=>prDeck('A','play'),'2':()=>prDeck('A','bl4'),'3':()=>prDeck('A','bl8'),'4':()=>prDeck('A','exit'),'5':()=>prDeck('A','pad','H'),'7':()=>prDeck('B','play'),'8':()=>prDeck('B','bl4'),'9':()=>prDeck('B','bl8'),'0':()=>prDeck('B','exit')}[k];
+ if(act&&PR.kind==='try'){act();e.preventDefault();e.stopImmediatePropagation()}else if(HOLD[k]){PR.keys.add(k);e.preventDefault();e.stopImmediatePropagation()}},true);
+document.addEventListener('keyup',e=>{if(!PR.live)return;PR.keys.delete(e.key.toLowerCase());if(PR.kind==='beat')PR.beat.key(e,false)},true);
+/* beatmatching trainer */
+const BM_T={id:'bm',g:'',n:'',title:'Beatmatching trainer',start:{A:32,B:0},bars:1e9,roles:{A:'mixOut',B:'mixIn'},setup:{'c3.fader':.8},tracks:{},steps:[[0,'Match CDJ 2 to CDJ 1 by ear.']],why:'',gear:''};
+const BMLV={easy:{e:[.8,1.6],ph:[.15,.3],meter:true},medium:{e:[.4,2.5],ph:[.1,.45],meter:false},hard:{e:[2,4.5],ph:[0,.5],meter:false}};
+PR.beat={lv:'easy',pB:0,p0:0,nudge:0,spinV:0,keyN:0,ok:0,t0:0,rounds:[],meter:true,done:false,
+ rel(){const A=AU.trk.A,B=AU.trk.B;if(!A||!B)return 1;return B.bpm*(1+this.pB/100)/A.bpm*(1+this.nudge)},
+ phase(){const kA=PR.deck.A,kB=PR.deck.B;let ph=((kB.pos-this.b0)-(kA.pos-this.a0))*4;ph-=Math.round(ph);return ph},
+ start(){const A=AU.trk.A,B=AU.trk.B,L=BMLV[this.lv],r=(a)=>a[0]+Math.random()*(a[1]-a[0]),sg=()=>Math.random()<.5?-1:1;this.p0=A&&B?(A.bpm/B.bpm-1)*100:0;
+  this.pB=Math.round((this.p0+sg()*r(L.e))/.02)*.02;this.meter=L.meter;this.ok=0;this.done=false;this.nudge=0;
+  prInitDeck(0);this.a0=PR.deck.A.pos;this.b0=PR.deck.B.pos;PR.deck.B.pos+=sg()*r(L.ph)/4;t=0;this.t0=0;PR.run=true;playing=true;this.ui()},
+ tick(db){const kA=PR.deck.A,kB=PR.deck.B,A=AU.trk.A,B=AU.trk.B;if(this.spinV&&!this.spinHeld)this.spinV*=.85;this.nudge=(this.keyN||0)*.04+this.spinV;
+  if(A&&kA.pos>A.bars-3){const s=kA.pos-this.a0;kA.pos=this.a0;kB.pos-=s;}if(B&&kB.pos>B.bars-3){const s=kB.pos-this.b0;kB.pos=this.b0;kA.pos-=s}
+  const ph=this.phase(),ms=ph*60/(A?A.bpm:130)*1000,dp=Math.abs(this.pB-this.p0);
+  if(!this.done){if(dp<.031&&Math.abs(ms)<12&&!this.nudge)this.ok+=db;else this.ok=0;if(this.ok>=4){this.done=true;const sec=t*P.barSec;this.rounds.unshift({lv:this.lv,sec});}}
+  this.ms=ms;this.dp=this.pB-this.p0;this.ui()},
+ fader(y){const pct=Math.max(-10,Math.min(10,(y-1475)/212*10));this.pB=Math.round(pct/.02)*.02},
+ spin(da,end){if(end){this.spinHeld=false;return}this.spinHeld=true;this.spinV=Math.max(-.08,Math.min(.08,da*.25))},
+ key(e,down){const k=e.key;if(k==='ArrowUp'||k==='ArrowDown'){if(down){this.pB=Math.round((this.pB+(k==='ArrowDown'?1:-1)*(e.shiftKey?.2:.02))/.02)*.02}return true}
+  if(k==='ArrowLeft'||k==='ArrowRight'){this.keyN=down?(k==='ArrowRight'?1:-1):0;return true}if(e.code==='Space'&&down){this.start();return true}return false},
+ ui(){const el=$('bmread');if(!el)return;const mb=$('bmmeter');if(mb)mb.textContent=this.meter?'Hide meter':'Show meter';const show=this.meter||this.done;const ms=this.ms||0,dp=this.dp||0;
+  $('bmtempo').textContent=`CDJ 2 tempo ${this.pB>=0?'+':''}${this.pB.toFixed(2)} %`;
+  el.innerHTML=show?`Tempo ${Math.abs(dp)<.031?'matched':(dp>0?'too fast by ':'too slow by ')+Math.abs(dp).toFixed(2)+' %'} · Beats ${Math.abs(ms)<12?'in phase':(ms>0?'CDJ 2 ahead by ':'CDJ 2 behind by ')+Math.abs(ms).toFixed(0)+' ms'}`:'Meter hidden: listen for the kicks flamming (two hits) and drifting apart.';
+  const bar=$('bmph');bar.style.left=(50+Math.max(-50,Math.min(50,ms/4)))+'%';bar.parentNode.style.visibility=show?'visible':'hidden';
+  $('bmstat').textContent=this.done?`Locked in after ${this.rounds[0].sec.toFixed(0)} s. Press New round (or Space).`:this.ok>0?`Holding… ${Math.min(4,this.ok).toFixed(1)} of 4 bars`:'';
+  $('bmhist').innerHTML=this.rounds.slice(0,6).map(r=>`<li>${r.lv}: ${r.sec.toFixed(0)} s</li>`).join('')}};
+PR.pct=null;
+function prBeatEnter(){if(!AU.on)auToggle();PR.saveT=PR.saveT||T;T=BM_T;PR.kind='beat';PR.live=true;PR.rate=d=>d==='B'?(1+PR.beat.pB/100)*(1+PR.beat.nudge):1;PR.pct=d=>d==='B'?PR.beat.pB:0;PR.beat.start()}
+function prLeave(){if(PR.saveT){T=PR.saveT;PR.saveT=null}PR.live=false;PR.run=false;PR.kind=null;PR.rate=null;PR.pct=null;PR.keys.clear();t=0;curStep=-1;cueSrc()}
+/* tempo faders on the drawing and the screen readouts follow each deck's tempo */
+const TFG={};['A','B'].forEach((d,i)=>{const g=svg.children[i?2:0],r=g.querySelector('rect[x="1410"][y="1440"]');if(!r)return;const w=document.createElementNS('http://www.w3.org/2000/svg','g');r.parentNode.insertBefore(w,r);const n1=r.nextSibling,n2=n1&&n1.nextSibling;w.append(r);if(n1)w.append(n1);if(n2)w.append(n2);TFG[d]={g:w,last:null,txt:null}});
+function cdjTempo(d,S){const pct=PR.pct?PR.pct(d):((AU.rate[d]||1)*mixF(S)-1)*100;const o=TFG[d];if(!o)return;const k=Math.round(pct*100);if(k===o.last)return;o.last=k;
+ o.g.setAttribute('transform',`translate(0 ${(Math.max(-10,Math.min(10,pct))/10*212).toFixed(1)})`);
+ const root=$('sc_root'+d);if(!root)return;const tt=root.querySelector('text[x="1136"][y="484"]'),b1=root.querySelector('text[x="1178"][y="481"]'),b2=root.querySelector('text[x="1250"][y="481"]'),tr=AU.trk[d];
+ if(tt)tt.textContent=(pct>=0?'+':'')+pct.toFixed(2);if(tr&&b1&&b2){const eff=tr.bpm*(1+pct/100);b1.textContent=String(Math.floor(eff));b2.textContent='.'+String(Math.floor(eff*10)%10)}}
+$('trygo').onclick=()=>PR.run?prTryStop():prTryStart();$('tryhint').onchange=e=>{PR.hints=e.target.checked};
+$('bmgo').onclick=()=>PR.beat.start();$('bmlv').onchange=e=>{PR.beat.lv=e.target.value;PR.beat.start()};$('bmmeter').onclick=()=>{PR.beat.meter=!PR.beat.meter;$('bmmeter').textContent=PR.beat.meter?'Hide meter':'Show meter';PR.beat.ui()};
+const holdBtn=(id,v)=>{const b=$(id);b.onpointerdown=()=>{PR.beat.keyN=v};b.onpointerup=b.onpointerleave=b.onpointercancel=()=>{PR.beat.keyN=0}};holdBtn('bmslow',-1);holdBtn('bmfast',1);
+$('bmdn').onclick=()=>{PR.beat.pB=Math.round((PR.beat.pB-.02)/.02)*.02};$('bmup').onclick=()=>{PR.beat.pB=Math.round((PR.beat.pB+.02)/.02)*.02};
+/* ==== REGION practice END ==== */
+/* ==== REGION library ==== */
+/* Rekordbox library: open the collection XML exported from rekordbox (File > Export Collection in xml format)
+   and pick the music folder. Tracks play straight from disk; nothing is uploaded. Hot cues, memory cues,
+   beat grid, BPM and key come from rekordbox. */
+const LIB={tracks:[],files:new Map(),lists:[],sel:'all',q:'',compat:false};
+const CAM={'Abm':'1A','G#m':'1A','B':'1B','Ebm':'2A','D#m':'2A','F#':'2B','Gb':'2B','Bbm':'3A','A#m':'3A','Db':'3B','C#':'3B','Fm':'4A','Ab':'4B','G#':'4B','Cm':'5A','Eb':'5B','D#':'5B','Gm':'6A','Bb':'6B','A#':'6B','Dm':'7A','F':'7B','Am':'8A','C':'8B','Em':'9A','G':'9B','Bm':'10A','D':'10B','F#m':'11A','Gbm':'11A','A':'11B','C#m':'12A','Dbm':'12A','E':'12B'};
+const camelot=k=>{if(!k)return'';k=k.trim();if(/^\d{1,2}[AB]$/i.test(k))return k.toUpperCase();return CAM[k]||CAM[k.replace('min','m').replace('maj','')]||''};
+function camNear(a,b){a=camelot(a);b=camelot(b);if(!a||!b)return false;const na=+a.slice(0,-1),la=a.slice(-1),nb=+b.slice(0,-1),lb=b.slice(-1);if(la===lb)return na===nb||(na%12)+1===nb||(nb%12)+1===na;return na===nb}
+function libParse(xml){const doc=new DOMParser().parseFromString(xml,'text/xml');if(doc.querySelector('parsererror'))throw new Error('that file is not valid XML');
+ const out=[];for(const tk of doc.querySelectorAll('COLLECTION > TRACK')){const A=n=>tk.getAttribute(n);const loc=A('Location')||'';const bpm=+A('AverageBpm')||0;
+  const tempos=[...tk.querySelectorAll('TEMPO')];const t0=tempos.find(x=>x.getAttribute('Battito')==='1')||tempos[0];const fb=t0?+t0.getAttribute('Inizio'):null;const gb=t0?+t0.getAttribute('Bpm')||bpm:bpm;
+  const bar=s=>fb==null||!gb?null:Math.round((s-fb)*gb/240);const hot={},mem={};
+  for(const pm of tk.querySelectorAll('POSITION_MARK')){const num=+pm.getAttribute('Num'),st=+pm.getAttribute('Start'),en=pm.getAttribute('End'),nm=pm.getAttribute('Name')||'';const b=bar(st);if(b==null)continue;
+   if(num>=0&&num<8){const L='ABCDEFGH'[num];hot[L]={bar:b,name:nm||('Hot cue '+L)};if(en!=null&&+en>st){const lb=Math.round((+en-st)*gb/240);if(lb>0)hot[L].loop=lb}}
+   else if(num===-1){mem[nm||('Memory '+(Object.keys(mem).length+1))]=b}}
+  const name=decodeURIComponent((loc.split('/').pop()||'').replace(/\+/g,'%2B'));
+  const secs=+A('TotalTime')||0,bars=gb?Math.floor((secs-(fb||0))*gb/240):0;
+  const cues={};if(hot.H)cues.mixOut=Math.max(0,hot.H.bar-16);if(mem['Bass in']!=null&&mem['Bass in']>=8)cues.bassSwap=8*Math.floor(mem['Bass in']/8)-8;if(hot.E)cues.drop=hot.E.bar;
+  out.push({rid:A('TrackID'),title:A('Name')||name,artist:A('Artist')||'',bpm:gb?+gb.toFixed(2):bpm,key:camelot(A('Tonality'))||A('Tonality')||'',firstBeat:fb,hotcues:hot,memory:mem,cues,fname:name,path:loc,bars,secs,genre:A('Genre')||''})}
+ const lists=[];const walk=(n,pre)=>{for(const c of n.children){if(c.tagName!=='NODE')continue;const nm=c.getAttribute('Name');if(c.getAttribute('Type')==='1'){lists.push({name:(pre?pre+' / ':'')+nm,ids:[...c.querySelectorAll('TRACK')].map(x=>x.getAttribute('Key'))})}else walk(c,(pre?pre+' / ':'')+(nm==='ROOT'?'':nm))}};
+ const root=doc.querySelector('PLAYLISTS > NODE');if(root)walk(root,'');return{tracks:out,lists}}
+function libFiles(fl){LIB.files=new Map();for(const f of fl)if(/\.(mp3|wav|aiff?|flac|m4a|aac|ogg|alac)$/i.test(f.name))LIB.files.set(f.name.normalize('NFC'),f);libRender()}
+function libFile(tk){return LIB.files.get(tk.fname.normalize('NFC'))||null}
+function libRender(){const st=$('libst'),ul=$('liblist');if(!st)return;const have=LIB.tracks.filter(libFile).length;
+ st.textContent=LIB.tracks.length?`${LIB.tracks.length} tracks in the collection · ${LIB.files.size?have+' found in your folder':'choose your music folder to play them'}`:'Open your rekordbox.xml to start.';
+ const sel=$('libpl');if(sel&&sel.options.length!==LIB.lists.length+1)sel.innerHTML='<option value="all">Whole collection</option>'+LIB.lists.map((l,i)=>`<option value="${i}">${auEsc(l.name)}</option>`).join('');
+ let L=LIB.tracks;if(LIB.sel!=='all'){const ids=new Set(LIB.lists[+LIB.sel].ids);L=L.filter(t=>ids.has(t.rid))}
+ const q=LIB.q.toLowerCase();if(q)L=L.filter(t=>(t.title+' '+t.artist+' '+t.genre).toLowerCase().includes(q));
+ const A=AU.trk.A;if(LIB.compat&&A){const kA=A.meta.key,bA=A.bpm;L=L.filter(t=>camNear(kA,t.key)&&t.bpm&&Math.abs(t.bpm/bA-1)<=.06)}
+ ul.innerHTML=L.slice(0,300).map(t=>{const f=libFile(t),i=LIB.tracks.indexOf(t);return`<li class="${f?'':'off'}"><span class="lt"><b>${auEsc(t.title)}</b> ${auEsc(t.artist)}</span><span class="lm">${auEsc(t.key)} · ${t.bpm||'?'} · ${Object.keys(t.hotcues).length} cues</span><span class="lb"><button data-d="A" data-i="${i}" ${f?'':'disabled'}>CDJ 1</button><button data-d="B" data-i="${i}" ${f?'':'disabled'}>CDJ 2</button></span></li>`}).join('')+(L.length>300?`<li class="more">Showing 300 of ${L.length}. Search to narrow it down.</li>`:'')}
+async function libLoad(d,i){const tk=LIB.tracks[i],f=libFile(tk);if(!f)return;const id='rb:'+tk.rid;let m=AU.lib.find(x=>x.id===id);
+ if(!m){m={id,file:URL.createObjectURL(f),title:tk.title,artist:tk.artist,bpm:tk.bpm,key:tk.key,firstBeat:tk.firstBeat,hotcues:tk.hotcues,memory:tk.memory,cues:tk.cues,rb:true};AU.lib.push(m);
+  for(const dd of'AB'){const s=$('trk'+dd),o=document.createElement('option');o.value=id;o.textContent='Rekordbox · '+tk.title+(tk.artist?' · '+tk.artist:'')+` (${[tk.key,tk.bpm].filter(Boolean).join(' · ')})`;s.append(o)}}
+ $('trk'+d).value=id;await auAssign(d,id);libRender()}
+function libInit(){$('libBtn').onclick=()=>{$('libdlg').hidden=false;libRender()};$('libclose').onclick=()=>{$('libdlg').hidden=true};
+ $('libxml').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const r=libParse(await f.text());LIB.tracks=r.tracks;LIB.lists=r.lists;LIB.sel='all'}catch(err){$('libst').textContent='Could not read it: '+err.message;return}libRender()};
+ $('libdir').onchange=e=>libFiles(e.target.files);$('libq').oninput=e=>{LIB.q=e.target.value;libRender()};$('libpl').onchange=e=>{LIB.sel=e.target.value;libRender()};
+ $('libcompat').onchange=e=>{LIB.compat=e.target.checked;libRender()};$('liblist').onclick=e=>{const b=e.target.closest('button[data-d]');if(b)libLoad(b.dataset.d,+b.dataset.i)}}
+libInit();
+/* ==== REGION library END ==== */
+
+
 /* render */
 let last=performance.now();
 function frame(now){const dt=Math.min(.1,(now-last)/1000);last=now;
-const adt=audioDt(dt);if(playing){t+=adt*P.speed/P.barSec;if(mode==='step'&&segEnd!==null&&t>=segEnd){t=segEnd;playing=false;setPlayLabel()}else if(t>=T.bars){if(repeat)t=0;else{t=T.bars;playing=false;setPlayLabel()}}}
-const S=state(t),D={A:deckAt('A',t),B:deckAt('B',t)};if(AU.on)auTick(S,D);
+const adt=audioDt(dt);if(PR.live)PR.tick(adt);else if(playing){t+=adt*P.speed/P.barSec*mixF({tempo:val('tempo',t)});if(mode==='step'&&segEnd!==null&&t>=segEnd){t=segEnd;playing=false;setPlayLabel()}else if(t>=T.bars){if(repeat)t=0;else{t=T.bars;playing=false;setPlayLabel()}}}
+const S=PR.live?PR.state():state(t),D={A:deckAt('A',t),B:deckAt('B',t)};if(AU.on)auTick(S,D);
 for(const c of CTL){const v=S[c.key];
 if(c.type==='knob'){const ang=-135+270*nrm(c.kind,v);c.v.setAttribute('d',arcD(c.ar,-135,ang));c.ind.setAttribute('transform',`rotate(${ang.toFixed(1)})`)}
 else if(c.type==='fader')c.cap.setAttribute('transform',`translate(0 ${(c.y0+(1-v)*c.len).toFixed(1)})`);
@@ -896,10 +1193,10 @@ else if(c.type==='sw')c.lev.setAttribute('cx',c.cx+(c.d||12)*(c.map[v]??0));
 else if(c.type==='btn')c.el.classList.toggle('on',!!c.test(v,S));
 else if(c.type==='xf')c.cap.setAttribute('transform',`translate(${(c.x0+v*c.len).toFixed(1)} ${c.y})`);
 const num=c.type==='btn'?+!!c.test(v,S):v;if(c.last!==undefined&&num!==c.last)c.moved=now;c.last=num;
-c.halo.style.opacity=Math.max(c.moved?Math.max(0,.9*(1-(now-c.moved)/450)):0,mode==='step'&&chgSet.has(c.id)?.85:0)}
+c.halo.style.opacity=Math.max(c.moved?Math.max(0,.9*(1-(now-c.moved)/450)):0,mode==='step'&&chgSet.has(c.id)?.85:0,prHint(c))}
 if(!measured){measure();measured=true}
 for(const f of[1,2])$('hz'+f).textContent=S[`f${f}.on`]?hz(S[`f${f}.freq`]):'off';$('cvt').textContent=S.curve;
-for(const d of'AB'){updScreen(d,D[d],S);updDeck(d,D[d],S)}
+for(const d of'AB'){updScreen(d,D[d],S);updDeck(d,D[d],S);cdjTempo(d,S)}prCoach();
 const pulse={A:Math.exp(-((D.A.pos*4)%1)*5),B:Math.exp(-((D.B.pos*4)%1)*5)};
 const lv={A:[],B:[]};let mxAll=0;
 for(const[c,d]of[['c2','A'],['c3','B']]){const g=chG(S,c,d);let mx=0;BANDS.forEach(([,k,fb],i)=>{const v=g*eqLin(S[c+'.'+k])*filt(S,c,fb);lv[d][i]=v;mx=Math.max(mx,v)});

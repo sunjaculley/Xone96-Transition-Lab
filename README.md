@@ -31,3 +31,11 @@ node scripts/build-manifest.mjs .
 python3 -m http.server 8000
 # then open http://localhost:8000
 ```
+
+## Practice and your own library
+
+- **Learn** watches the techniques (Animate or Step through). **Practice** has **Try it**, where you perform a technique on live audio with the mouse, touch or keys and get graded, and a **Beatmatch** trainer. **Explore** lets you tap any part of the gear.
+- Techniques come in three groups: Transitions, Low-end swaps, and Phrasing & performance.
+- **Rekordbox library**: in rekordbox choose File → Export Collection in xml format, open that file in the lab, then choose your music folder. Tracks play from your disk and are never uploaded; hot cues, memory cues, grid, BPM and key come from rekordbox. Folder picking works in Chrome, Edge, Safari and Firefox.
+
+Note: this repository is public, so anything in `tracks/` can be downloaded by anyone. The Rekordbox library option keeps your music on your computer.
