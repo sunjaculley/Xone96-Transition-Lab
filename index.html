@@ -176,7 +176,8 @@ body.expm .fig{user-select:none;-webkit-user-select:none}body.expm .fig>svg{touc
 <p class="mist" id="mist">Looking for controllers…</p>
 <p class="exs">Chrome or Edge. Quit rekordbox first so it doesn’t react to the same moves. The DDJ-FLX4 is mapped automatically: deck 1 drives CDJ 1 / CH 2, deck 2 drives CDJ 2 / CH 3. Moves play in Practice → Try it and the Beatmatch trainer; in Explore, touching a control shows what it is.</p>
 <ul class="mimap"><li><b>Faders, crossfader</b> as on the Xone</li><li><b>EQ HI / LOW</b> → HI / LO · <b>EQ MID</b> → both mids together</li><li><b>CFX</b> → that channel’s Xone filter: left LPF, right HPF, centre off</li><li><b>PLAY, CUE, LOOP IN / OUT, RELOOP/EXIT, CUE/LOOP CALL ◀ ▶</b> → loop ½ and ×2</li><li><b>Pads</b> hot cue mode → hot cues A–H · beat loop mode → loops</li><li><b>Deck 2 tempo slider and jog</b> → Beatmatch trainer · <b>BEAT SYNC</b> ignored on purpose</li><li><b>Channel CUE, HEADPHONES MIXING</b> → headphone cue (needs the option below)</li></ul>
-<label class="trych"><input type="checkbox" id="mihp"> Headphone cue on the FLX4’s headphone output (set the FLX4 as the computer’s sound output first)</label>
+<details class="mik2"><summary><b>Xone:K2 map</b> (turn latching layers off on the K2)</summary><ul class="mimap"><li><b>Encoders</b>: nudge CDJ 1 · CRUNCH F1 · CRUNCH F2 · nudge CDJ 2 · push: CH 2 cue · zero · zero · CH 3 cue</li><li><b>Pot row 1</b>: F1 FREQ · F1 RES · F2 RES · F2 FREQ</li><li><b>Pot row 2</b>: CH 2 LO · LO MID · HI MID · HI</li><li><b>Pot row 3</b>: CH 3 LO · LO MID · HI MID · HI</li><li><b>12 buttons</b>: outer columns F1 / F2 HPF · BPF · LPF; inner columns FILTER ON · filter assign · X assign</li><li><b>Faders</b>: CDJ 1 tempo · CH 2 · CH 3 · CDJ 2 tempo (down = faster)</li><li><b>4×4 grid</b>, two columns per CDJ: IN OUT · loop 4/½ loop 8/×2 · EXIT hot cue A · CUE PLAY. <b>LAYER</b> flips it to hot cues A–H.</li><li><b>Bottom encoders</b>: crossfader (push = centre) · headphone CUE/MST</li></ul></details>
+<label class="trych"><input type="checkbox" id="mihp"> Headphone cue on the controller’s headphone output (FLX4 or K2: set it as the computer’s sound output first)</label>
 <label class="trych"><input type="checkbox" id="miinv"> Tempo slider feels backwards: invert it</label>
 <div class="tryctl"><button id="milearn">MIDI learn (other controllers)</button><button id="miclear">Clear learned</button></div></div>
 <div class="libdlg" id="libdlg" hidden role="dialog" aria-label="Rekordbox library"><div class="libbox">
@@ -1198,9 +1199,9 @@ function miStatus(s){MI.last=s;const el=$('mist');if(el)el.textContent=s}
 async function miInit(){if(!navigator.requestMIDIAccess){miStatus('This browser has no Web MIDI. Use Chrome or Edge.');return}
  try{MI.acc=await navigator.requestMIDIAccess({sysex:false})}catch(e){miStatus('MIDI access was blocked: '+e.message);return}
  const scan=()=>{MI.ins=[...MI.acc.inputs.values()];MI.outs=[...MI.acc.outputs.values()];for(const i of MI.ins)i.onmidimessage=miMsg;
-  MI.flx=MI.ins.some(i=>/flx4/i.test(i.name));miStatus(MI.ins.length?`Connected: ${MI.ins.map(i=>i.name).join(', ')}${MI.flx?' · DDJ-FLX4 map active':' · use MIDI learn to map it'}`:'No MIDI controller found. Plug it in (quit rekordbox first).');$('miBtn').classList.toggle('on',MI.ins.length>0);miLeds()};
+  MI.flx=MI.ins.some(i=>/flx4/i.test(i.name));MI.k2=MI.ins.some(i=>/k2/i.test(i.name));MI.k2out=MI.outs.find(o=>/k2/i.test(o.name))||null;miStatus(MI.ins.length?`Connected: ${MI.ins.map(i=>i.name).join(', ')}${MI.flx?' · DDJ-FLX4 map active':''}${MI.k2?' · Xone:K2 map active':''}${!MI.flx&&!MI.k2?' · use MIDI learn to map it':''}`:'No MIDI controller found. Plug it in (quit rekordbox first).');$('miBtn').classList.toggle('on',MI.ins.length>0);miLeds();if(MI.k2out)k2Leds(true)};
  MI.acc.onstatechange=scan;scan()}
-function miOut(a,b,c){for(const o of MI.outs)if(!MI.flx||/flx4/i.test(o.name))try{o.send([a,b,c])}catch(e){}}
+function miOut(a,b,c){for(const o of MI.outs)if(/flx4/i.test(o.name)||(!MI.flx&&!/k2/i.test(o.name)))try{o.send([a,b,c])}catch(e){}}
 function miLeds(){if(!MI.flx)return;for(const d of[0,1]){const tr=AU.trk[MI_D[d]],h=tr&&tr.meta.hotcues||{};for(let i=0;i<8;i++)miOut(0x97+2*d,i,h['ABCDEFGH'[i]]?0x7F:0)}}
 /* value helpers */
 const mi14=(st,lo,v)=>{const k=st+':'+lo;return((MI.msb[k]||0)<<7|v)/16383};
@@ -1221,6 +1222,7 @@ function miMsg(e){const[st,d1,v=0]=e.data;const type=st&0xF0,chn=st&0x0F;
  /* MIDI learn: next message binds to the chosen lab control */
  if(MI.learn&&(type===0xB0||(type===0x90&&v>0))){const key=(type===0xB0?'cc':'nt')+':'+chn+':'+d1;MI.map[key]=MI.learn;try{localStorage.setItem('xl_midimap',JSON.stringify(MI.map))}catch(err){}miStatus(`Mapped ${type===0xB0?'CC':'note'} ${d1} (channel ${chn+1}) to ${keyName(MI.learn)||MI.learn}.`);MI.learn=null;document.body.classList.remove('milearn');return}
  const lk=(type===0xB0?'cc':'nt')+':'+chn+':'+d1;if(MI.map[lk]){const k=MI.map[lk];if(mode==='try'&&PR.live){const c=CTL.find(c=>c.key===k);if(type===0xB0&&c){prSet(k,c.type==='knob'?invN(c.kind,v/127):v/127)}else if(type===0x90&&v>0){const cur=prVal(k);prSet(k,typeof cur==='number'?(cur?0:1):cur)}}return}
+ if(e.target&&/k2/i.test(e.target.name||'')||e.k2){k2Msg(st,d1,v);return}
  if(!MI.flx)return;
  if(type===0xB0){const deck=st===0xB0?0:st===0xB1?1:null;
   if(d1<0x20){MI.msb[st+':'+(d1+0x20)]=v;/* MSB only: act now with coarse value, LSB refines */}
@@ -1236,6 +1238,47 @@ function miMsg(e){const[st,d1,v=0]=e.data;const type=st&0xF0,chn=st&0x0F;
    if(m==='chcue'){MI.cue=MI.cue||[false,false];MI.cue[deck]=!MI.cue[deck];miOut(0x90+deck,0x54,MI.cue[deck]?0x7F:0);auCueSet();return}
    if(d1===0x58){miStatus(MI.last.split(' · ')[0]+' · BEAT SYNC is ignored here on purpose: match by ear.');return}if(m)miAct(m,deck);return}
   if(!on)return;if(st===0x97||st===0x99){const deck=st===0x97?0:1;if(d1<8)miAct('pad',deck,d1);else if(d1>=0x60&&d1<0x68)miAct('bloop',deck,d1-0x60)}}}
+/* Allen & Heath Xone:K2 (factory notes and CCs on any MIDI channel; layer latching off).
+   Knob rows: encoders = nudge / crunch, pots 1 = filters, pots 2 = CH 2 EQ, pots 3 = CH 3 EQ (LO → HI, left to right). */
+const K2={layer:0,ch:14,lastLed:'',enc:{}};
+function k2Key(key,v){if(mode==='explore'){if(EXL.find(e=>e.id===key))exShow(key);return}if(mode!=='try'||!PR.live)return;prSet(key,v)}
+function k2Rel(key,v,step,lo,hi){const d=v<64?v:v-128;const cur=mode==='try'&&PR.live?prVal(key):state(Math.max(0,t))[key];k2Key(key,Math.max(lo,Math.min(hi,cur+d*step)))}
+function k2Tog(key,a,b){const cur=mode==='try'&&PR.live?prVal(key):null;k2Key(key,cur===a?b:a)}
+function k2Msg(st,d1,v){const type=st&0xF0;K2.ch=st&0x0F;
+ if(type===0xB0){
+  if(d1<=3){if(d1===1)return k2Rel('f1.crunch',v,.02,0,1);if(d1===2)return k2Rel('f2.crunch',v,.02,0,1);const dd=v<64?v:v-128;return miAct('jog',d1===0?0:1,0,dd*3)}
+  const f=v/127;
+  if(d1>=4&&d1<=7)return k2Key(['f1.freq','f1.res','f2.res','f2.freq'][d1-4],f);
+  if(d1>=8&&d1<=15){const ch=d1<12?'c2':'c3',b=['lo','lm','hm','hi'][(d1-8)%4];return k2Key(ch+'.'+b,invN(b==='lo'||b==='hi'?'eqHL':'eqM',f))}
+  if(d1===16||d1===19)return miAct('tempo',d1===16?0:1,0,(.5-f)*20*(MI.inv?-1:1));
+  if(d1===17||d1===18)return k2Key(d1===17?'c2.fader':'c3.fader',f);
+  if(d1===20)return k2Rel('xf',v,.03,0,1);
+  if(d1===21){const dd=v<64?v:v-128;MI.hpMix=Math.max(0,Math.min(1,(MI.hpMix??.5)+dd*.03));auHpMix();return}
+  return}
+ if(type!==0x90||v===0)return;
+ if(d1===0x0C){K2.layer=1-K2.layer;k2Leds(true);miStatus(MI.last.split(' · ')[0]+` · K2 pads: ${K2.layer?'hot cues A–H (red)':'transport (green)'}`);return}
+ if(d1===0x0D)return k2Key('xf',.5);
+ if(d1>=0x34&&d1<=0x37){const c=d1-0x34;if(c===1)return k2Key('f1.crunch',0);if(c===2)return k2Key('f2.crunch',0);MI.cue=MI.cue||[false,false];MI.cue[c?1:0]=!MI.cue[c?1:0];auCueSet();k2Leds(true);return}
+ if(d1>=0x28&&d1<=0x33){const row=2-Math.floor((d1-0x28)/4),col=(d1-0x28)%4;
+  if(col===0||col===3){const fl=col===0?'f1':'f2',m=['HPF','BPF','LPF'][row];if(mode==='explore')return k2Key(fl+'.'+m);return k2Key(fl+'.mode',m)}
+  const L=col===1?0:1,ch=MI_CH[L];
+  if(row===0)return mode==='explore'?k2Key(MI_F[L]+'.on'):k2Tog(MI_F[L]+'.on',1,0);
+  if(row===1)return mode==='explore'?k2Key(ch+'.fa'):k2Tog(ch+'.fa',L+1,0);
+  return mode==='explore'?k2Key(ch+'.x'):k2Tog(ch+'.x',L?'Y':'X','off')}
+ if(d1>=0x18&&d1<=0x27){const row=3-Math.floor((d1-0x18)/4),col=(d1-0x18)%4,deck=col<2?0:1,c=col%2;
+  if(K2.layer){return miAct('pad',deck,row*2+c)}
+  return miAct([['in','out'],['half','dbl'],['exit','pad'],['cue','play']][row][c],deck,0)}}
+function k2Leds(force){if(!MI.k2out)return;const on=(n,col)=>{try{MI.k2out.send([0x90+K2.ch,n+col,0x7F])}catch(e){}},off=n=>{for(const c of[0,36,72])try{MI.k2out.send([0x80+K2.ch,n+c,0])}catch(e){}};
+ const S=PR.live?prState():state(Math.max(0,t)),sig=JSON.stringify([K2.layer,S['f1.on'],S['f2.on'],S['f1.mode'],S['f2.mode'],S['c2.fa'],S['c3.fa'],S['c2.x'],S['c3.x'],MI.cue,AU.trk.A&&AU.trk.A.meta.id,AU.trk.B&&AU.trk.B.meta.id]);
+ if(!force&&sig===K2.lastLed)return;K2.lastLed=sig;const G=72,R=0,A=36;
+ const set=(n,lit,col)=>{off(n);if(lit)on(n,col)};
+ for(const[i,fl]of[[0,'f1'],[3,'f2']])['HPF','BPF','LPF'].forEach((m,r)=>set(0x30-r*4+i,S[fl+'.mode']===m,A));
+ set(0x31,S['f1.on'],G);set(0x32,S['f2.on'],G);set(0x2D,S['c2.fa']===1,A);set(0x2E,S['c3.fa']===2,A);set(0x29,S['c2.x']!=='off',A);set(0x2A,S['c3.x']!=='off',A);
+ const q=MI.cue||[false,false];set(0x34,q[0],A);set(0x37,q[1],A);
+ for(let r=0;r<4;r++)for(let c=0;c<4;c++){const n=0x24-r*4+c,deck=c<2?'A':'B';if(K2.layer){const tr=AU.trk[deck],h=tr&&tr.meta.hotcues||{};set(n,!!h['ABCDEFGH'[r*2+c%2]],R)}else set(n,true,r===3?G:A)}
+ for(const n of[0x0C,0x10,0x14])try{MI.k2out.send([0x80+K2.ch,n,0])}catch(e){}try{MI.k2out.send([0x90+K2.ch,K2.layer?0x0C:0x14,0x7F])}catch(e){}}
+setInterval(()=>{if(MI.k2out)k2Leds(false)},250);
+
 /* headphone cue on the FLX4's second stereo output (channels 3-4) */
 function auHpSetup(on){if(!AU.ctx)auGraph();const c=AU.ctx,dst=c.destination;
  if(on&&dst.maxChannelCount<4){miStatus(`Your sound output has ${dst.maxChannelCount} channels. Set the DDJ-FLX4 as the computer’s sound output, reload the lab and try again.`);$('mihp').checked=false;MI.hp=false;return false}

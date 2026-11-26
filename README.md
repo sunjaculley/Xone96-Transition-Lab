@@ -38,6 +38,6 @@ python3 -m http.server 8000
 - Techniques come in three groups: Transitions, Low-end swaps, and Phrasing & performance.
 - **Rekordbox library**: in rekordbox choose File → Export Collection in xml format, open that file in the lab, then choose your music folder. Tracks play from your disk and are never uploaded; hot cues, memory cues, grid, BPM and key come from rekordbox. Folder picking works in Chrome, Edge, Safari and Firefox.
 
-- **MIDI**: the DDJ-FLX4 is mapped automatically in Chrome or Edge (quit rekordbox first); other controllers via MIDI learn. Optional headphone cue on the FLX4's headphone output (channels 3-4). Message numbers come from the Mixxx DDJ-FLX4 mapping.
+- **MIDI**: the DDJ-FLX4 and Xone:K2 are mapped automatically in Chrome or Edge (quit rekordbox first); other controllers via MIDI learn. Optional headphone cue on the FLX4's headphone output (channels 3-4). Message numbers come from the Mixxx DDJ-FLX4 mapping.
 
 Note: this repository is public, so anything in `tracks/` can be downloaded by anyone. The Rekordbox library option keeps your music on your computer.
