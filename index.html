@@ -1387,7 +1387,7 @@ function perfToggle(){PERF.on=!PERF.on;$('perfplay').textContent=PERF.on?'Stop':
  if(PERF.on&&PERF.cont){if(!PERF.seq)PERF.seq=perfSeq();let j=PERF.seq.indexOf(T);if(j===1&&t<.01)j=0;perfSegGo(j>=0?j:0);return}
  if(PERF.on){if(!T.perf)perfGo(0);else{if(mode!=='anim')setMode('anim');playing=true;setPlayLabel()}}}
 /* called by the frame loop when a scene reaches its end */
-function perfEnd(){if(PERF.on&&PERF.cont&&PERF.seq){if(PERF.pos>=PERF.seq.length-1){perfToggle();return false}perfSegGo(PERF.pos+1);return true}if(!PERF.on||!T.perf)return false;const p=PERF.plan,k=p.scenes.indexOf(T.perf);if(k>=p.scenes.length-1){perfToggle();return false}perfGo(k+1);return true}
+function perfEnd(){if(PERF.cont&&(T.perf||T.gap)){if(!PERF.seq)PERF.seq=perfSeq();const j=PERF.seq.indexOf(T);if(j>=0)PERF.pos=j;if(PERF.pos>=PERF.seq.length-1){if(PERF.on)perfToggle();return false}perfSegGo(PERF.pos+1);return true}if(!PERF.on||!T.perf)return false;const p=PERF.plan,k=p.scenes.indexOf(T.perf);if(k>=p.scenes.length-1){perfToggle();return false}perfGo(k+1);return true}
 $('perfplay').onclick=perfToggle;$('perfprev').onclick=()=>{const k=PERF.plan&&T.perf?PERF.plan.scenes.indexOf(T.perf):0;perfGo(k-1)};$('perfnext').onclick=()=>{const k=PERF.plan&&T.perf?PERF.plan.scenes.indexOf(T.perf):-1;perfGo(k+1)};
 $('perftl').onclick=e=>{const p=PERF.plan;if(!p)return;const b=e.target.closest('.sc');if(b){perfGo(+b.dataset.k);return}const r=$('perftl').getBoundingClientRect(),cl=(e.clientX-r.left)/r.width*p.end;let k=0;p.scenes.forEach((s,i)=>{if(s.clock<=cl)k=i});perfGo(k)};
 try{const tx=localStorage.getItem('xl_perf');if(tx){PERF.plan=JSON.parse(tx);perfBuild();perfShowAssume()}}catch(e){}
@@ -1416,7 +1416,7 @@ function perfSeq(){PERF.endAt=new Map();PERF.t0=new Map();const F=TECH.filter(x=
  return seq}
 function perfSegGo(j){const q=PERF.seq;if(!q||!q.length)return;j=Math.max(0,Math.min(q.length-1,j));PERF.pos=j;if(mode!=='anim'&&mode!=='step')setMode('anim');pickT(q[j]);t=PERF.t0.get(q[j])||0;playing=true;setPlayLabel()}
 function perfModeSet(c){PERF.cont=c;$('perfcond').setAttribute('aria-pressed',!c);$('perfcont').setAttribute('aria-pressed',c);if(c&&!PERF.seq)PERF.seq=perfSeq();if(c&&PERF.seq){const j=T.perf?PERF.seq.indexOf(T):0;PERF.pos=Math.max(0,j)}}
-$('perfcond').onclick=()=>perfModeSet(false);$('perfcont').onclick=()=>perfModeSet(true);
+$('perfcond').onclick=()=>{perfModeSet(false);if(PERF.on)perfToggle()};$('perfcont').onclick=()=>{perfModeSet(true);if(!PERF.on)perfToggle()};
 $('perfspd').onchange=e=>{const v=+e.target.value,el=$('spd');el.value=v;el.dispatchEvent(new Event('input'))};
 /* ---- export the preview as an MP3 (offline render with the same mixer, then lamejs) ----
    Changes only: every scene back to back with short fades (about an hour). Whole set: continuous, 5½ h, takes a while.
@@ -1596,7 +1596,7 @@ miPanel();
 /* render */
 let last=performance.now();
 function frame(now){const dt=Math.min(.1,(now-last)/1000);last=now;
-const adt=audioDt(dt);if(PR.live)PR.tick(adt);else if(playing){t+=adt*P.speed/P.barSec*mixF({tempo:val('tempo',t)});if(mode==='step'&&segEnd!==null&&t>=segEnd){t=segEnd;playing=false;setPlayLabel()}else if(PERF.on&&PERF.cont&&PERF.endAt.has(T)&&t>=PERF.endAt.get(T)){perfEnd()}else if(t>=T.bars){if(T.perf&&typeof perfEnd==='function'&&perfEnd()){}else if(repeat)t=0;else{t=T.bars;playing=false;setPlayLabel()}}}
+const adt=audioDt(dt);if(PR.live)PR.tick(adt);else if(playing){t+=adt*P.speed/P.barSec*mixF({tempo:val('tempo',t)});if(mode==='step'&&segEnd!==null&&t>=segEnd){t=segEnd;playing=false;setPlayLabel()}else if(PERF.cont&&PERF.endAt.has(T)&&t>=PERF.endAt.get(T)){perfEnd()}else if(t>=T.bars){if(T.perf&&typeof perfEnd==='function'&&perfEnd()){}else if(repeat)t=0;else{t=T.bars;playing=false;setPlayLabel()}}}
 const S=PR.live?PR.state():state(t),D={A:deckAt('A',t),B:deckAt('B',t),C:deckAt('C',t),D:deckAt('D',t)};if(AU.on)auTick(S,D);
 for(const c of CTL){const v=S[c.key];
 if(c.type==='knob'){const ang=-135+270*nrm(c.kind,v);c.v.setAttribute('d',arcD(c.ar,-135,ang));c.ind.setAttribute('transform',`rotate(${ang.toFixed(1)})`)}
