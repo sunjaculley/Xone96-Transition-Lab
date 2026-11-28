@@ -45,7 +45,7 @@ ol.steps li.cur{background:#0000000c;color:var(--ink)}
 .row{display:grid;grid-template-columns:5.4em minmax(0,1fr) auto;gap:8px;align-items:center;margin:7px 0;font-size:14px}
 .bt{position:relative;height:26px;background:#ecebe6;border-radius:5px;overflow:hidden}
 .bt i{position:absolute;left:0;height:12px;border-radius:2px;transition:width .06s linear}
-.bt .ba{top:1px;background:var(--a)}.bt .bb{bottom:1px;background:var(--b)}
+.bt .ba{top:1px;background:var(--a)}.bt .bb{bottom:1px;background:var(--b)}.bt4 i{height:5px!important}
 .fl{font:700 13px "Barlow Semi Condensed",sans-serif;color:var(--warn);white-space:nowrap}
 .legend{display:flex;gap:14px;font-size:12px;color:var(--mute);margin-top:4px;flex-wrap:wrap}
 .legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
@@ -84,7 +84,7 @@ body{height:100dvh;overflow:hidden}
 .app{display:grid;height:100dvh;padding:14px 14px 10px;gap:8px 12px;grid-template-columns:clamp(170px,15vw,210px) minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) clamp(150px,24vh,260px) auto;grid-template-areas:"hd hd" "list stage" "list side" "tr tr"}
 .hd{grid-area:hd;display:flex;align-items:center;gap:16px;flex-wrap:nowrap;overflow:hidden}.hd .snd{flex:none;flex-wrap:nowrap}.hd h1{flex:none}.hd h1{font-size:22px;white-space:nowrap}.sub{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .list{grid-area:list;flex-direction:column;overflow-y:auto;overflow-x:hidden;padding:0}
-.list .g{padding:10px 4px 2px}.list .g:first-child{padding-top:0}.list .g.gp{padding:6px 4px 0;font-weight:500;font-style:italic}.chip.sc{font-size:13px;line-height:1.25}.setcd{font:500 14px "Barlow Semi Condensed",sans-serif;color:var(--mute);margin:2px 0 4px;font-variant-numeric:tabular-nums}.setcd b{color:var(--ink);font-weight:600}.setcd .ksb{color:#b4570a;font-weight:600}.chip em.bs{float:right;font:600 12px "Barlow Semi Condensed",sans-serif;font-style:normal;border-radius:6px;padding:1px 6px;margin-left:6px;background:#eee;color:#555}.chip em.bs.hi{background:#dcf2e6;color:#11633f}.chip em.bs.md{background:#fdf0d8;color:#8a5a00}.chip em.bs.lo{background:#fbe1dc;color:#9b2b17}.chip[aria-pressed=true] em.bs{background:#fff}.chip i{font-style:normal;opacity:.7}.altb{margin:2px 0 6px;min-height:32px;padding:4px 10px;border-radius:8px;border:1px solid var(--line);background:var(--card);font:600 13px Barlow,sans-serif;cursor:pointer}.setrun{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:4px 0}.setrun button{min-height:36px;padding:4px 10px;border-radius:8px;border:1px solid var(--line);background:var(--card);font:600 13px Barlow,sans-serif;cursor:pointer}#phaseSt{font-size:13px;color:var(--mute)}
+.list .g{padding:10px 4px 2px}.list .g:first-child{padding-top:0}.list .g.gp{padding:6px 4px 0;font-weight:500;font-style:italic}.chip.sc{font-size:13px;line-height:1.25}.setcd{font:500 14px "Barlow Semi Condensed",sans-serif;color:var(--mute);margin:2px 0 4px;font-variant-numeric:tabular-nums}.setcd b{color:var(--ink);font-weight:600}.setcd .ksb{color:#b4570a;font-weight:600}#why{white-space:pre-line}.flags{display:flex;flex-wrap:wrap;gap:4px;margin:3px 0}.flg{display:inline-block;font:600 11px "Barlow Semi Condensed",sans-serif;letter-spacing:.02em;padding:1px 6px;border-radius:4px;background:#e8e6df;color:#333}.flg.f-long,.flg.f-blend{background:#dbe7f3;color:#1c4f7c}.flg.f-swap{background:#fde3cc;color:#8a4300}.flg.f-cut{background:#f8d4cf;color:#9b2b17}.flg.f-hloop{background:#e2e0f0;color:#3d3a73}.flg.f-tail{background:#d3efe2;color:#11633f}.flg.f-brk{background:#fbecc4;color:#7a5600}.flg.f-late{background:#efe3d6;color:#6b4423}.flg.f-layer,.flg.f-three{background:#e6ddfa;color:#4f2fa8}.flg.f-solo{background:#eee;color:#555}.cfl{display:flex;flex-wrap:wrap;gap:3px;margin-top:3px}.chip .cfl,.chip .cfl span{opacity:1;margin-right:0}.chip[aria-pressed=true] .flg{background:#fff;color:#222}.intent{margin:4px 0 6px;font-size:14px;line-height:1.35;color:var(--ink);font-weight:500}.stag{font:600 11px "Barlow Semi Condensed",sans-serif;font-style:normal;text-transform:uppercase;letter-spacing:.04em;color:#fff;background:#555;border-radius:3px;padding:1px 5px;vertical-align:1px}.decks4{display:grid;grid-template-columns:1fr 1fr;gap:3px 10px;margin:4px 0 6px;font-size:12.5px;line-height:1.3}.d4{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--mute)}.d4 i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:4px}.d4 b{color:var(--ink)}.d4.lead span{color:#111;font-weight:600}.d4.tex span{color:#11633f;font-weight:600}.d4.in span{color:#1c4f7c;font-weight:600}.perfleg{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:11.5px;color:var(--mute);margin-top:3px}.perfleg i{display:inline-block;width:8px;height:10px;border-radius:1px;margin-right:4px;vertical-align:-1px}.perfleg .f-long,.perftl .sc.f-long{background:#5b86b0}.perfleg .f-blend,.perftl .sc.f-blend{background:#1c4f7c}.perfleg .f-swap,.perftl .sc.f-swap{background:#e67e22}.perfleg .f-cut,.perftl .sc.f-cut{background:#c0392b}.perfleg .f-layer,.perftl .sc.f-layer{background:#7a5bd6}.perfleg .f-tail{background:#1f9e6e}.perfbar{margin:6px 0 0}.perfctl{display:flex;flex-wrap:wrap;align-items:center;gap:6px;font-size:13px;color:var(--mute)}.perfctl button{min-height:32px;padding:3px 10px;border-radius:8px;border:1px solid var(--line);background:var(--card);font:600 13px Barlow,sans-serif;cursor:pointer}.perfctl #perfplay[aria-pressed=true]{background:var(--ink);color:#fff}.seg2{display:inline-flex}.seg2 button{border-radius:0}.seg2 button:first-child{border-radius:8px 0 0 8px}.seg2 button:last-child{border-radius:0 8px 8px 0;border-left:0}.seg2 button[aria-pressed=true]{background:#e6e4dc}#perfspd{min-height:32px;border-radius:8px;border:1px solid var(--line);font:500 13px Barlow,sans-serif;padding:0 6px}#perfst{color:var(--ink);font-weight:600}.perftl{position:relative;height:30px;margin-top:6px;border-radius:6px;overflow:hidden;background:#eee;cursor:pointer}.perftl .ph{position:absolute;top:0;bottom:0;font-style:normal}.perftl .ph span{position:absolute;left:4px;top:2px;font:500 10px "Barlow Semi Condensed",sans-serif;color:#333;white-space:nowrap;overflow:hidden;max-width:calc(100% - 6px)}.perftl .sc{position:absolute;bottom:2px;width:3px;height:12px;margin-left:-1px;background:#555;border-radius:1px}.perftl .sc.k-cut{background:#c0392b}.perftl .sc.k-swap{background:#e67e22}.perftl .sc.k-layer{background:#7a5bd6;height:18px}.perftl .sc.tl{background:#1f9e6e;height:16px}.perftl .sc.cur{background:#111;height:24px;width:4px}.perftl em{position:absolute;top:0;bottom:0;width:2px;background:#111}.chip em.bs{float:right;font:600 12px "Barlow Semi Condensed",sans-serif;font-style:normal;border-radius:6px;padding:1px 6px;margin-left:6px;background:#eee;color:#555}.chip em.bs.hi{background:#dcf2e6;color:#11633f}.chip em.bs.md{background:#fdf0d8;color:#8a5a00}.chip em.bs.lo{background:#fbe1dc;color:#9b2b17}.chip[aria-pressed=true] em.bs{background:#fff}.chip i{font-style:normal;opacity:.7}.altb{margin:2px 0 6px;min-height:32px;padding:4px 10px;border-radius:8px;border:1px solid var(--line);background:var(--card);font:600 13px Barlow,sans-serif;cursor:pointer}.setrun{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin:4px 0}.setrun button{min-height:36px;padding:4px 10px;border-radius:8px;border:1px solid var(--line);background:var(--card);font:600 13px Barlow,sans-serif;cursor:pointer}#phaseSt{font-size:13px;color:var(--mute)}
 .chip{width:100%;flex:none;min-height:40px;padding:7px 12px;font-size:14px}
 .stage{grid-area:stage;min-height:0;position:relative}
 .fig{flex:1;aspect-ratio:auto;max-height:none;min-height:0}
@@ -171,7 +171,7 @@ body.expm .fig{user-select:none;-webkit-user-select:none}body.expm .fig>svg{touc
 @media(prefers-reduced-motion:reduce){.bt i{transition:none}}
 </style></head><body>
 <div class="app">
-<header class="hd"><h1>Xone:96 + CDJ-3000 transition lab</h1><div class="snd"><button id="sndBtn" aria-pressed="false" title="Play the techniques on real audio">Sound off</button><label>CDJ 2 <select id="trkA" aria-label="Track on CDJ 2"></select></label><label>CDJ 3 <select id="trkB" aria-label="Track on CDJ 3"></select></label><button id="miBtn" title="Connect a MIDI controller such as the DDJ-FLX4">MIDI</button><button id="libBtn" title="Load tracks from your rekordbox collection">Rekordbox library</button><button id="setBtn" title="Import a set sheet (.md) from the set builder and practise every change">Set sheet</button><input type="file" id="setFile" accept=".md,.markdown,.txt,text/markdown,text/plain" hidden><span id="sndSt"></span></div><p class="sub">CDJ 2 → CH 2 · CDJ 3 → CH 3 · no send FX · 16-bar demos, time compressed · Space play/pause · ← → steps</p></header>
+<header class="hd"><h1>Xone:96 + CDJ-3000 transition lab</h1><div class="snd"><button id="sndBtn" aria-pressed="false" title="Play the techniques on real audio">Sound off</button><label>CDJ 2 <select id="trkA" aria-label="Track on CDJ 2"></select></label><label>CDJ 3 <select id="trkB" aria-label="Track on CDJ 3"></select></label><button id="miBtn" title="Connect a MIDI controller such as the DDJ-FLX4">MIDI</button><button id="libBtn" title="Load tracks from your rekordbox collection">Rekordbox library</button><button id="setBtn" title="Import a set sheet (.md) from the set builder and practise every change">Set sheet</button><input type="file" id="setFile" accept=".md,.markdown,.txt,.json,text/markdown,text/plain,application/json" hidden><span id="sndSt"></span></div><p class="sub">CDJ 2 → CH 2 · CDJ 3 → CH 3 · no send FX · 16-bar demos, time compressed · Space play/pause · ← → steps</p></header>
 <div class="mipanel" id="mipanel" hidden role="dialog" aria-label="MIDI controller"><div class="libhd"><b>MIDI controller</b><button id="miclose" aria-label="Close">✕</button></div>
 <p class="mist" id="mist">Looking for controllers…</p>
 <p class="exs">Chrome or Edge. Quit rekordbox first so it doesn’t react to the same moves. The DDJ-FLX4 is mapped automatically: deck 1 drives CDJ 2 / CH 2, deck 2 drives CDJ 3 / CH 3. Moves play in Practice → Try it and the Beatmatch trainer; in Explore, touching a control shows what it is.</p>
@@ -191,9 +191,10 @@ body.expm .fig{user-select:none;-webkit-user-select:none}body.expm .fig>svg{touc
 <section class="stage">
 <div class="fig" id="fig"><svg id="rig" viewBox="0 0 1614 720" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Top-down drawing of two CDJ-3000 players either side of an Allen and Heath Xone:96 mixer"></svg></div>
 <div class="under"><div class="views" id="views" role="toolbar" aria-label="Zoom"></div><div class="exz" role="toolbar" aria-label="Zoom in Explore"><button id="exZo" aria-label="Zoom out">−</button><button id="exZi" aria-label="Zoom in">+</button><button id="exZf">Fit</button></div><div class="pill" id="pill">Tap any control for its name and value</div></div>
+<div class="perfbar" id="perfbar" hidden><div class="perfctl"><button id="perfplay" aria-pressed="false">Perform the set</button><span class="seg2"><button id="perfcond" aria-pressed="true" title="Each change in full, the stretches between skipped">Changes only</button><button id="perfcont" aria-pressed="false" title="The whole set end to end, including the stretches between changes">Continuous</button></span><select id="perfspd" aria-label="Speed"><option value="1">1× real time</option><option value="2">2× (muted)</option><option value="4">4× (muted)</option><option value="8">8× (muted)</option><option value="16">16× (muted)</option></select><button id="perfprev" aria-label="Previous change">◀</button><button id="perfnext" aria-label="Next change">▶</button><span id="perfst"></span><span id="perfinfo"></span></div><div class="perftl" id="perftl" role="slider" aria-label="Set timeline"></div><div class="perfleg" id="perfleg"></div></div>
 </section>
 <aside class="side">
-<div class="card nowc"><div class="tt" id="tt"></div><div class="setcd" id="setcd" hidden></div><button class="altb" id="altBtn" hidden></button><p class="now" id="now" aria-live="polite"></p><ul class="chg" id="chg" aria-label="What changes in this step"></ul></div>
+<div class="card nowc"><div class="tt" id="tt"></div><div class="flags" id="flags"></div><p class="intent" id="intent" hidden></p><div class="setcd" id="setcd" hidden></div><div class="decks4" id="decks4" hidden></div><button class="altb" id="altBtn" hidden></button><p class="now" id="now" aria-live="polite"></p><ul class="chg" id="chg" aria-label="What changes in this step"></ul></div>
 <div class="card"><h2>Who owns each band</h2><div id="bands"></div>
 <div class="legend"><span><i style="background:var(--a)"></i>CDJ 2 → CH 2</span><span><i style="background:var(--b)"></i>CDJ 3 → CH 3</span></div></div>
 <div class="card prc" id="tryc"><div class="tt" id="trytt">Try it</div>
@@ -229,7 +230,7 @@ body.expm .fig{user-select:none;-webkit-user-select:none}body.expm .fig>svg{touc
 <script>
 {
 const A_C='#1f8fe0',B_C='#e8700c',C_C='#7a5bd6',D_C='#1f9e6e',F1_C='#1f8fe0',F2_C='#e8700c';
-const PARAMS={speed:{min:.25,max:2,def:1,step:.05},barSec:{min:.5,max:2.5,def:1,step:.05}};
+const PARAMS={speed:{min:.25,max:16,def:1,step:.05},barSec:{min:.5,max:2.5,def:1,step:.05}};
 const P={speed:PARAMS.speed.def,barSec:PARAMS.barSec.def};
 const DEF={xf:.5,curve:'smooth','f1.on':0,'f1.mode':'HPF','f1.freq':0,'f1.res':.2,'f1.crunch':0,'f2.on':0,'f2.mode':'LPF','f2.freq':1,'f2.res':.2,'f2.crunch':0,
 'A.play':1,'A.loop':0,'A.hot':0,'B.play':1,'B.loop':0,'B.hot':0,'C.play':0,'C.loop':0,'C.hot':0,'D.play':0,'D.loop':0,'D.hot':0,tempo:0,'A.spd':1,'B.spd':1,'C.spd':1,'D.spd':1,'A.ks':0,'B.ks':0,'C.ks':0,'D.ks':0};
@@ -807,16 +808,17 @@ function nrm(k,v){if(k==='gain')return v>=0?.5+v/20:.5*(1-Math.min(40,-v)/40);if
 const hz=v=>{const f=20*Math.pow(1000,v);return f>=1000?(f/1000).toFixed(1)+' kHz':Math.round(f)+' Hz'};
 /* UI */
 const chips=$('chips');
-const GRP={T:'Transitions',L:'Low-end swaps',P:'Phrasing & performance'};
+const GRP={T:'Transitions',L:'Low-end swaps',P:'Phrasing & performance',F:'Performance'};
 const SET={name:'',rows:[],layers:{}};
 const sEsc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 let BEST={};try{BEST=JSON.parse(localStorage.getItem('xl_best')||'{}')}catch(e){}
 const scoreKey=x=>x.skey||x.id;const scoreGet=x=>BEST[scoreKey(x)]??null;
 function scoreSave(x,p){const k=scoreKey(x);if(BEST[k]==null||p>BEST[k]){BEST[k]=p;try{localStorage.setItem('xl_best',JSON.stringify(BEST))}catch(e){}}renderChips()}
-function renderChips(){let h='',lg='',lp='';TECH.forEach((x,i)=>{if(x.g!==lg){h+=`<span class="g">${x.g==='S'?'Set · '+sEsc(SET.name):GRP[x.g]}</span>`;lg=x.g;lp=''}if(x.g==='S'&&x.phase&&x.phase!==lp){h+=`<span class="g gp">${sEsc(x.phase)}</span>`;lp=x.phase}const bs=scoreGet(x);h+=`<button class="chip${x.g==='S'?' sc':''}" data-i="${i}" aria-pressed="${typeof T!=='undefined'&&x===T}"><span>${x.g}${x.n}${x.isAlt?'+':''}</span>${sEsc(x.title)}${x.isAlt?` <i>(${x.altName})</i>`:''}${bs!=null?`<em class="bs ${bs>=85?'hi':bs>=60?'md':'lo'}">${bs}</em>`:''}</button>`});chips.innerHTML=h}
+function renderChips(){let h='',lg='',lp='';TECH.forEach((x,i)=>{if(x.g!==lg){h+=`<span class="g">${x.g==='S'?'Set · '+sEsc(SET.name):x.g==='F'?'Performance · '+sEsc(PERF.plan?PERF.plan.name:''):GRP[x.g]}</span>`;lg=x.g;lp=''}if((x.g==='S'||x.g==='F')&&x.phase&&x.phase!==lp){h+=`<span class="g gp">${sEsc(x.phase)}</span>`;lp=x.phase}const bs=scoreGet(x);h+=`<button class="chip${x.g==='S'||x.g==='F'?' sc':''}" data-i="${i}" aria-pressed="${typeof T!=='undefined'&&x===T}"><span>${x.g}${x.n}${x.isAlt?'+':''}</span>${sEsc(x.title)}${x.isAlt?` <i>(${x.altName})</i>`:''}${x.flags?`<span class="cfl">${x.flags.map(f=>`<span class="flg f-${f.k}">${sEsc(f.label)}</span>`).join('')}</span>`:''}${bs!=null?`<em class="bs ${bs>=85?'hi':bs>=60?'md':'lo'}">${bs}</em>`:''}</button>`});chips.innerHTML=h}
 renderChips();
-const bandsEl=$('bands');bandsEl.innerHTML=BANDS.map(b=>`<div class="row"><span>${b[0]}</span><div class="bt"><i class="ba"></i><i class="bb"></i></div><span class="fl"></span></div>`).join('');
-const rows=[...bandsEl.querySelectorAll('.row')].map(r=>({a:r.querySelector('.ba'),b:r.querySelector('.bb'),f:r.querySelector('.fl')}));
+const DORD=['C','A','B','D'],DCOL={C:C_C,A:A_C,B:B_C,D:D_C};
+const bandsEl=$('bands');bandsEl.innerHTML=BANDS.map(b=>`<div class="row"><span>${b[0]}</span><div class="bt bt4">${DORD.map((d,j)=>`<i data-d="${d}" style="top:${1+j*6.25}px;background:${DCOL[d]}"></i>`).join('')}</div><span class="fl"></span></div>`).join('');
+const rows=[...bandsEl.querySelectorAll('.row')].map(r=>({d:Object.fromEntries([...r.querySelectorAll('i[data-d]')].map(i=>[i.dataset.d,i])),f:r.querySelector('.fl')}));
 const VB={rig:[541,0,1614,RH],all:[0,0,RW,RH],mixer:[1072,90,552,630],A:[541,0,521,RH],B:[1634,0,521,RH],C:[0,0,521,RH],D:[2175,0,521,RH]};let customBox=null,snap=false,exView=null;window.__lab={box(b){customBox=b;snap=true},clear(){customBox=null}};
 const narrowQ=matchMedia('(max-width:959px)'),DESK=matchMedia('(min-width:960px) and (min-height:560px)');
 let follow=true,userView='rig',vb=[...VB[userView]];
@@ -848,10 +850,13 @@ function measure(){const m=svg.getScreenCTM();if(!m)return;svg.classList.add('me
 for(const c of CTL){let bb=rb(c.el);if((c.type==='fader'||c.type==='xf')&&c.cap){const keep=c.cap.getAttribute('transform');for(const v of[0,1]){c.cap.setAttribute('transform',c.type==='fader'?`translate(0 ${c.y0+(1-v)*c.len})`:`translate(${c.x0+v*c.len} ${c.y})`);bb=U(bb,rb(c.el))}c.cap.setAttribute('transform',keep||'')}c.bb=bb}svg.classList.remove('measuring')}
 function autoBox(){const cs=CTL.filter(c=>primSet.has(c.id)&&c.bb);if(!cs.length)return VB.mixer;let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;for(const c of cs){x0=Math.min(x0,c.bb[0]);y0=Math.min(y0,c.bb[1]);x1=Math.max(x1,c.bb[2]);y1=Math.max(y1,c.bb[3])}x0-=24;y0-=24;x1+=24;y1+=24;let w=Math.max(190,x1-x0),h=Math.max(140,y1-y0);const cx=(x0+x1)/2,cy=(y0+y1)/2;w=Math.min(RW,w);h=Math.min(RH,h);return[Math.max(0,Math.min(RW-w,cx-w/2)),Math.max(0,Math.min(RH-h,cy-h/2)),w,h]}
 function fit(v){const r=figEl.clientWidth/Math.max(1,figEl.clientHeight);let[x,y,w,h]=v;if(DESK.matches){const pd=h*.17;y-=pd;h+=pd}if(w/h<r){const nw=Math.min(RW,h*r),cx=x+w/2;x=Math.max(0,Math.min(RW-nw,cx-nw/2));w=nw}else if(w/h>r){const nh=Math.min(RH*1.2,w/r),cy=y+h/2;y=cy-nh/2;h=nh}return[x,y,w,h]}
-function pick(i){T=TECH[i];t=0;curStep=-1;for(const c of CTL)c.last=undefined;for(const b of chips.querySelectorAll('.chip'))b.setAttribute('aria-pressed',b.dataset.i==i);
-$('tt').textContent=`${T.g}${T.n} · ${T.title}${T.isAlt?' ('+T.altName+' version)':''}`;{const[p0,p1]=T.pair||['A','B'],lg=document.querySelector('.legend');if(lg)lg.innerHTML=`<span><i style="background:var(--a)"></i>${DLBL(p0)} → CH ${DCH[p0].slice(1)}</span><span><i style="background:var(--b)"></i>${DLBL(p1)} → CH ${DCH[p1].slice(1)}</span>`}if(AU.on||T.set)auRates();if(T.set)setAutoLoad(T);if(typeof setTools==='function')setTools();{const cb=chips.querySelector(`.chip[data-i="${i}"]`);if(cb&&cb.scrollIntoViewIfNeeded)cb.scrollIntoViewIfNeeded()}$('now').textContent='';$('why').textContent=T.why;$('gear').textContent='On the gear: '+T.gear;cueSrc();
+function legendSet(){const lg=document.querySelector('.legend');if(!lg)return;const act=new Set(T.set&&T.set.decks?T.set.decks.map(x=>x.d):(T.pair||['A','B']));lg.innerHTML=DORD.map(d=>`<span style="opacity:${act.has(d)?1:.45}"><i style="background:${DCOL[d]}"></i>${DLBL(d)} → CH ${DCH[d].slice(1)}</span>`).join('')}
+function pick(i){pickT(TECH[i])}
+function pickT(obj){T=obj;const i=TECH.indexOf(T);if(T.g==='G'&&follow)customBox=[...VB.all];else if(customBox&&customBox.length===4&&customBox[2]===RW)customBox=null;t=0;curStep=-1;for(const c of CTL)c.last=undefined;for(const b of chips.querySelectorAll('.chip'))b.setAttribute('aria-pressed',b.dataset.i==i);
+$('tt').textContent=`${T.g}${T.n} · ${T.title}${T.isAlt?' ('+T.altName+' version)':''}`;legendSet();if(AU.on||T.set)auRates();if(T.set)setAutoLoad(T);if(typeof setTools==='function')setTools();{const cb=chips.querySelector(`.chip[data-i="${i}"]`);if(cb&&cb.scrollIntoViewIfNeeded)cb.scrollIntoViewIfNeeded()}$('now').textContent='';$('why').textContent=T.why;$('gear').textContent='On the gear: '+T.gear;cueSrc();
 $('steps').innerHTML=T.steps.map((s,j)=>`<li data-j="${j}"><b>Bar ${Math.floor(s[0])+1}${s[0]%1?'.'+(Math.floor((s[0]%1)*4)+1):''}</b><span></span></li>`).join('');
-[...$('steps').children].forEach((li,j)=>li.lastChild.textContent=T.steps[j][1]);
+[...$('steps').children].forEach((li,j)=>{li.lastChild.textContent=T.steps[j][1];if(T.steps[j][2]){const e=document.createElement('em');e.className='stag';e.textContent=T.steps[j][2];li.lastChild.prepend(e,' ')}});
+{const fl=$('flags');fl.innerHTML=(T.flags||[]).map(f=>`<span class="flg f-${f.k}">${sEsc(f.label)}</span>`).join('');const it=$('intent');it.hidden=!T.intent;it.textContent=T.intent?'Intention: '+T.intent:''}$('decks4').hidden=!T.set;
 $('scrub').max=T.bars;playing=true;if(mode==='step')goStep(0);else{segEnd=null;setPlayLabel()}}
 chips.onclick=e=>{const b=e.target.closest('.chip');if(!b)return;if(mode==='beat')setMode('try');if(mode==='try'){prLeave();pick(+b.dataset.i);setMode('try');return}pick(+b.dataset.i)};
 $('steps').onclick=e=>{const li=e.target.closest('li');if(!li)return;const j=+li.dataset.j;if(mode==='step')goStep(j);else t=T.steps[j][0]+.001};
@@ -967,6 +972,7 @@ function auSet(p,v){if(p._v===undefined||Math.abs(p._v-v)>1e-4){p.setTargetAtTim
 const AU_FT={HPF:'highpass',BPF:'bandpass',LPF:'lowpass'};
 /* --- per-frame: parameters and transport --- */
 function auTick(S,D){const held=mode==='step'&&!playing&&segEnd!==null&&t>=segEnd-.002;
+ auSet(AU.master.gain,P.speed>1.05?0:.85);
  for(const d of DECKS){const c=DCH[d],n=AU.ch[d];if(!n)continue;if(AU.ks[d])auSet(AU.ks[d].parameters.get('ratio'),auPsRatio(d,S));
   auSet(n.in.gain,Math.pow(10,(S[c+'.gain']||0)/20));auSet(n.lo.gain,Math.max(-40,S[c+'.lo']));auSet(n.lm.gain,S[c+'.lm']);auSet(n.hm.gain,S[c+'.hm']);auSet(n.hi.gain,Math.max(-40,S[c+'.hi']));
   const fa=S[c+'.fa'],f='f'+fa,on=!!(fa&&S[f+'.on']);auSet(n.dry.gain,on?0:1);auSet(n.wet.gain,on?1:0);
@@ -1309,9 +1315,9 @@ function setLoadText(md,save){const r=setParse(md);if(!r.rows.length){alert('No 
  Object.assign(SET,r);if(save)try{localStorage.setItem('xl_set',md)}catch(e){}const n=setBuild();const i=TECH.findIndex(x=>x.g==='S');if(mode==='try'||mode==='beat')setMode('anim');if(i>=0)pick(i)}
 function setTrackIdx(row){if(!LIB.tracks.length||!row)return -1;const t=sNorm(row.title),ar=sNorm(row.artist);let best=-1;
  LIB.tracks.forEach((x,i)=>{if(best>=0&&sNorm(LIB.tracks[best].artist)===ar)return;if(sNorm(x.title)===t&&libFile(x))best=i});return best}
-async function setAutoLoad(tc){if(!tc||!tc.set)return;for(const[d,row]of[[tc.pair[0],tc.set.a],[tc.pair[1],tc.set.b]]){const i=setTrackIdx(row);if(i<0)continue;
+async function setAutoLoad(tc){if(!tc||!tc.set)return;const L=tc.set.decks?tc.set.decks.map(x=>[x.d,{title:x.title,artist:''}]):[[tc.pair[0],tc.set.a],[tc.pair[1],tc.set.b]];for(const[d,row]of L){const i=setTrackIdx(row);if(i<0)continue;
   const tk=LIB.tracks[i];if(AU.trk[d]&&AU.trk[d].meta.id==='rb:'+tk.rid)continue;await libLoad(d,i)}if(T===tc)auRates()}
-function setSecBar(d){const tr=AU.trk[d];if(!T.set||!tr||T.set.sec[d]==null)return null;const m=tr.meta||{},row=d===T.pair[0]?T.set.a:T.set.b;if(!(m.id||'').startsWith('rb:')||sNorm(m.title)!==sNorm(row.title))return null;return Math.max(0,(T.set.sec[d]-(tr.fb||0))*tr.bpm/240)}
+function setSecBar(d){const tr=AU.trk[d];if(!T.set||!tr||T.set.sec[d]==null)return null;const m=tr.meta||{},dk=T.set.decks&&T.set.decks.find(x=>x.d===d),row=dk?{title:dk.title}:d===T.pair[0]?T.set.a:T.pair.includes(d)?T.set.b:null;if(!row)return null;if(!(m.id||'').startsWith('rb:')||sNorm(m.title)!==sNorm(row.title))return null;return Math.max(0,(T.set.sec[d]-(tr.fb||0))*tr.bpm/240)}
 function setClock(){if(!T.set)return'';const s=T.set,S=PR.live?PR.state():state(t),x=s.tX(Math.max(0,t)),y=s.tY(t);let h=`<b>CDJ ${s.nX}</b> ${x==null?'':fmtT(x)}`;if(S[T.pair[1]+'.play']&&y!=null&&y>=0)h+=` · <b>CDJ ${s.nY}</b> ${fmtT(y)}`;
  const nx=(s.cues||[]).find(c=>c[0]>t+1e-3);if(nx&&nx[0]-t<=8){const n=Math.ceil(nx[0]-t-1e-6);h+=` · ${nx[1]} in ${n} bar${n===1?'':'s'}`}const ks=S[T.pair[1]+'.ks'];if(ks)h+=` · <span class="ksb">CDJ ${s.nY} Key Shift ${ks>0?'+':'−'}${Math.abs(ks)}</span>`;return h}
 /* variants, phase runs, weakest drill */
@@ -1329,9 +1335,85 @@ function drillWeakest(){const L=TECH.filter(x=>x.g==='S'&&!x.isAlt);if(!L.length
  const i=TECH.indexOf(w);if(mode==='try')prLeave();pick(i);setMode('try');runStatus(un?'Not practised yet':`Your best here: ${scoreGet(w)}%`)}
 $('altBtn').onclick=setAltSwap;$('altBtn2').onclick=()=>{if(PR.run)prTryStop();setAltSwap()};$('phaseRun').onclick=runPhase;$('weakBtn').onclick=drillWeakest;
 $('setBtn').onclick=()=>$('setFile').click();
-$('setFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;setLoadText(await f.text(),true);e.target.value=''};
+$('setFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;const tx=await f.text();if(/^\s*\{/.test(tx))perfLoad(tx,true);else setLoadText(tx,true);e.target.value=''};
 try{const md=localStorage.getItem('xl_set');if(md){const r=setParse(md);if(r.rows.length){Object.assign(SET,r);setBuild()}}}catch(e){}
 /* ==== REGION set END ==== */
+/* ==== REGION performance ==== */
+/* Whole-set performance preview: a plan made by scripts/plan-performance.py from the set sheet, the rekordbox export and
+   the track prep analysis. One scene per change (up to 3 decks: texture tails and carried layers), played back to back,
+   condensed: the stretches between changes are skipped. Scenes are ordinary techniques, so Step through and Try it work on them. */
+const PERF={plan:null,on:false};
+function perfScene(s,k){const[X,Y]=s.pair,d0=s.decks[0],d1=s.decks[1],b0=240/d0.bpm,b1=240/d1.bpm;
+ const tX=b=>d0.loopAt!=null&&b>=d0.loopAt&&d0.loopSec!=null?d0.loopSec+((b-d0.loopAt)%(d0.loopLen||8))*b0:d0.sec+b*b0;
+ const tY=b=>b<(d1.startBar??0)?null:d1.sec+(b-(d1.startBar??0))*b1;
+ const sec={};for(const d of s.decks)sec[d.d]=d.sec;
+ const why=[s.why,...s.reasons,...s.ears.map(e=>'Check by ear: '+e)].filter(Boolean).join('\n');
+ const kinds={blend:'blend',loop:'blend on the H loop',swap:'SWAP',cut:'CUT',layer:'layer'};
+ return{id:s.id,g:'F',n:k,title:s.title,phase:s.phase,pair:s.pair,playAt:s.playAt,start:{A:32,B:0,C:32,D:0},setup:s.setup,tracks:s.tracks,steps:s.steps,bars:s.bars,
+  why,gear:`${kinds[s.kind]||s.kind}${s.tail?' + texture tail':''} · ${s.decks.map(d=>'CDJ '+DNUM[d.d]).join(', ')}. Set clock ${fmtT(s.clock)}.`,skey:`F|${PERF.plan.name}|${s.title}|${s.kind}`,
+  perf:s,flags:s.flags,intent:s.intent,set:{kind:s.kind,a:{title:d0.title},b:{title:d1.title},decks:s.decks,sec,tX,tY,nX:DNUM[X],nY:DNUM[Y],cues:s.cues}}}
+function perfDeckMap(){const p=PERF.plan;if(!p)return;const sc=p.scenes;sc.forEach((s,k)=>{const now={},nxt={};for(let j=0;j<=k;j++)for(const d of sc[j].decks)now[d.d]=d.title;
+ for(let j=k+1;j<sc.length;j++)for(const d of sc[j].decks)if(!nxt[d.d]&&!s.decks.some(x=>x.d===d.d&&x.title===d.title))nxt[d.d]={title:d.title,clock:sc[j].clock};s._now=now;s._next=nxt})}
+function perfBuild(){perfDeckMap();for(let i=TECH.length-1;i>=0;i--)if(TECH[i].g==='F')TECH.splice(i,1);const p=PERF.plan;if(!p)return 0;
+ const out=p.scenes.map((s,k)=>perfScene(s,k+1));TECH.unshift(...out);renderChips();perfBar();PERF.seq=null;return out.length}
+function perfLoad(txt,save){let p;try{p=JSON.parse(txt)}catch(e){alert('That file is not a performance plan.');return}if(p.kind!=='xone96-performance'){alert('That JSON is not a performance plan from plan-performance.py.');return}
+ PERF.plan=p;if(save)try{localStorage.setItem('xl_perf',txt)}catch(e){}perfBuild();if(mode==='try'||mode==='beat')setMode('anim');const i=TECH.findIndex(x=>x.g==='F');if(i>=0)pick(i);perfShowAssume()}
+function perfShowAssume(){const p=PERF.plan;if(!p)return;$('perfinfo').innerHTML=`<b>${sEsc(p.name)}</b> · ${p.scenes.length} scenes · ${p.tracks.filter(x=>!x.layer).length} tracks · ${fmtT(p.end)} · <button id="perfass">Assumptions</button>`;
+ $('perfass').onclick=()=>alert('Assumptions in this preview:\n\n• '+p.assumptions.join('\n• '))}
+const PH_C=['#cfd8e3','#b9d7c7','#9fcbb0','#f2c48f','#d9d2ef','#f0a37a','#c9c2b8'];
+function perfBar(){const el=$('perfbar');const p=PERF.plan;el.hidden=!p;if(!p)return;const E=p.end||1;
+ const ph=p.phases.map((x,i)=>{const nx=p.phases[i+1]?p.phases[i+1].clock:E;return`<i class="ph" style="left:${x.clock/E*100}%;width:${(nx-x.clock)/E*100}%;background:${PH_C[i%PH_C.length]}" title="${sEsc(x.name)}"><span>${sEsc(x.name)}</span></i>`}).join('');
+ const sc=p.scenes.map((s,i)=>`<b class="sc f-${(s.flags&&s.flags[0]||{}).k}${s.tail?' tl':''}" data-k="${i}" style="left:${s.clock/E*100}%" title="${sEsc(s.title)} · ${fmtT(s.clock)}"></b>`).join('');
+ $('perftl').innerHTML=ph+sc+'<em id="perfpos"></em>';$('perfleg').innerHTML=[['long','Long blend'],['blend','Blend'],['swap','Quick swap'],['cut','Cut'],['layer','Layer'],['tail','Texture tail (tall green)']].map(([k,l])=>`<span><i class="f-${k}"></i>${l}</span>`).join('');perfMark()}
+function perfMark(){const p=PERF.plan,pos=$('perfpos');if(!p||!pos)return;const s=T.perf||(T.gap?{clock:T.gap.clock,playAt:T.playAt,phase:T.phase}:null);if(!s){pos.style.display='none';return}pos.style.display='';
+ const bar=240/(s.playAt||130),cl=s.clock+Math.max(0,t)*bar;pos.style.left=Math.min(100,cl/(p.end||1)*100)+'%';
+ const k=T.perf?p.scenes.indexOf(s):-1;for(const b of $('perftl').querySelectorAll('.sc'))b.classList.toggle('cur',+b.dataset.k===k);
+ const lbl=T.perf?`${PERF.on?'Performing':'Scene'} ${k+1} of ${p.scenes.length} · ${sEsc(s.phase)} · set clock ${fmtT(cl)}`:`Between changes · ${sEsc(s.phase||'')} · set clock ${fmtT(cl)}`;if($('perfst').innerHTML!==lbl)$('perfst').innerHTML=lbl}
+function perfGo(k){const p=PERF.plan;if(!p)return;k=Math.max(0,Math.min(p.scenes.length-1,k));if(PERF.cont&&PERF.seq){const j=PERF.seq.findIndex(x=>x.perf===p.scenes[k]);if(j>=0){perfSegGo(j);return}}const i=TECH.findIndex(x=>x.perf===p.scenes[k]);if(i<0)return;if(mode!=='anim'&&mode!=='step')setMode('anim');pick(i);t=0;playing=true;setPlayLabel()}
+function perfToggle(){PERF.on=!PERF.on;$('perfplay').textContent=PERF.on?'Stop':'Perform the set';$('perfplay').setAttribute('aria-pressed',PERF.on);
+ if(PERF.on&&PERF.cont){if(!PERF.seq)PERF.seq=perfSeq();let j=PERF.seq.indexOf(T);if(j===1&&t<.01)j=0;perfSegGo(j>=0?j:0);return}
+ if(PERF.on){if(!T.perf)perfGo(0);else{if(mode!=='anim')setMode('anim');playing=true;setPlayLabel()}}}
+/* called by the frame loop when a scene reaches its end */
+function perfEnd(){if(PERF.on&&PERF.cont&&PERF.seq){if(PERF.pos>=PERF.seq.length-1){perfToggle();return false}perfSegGo(PERF.pos+1);return true}if(!PERF.on||!T.perf)return false;const p=PERF.plan,k=p.scenes.indexOf(T.perf);if(k>=p.scenes.length-1){perfToggle();return false}perfGo(k+1);return true}
+$('perfplay').onclick=perfToggle;$('perfprev').onclick=()=>{const k=PERF.plan&&T.perf?PERF.plan.scenes.indexOf(T.perf):0;perfGo(k-1)};$('perfnext').onclick=()=>{const k=PERF.plan&&T.perf?PERF.plan.scenes.indexOf(T.perf):-1;perfGo(k+1)};
+$('perftl').onclick=e=>{const p=PERF.plan;if(!p)return;const b=e.target.closest('.sc');if(b){perfGo(+b.dataset.k);return}const r=$('perftl').getBoundingClientRect(),cl=(e.clientX-r.left)/r.width*p.end;let k=0;p.scenes.forEach((s,i)=>{if(s.clock<=cl)k=i});perfGo(k)};
+try{const tx=localStorage.getItem('xl_perf');if(tx){PERF.plan=JSON.parse(tx);perfBuild();perfShowAssume()}}catch(e){}
+/* continuous play: scenes plus the stretches between them, so the set runs end to end */
+PERF.cont=false;PERF.seq=null;PERF.pos=0;PERF.endAt=new Map();PERF.t0=new Map();
+function tDeck(dk,b){const br=240/dk.bpm;if(dk.loopAt!=null&&dk.loopSec!=null&&b>=dk.loopAt)return dk.loopSec+((b-dk.loopAt)%(dk.loopLen||8))*br;const sb=dk.startBar||0;if(b<sb)return null;return dk.sec+(b-sb)*br}
+function sceneEnd(sc){const sv=T;T=sc;const S=state(sc.bars);T=sv;return S}
+function gapTech(k,decks,bars,clock,next,S0){const L=decks[0],nL=DNUM[L.d],br=240/L.bpm;const setup=Object.assign({},S0);
+ for(const d of DECKS){setup[d+'.loop']=0;const on=decks.some(x=>x.d===d);setup[d+'.play']=on?1:0;if(!on)setup[DCH[d]+'.fader']=0}
+ const sec={};for(const x of decks)sec[x.d]=x.sec;const other=decks[1];
+ const txt=`CDJ ${nL} plays ${L.title} (${fmtT(L.sec)} → ${fmtT(L.sec+bars*br)})`+(other?`, with ${other.title} still under it on CDJ ${DNUM[other.d]}`:'')+(next?`. Next: ${next.title} at set clock ${fmtT(next.perf.clock)}.`:'. End of the set.');
+ return{id:'gap'+k,g:'G',n:k,title:`${L.title} plays`,phase:next?next.phase:'',pair:[L.d,other?other.d:L.d],playAt:next?next.playAt:(T.playAt||140),start:{A:32,B:0,C:32,D:0},setup,tracks:{},
+  steps:[[0,txt,'Play']],flags:[{k:'solo',label:other?'Lead + layer':'Lead alone'}],intent:other?'Let the layer ride: the lead keeps the floor, the layer stays thin with its lows cut.':'Let the track play. Nothing to do until the next change: listen ahead on the next deck.',bars:Math.max(1,bars),why:'Between changes. '+txt,gear:'Continuous play: the lead runs on its own until the next change.',gap:{clock},
+  set:{kind:'gap',a:{title:L.title},b:{title:other?other.title:''},decks,sec,tX:b=>tDeck(L,b),tY:b=>other?tDeck(other,b):null,nX:nL,nY:other?DNUM[other.d]:nL,cues:next?[[bars,'the next change']]:[]}}}
+function perfSeq(){PERF.endAt=new Map();PERF.t0=new Map();const F=TECH.filter(x=>x.g==='F');if(!F.length)return[];const seq=[];
+ {const f=F[0],d=f.set.decks[0],play=f.playAt||130,B=d.sec-f.perf.clock*play/d.bpm;seq.push(gapTech(0,[{d:d.d,title:d.title,sec:B,bpm:d.bpm}],f.perf.clock*play/240,0,f,f.setup))}
+ F.forEach((f,k)=>{seq.push(f);const nx=F[k+1];const S=sceneEnd(f);const snd=[];
+  for(const dk of f.set.decks){if(!S[dk.d+'.play']||!(S[DCH[dk.d]+'.fader']>.05))continue;const e=tDeck(dk,f.bars);if(e==null)continue;snd.push({d:dk.d,title:dk.title,sec:e,bpm:dk.bpm})}
+  const clock=f.perf.clock+f.bars*240/(f.playAt||130);
+  if(!nx){if(snd.length)seq.push(gapTech(k+1,snd,16,clock,null,S));return}
+  const lead=nx.set.decks[0],i=snd.findIndex(x=>x.d===lead.d);if(i<0)return;if(i>0)snd.unshift(snd.splice(i,1)[0]);
+  const bars=(lead.sec-snd[0].sec)/(240/lead.bpm);if(bars>=.5){seq.push(gapTech(k+1,snd,bars,clock,nx,S));return}
+  if(bars<-.5){/* the next change starts before this one has finished: end this scene early, after its last cue, or start the next one late */
+   const dk=f.set.decks.find(x=>x.d===lead.d),br=240/dk.bpm,cut=(dk.startBar||0)+(lead.sec-dk.sec)/br,lastCue=Math.max(0,...(f.set.cues||[]).map(c=>c[0]));
+   if(cut>=lastCue+1&&cut<f.bars)PERF.endAt.set(f,cut);else PERF.t0.set(nx,Math.min(7.5,-bars))}});
+ return seq}
+function perfSegGo(j){const q=PERF.seq;if(!q||!q.length)return;j=Math.max(0,Math.min(q.length-1,j));PERF.pos=j;if(mode!=='anim'&&mode!=='step')setMode('anim');pickT(q[j]);t=PERF.t0.get(q[j])||0;playing=true;setPlayLabel()}
+function perfModeSet(c){PERF.cont=c;$('perfcond').setAttribute('aria-pressed',!c);$('perfcont').setAttribute('aria-pressed',c);if(c&&!PERF.seq)PERF.seq=perfSeq();if(c&&PERF.seq){const j=T.perf?PERF.seq.indexOf(T):0;PERF.pos=Math.max(0,j)}}
+$('perfcond').onclick=()=>perfModeSet(false);$('perfcont').onclick=()=>perfModeSet(true);
+$('perfspd').onchange=e=>{const v=+e.target.value,el=$('spd');el.value=v;el.dispatchEvent(new Event('input'))};
+/* what every CDJ is doing right now: lead, incoming, texture loop, layer, cued, free (and what loads next) */
+function decksNow(S,D){const el=$('decks4');if(!el||el.hidden||!T.set)return;const dk=T.set.decks||[{d:T.pair[0],title:T.set.a.title},{d:T.pair[1],title:T.set.b.title}];
+ const ref=T.perf||(T.gap&&PERF.plan?PERF.plan.scenes.find(s=>s.clock>=T.gap.clock):null);let h='';
+ for(const d of DORD){const c=DCH[d],in_=dk.find(x=>x.d===d),title=in_?in_.title:ref&&ref._now&&ref._now[d]?null:null,pl=!!S[d+'.play'],fd=S[c+'.fader']||0,lo=S[c+'.lo'],loop=D[d]&&D[d].L>0,fa=S[c+'.fa'],fon=fa&&S['f'+fa+'.on'];
+  let role,cls='';if(in_&&pl&&fd>.05){if(lo<=-30){role=loop?'texture, looping':d===T.pair[1]&&T.perf&&T.perf.kind!=='layer'||d===T.pair[1]&&!T.perf&&!T.gap?'coming in, LO cut':'layer, LO cut';cls=loop?'tex':'in'}else{role='owns the low end'+(loop?', on its H loop':'');cls='lead'}if(fon&&!/texture/.test(role))role+=', filtered'}
+  else if(in_&&pl){role='playing in the headphones';cls='cue'}else if(in_){role='cued on B';cls='cue'}else{const nx=ref&&ref._next&&ref._next[d];role=nx?`free · next: ${sEsc(nx.title)} (${fmtT(nx.clock)})`:'free';cls='free'}
+  h+=`<div class="d4 ${cls}"><i style="background:${DCOL[d]}"></i><b>CDJ ${DNUM[d]}</b> ${in_?sEsc(in_.title)+' · ':''}<span>${role}</span></div>`}
+ if(el.innerHTML!==h)el.innerHTML=h}
+/* ==== REGION performance END ==== */
 /* ==== REGION midi ==== */
 /* MIDI controllers through Web MIDI (Chrome / Edge). Built-in map for the Pioneer DDJ-FLX4
    (message numbers from the Mixxx DDJ-FLX4 mapping), plus MIDI learn for anything else.
@@ -1449,7 +1531,7 @@ miPanel();
 /* render */
 let last=performance.now();
 function frame(now){const dt=Math.min(.1,(now-last)/1000);last=now;
-const adt=audioDt(dt);if(PR.live)PR.tick(adt);else if(playing){t+=adt*P.speed/P.barSec*mixF({tempo:val('tempo',t)});if(mode==='step'&&segEnd!==null&&t>=segEnd){t=segEnd;playing=false;setPlayLabel()}else if(t>=T.bars){if(repeat)t=0;else{t=T.bars;playing=false;setPlayLabel()}}}
+const adt=audioDt(dt);if(PR.live)PR.tick(adt);else if(playing){t+=adt*P.speed/P.barSec*mixF({tempo:val('tempo',t)});if(mode==='step'&&segEnd!==null&&t>=segEnd){t=segEnd;playing=false;setPlayLabel()}else if(PERF.on&&PERF.cont&&PERF.endAt.has(T)&&t>=PERF.endAt.get(T)){perfEnd()}else if(t>=T.bars){if(T.perf&&typeof perfEnd==='function'&&perfEnd()){}else if(repeat)t=0;else{t=T.bars;playing=false;setPlayLabel()}}}
 const S=PR.live?PR.state():state(t),D={A:deckAt('A',t),B:deckAt('B',t),C:deckAt('C',t),D:deckAt('D',t)};if(AU.on)auTick(S,D);
 for(const c of CTL){const v=S[c.key];
 if(c.type==='knob'){const ang=-135+270*nrm(c.kind,v);c.v.setAttribute('d',arcD(c.ar,-135,ang));c.ind.setAttribute('transform',`rotate(${ang.toFixed(1)})`)}
@@ -1468,10 +1550,10 @@ for(const d of DECKS){const c=DCH[d];const g=chG(S,c,d);let mx=0;BANDS.forEach((
 ladder(LEDS['m'+c.slice(1)],mx/REF*(.55+.45*pulse[d]),1);mxAll=Math.max(mxAll,mx*(.55+.45*pulse[d]))}
 ladder(LEDS.mmL,mxAll/REF*.82,2);ladder(LEDS.mmR,mxAll/REF*.82,2);
 if(AU.on){const am=auMeters();if(am){for(const d of DECKS){lv[d]=am[d];ladder(LEDS['m'+DCH[d].slice(1)],am['r'+d],1)}ladder(LEDS.mmL,am.rM,2);ladder(LEDS.mmR,am.rM,2)}}
-{const[p0,p1]=T.pair||['A','B'],la=lv[p0]||[],lb=lv[p1]||[];rows.forEach((r,i)=>{r.a.style.width=Math.min(100,(la[i]||0)/REF*100).toFixed(1)+'%';r.b.style.width=Math.min(100,(lb[i]||0)/REF*100).toFixed(1)+'%';r.f.textContent=i===0&&la[0]>.3&&lb[0]>.3?'Two kicks!':i===0&&la[0]<.05&&lb[0]<.05?'No kick':''})}
-$('clock').innerHTML=`${Math.floor(t)+1}.${Math.floor((t%1)*4)+1} <small>of ${T.bars} bars</small>`;{const sc=$('setcd'),h=setClock();sc.hidden=!h;if(h&&sc.innerHTML!==h)sc.innerHTML=h}void``;
+rows.forEach((r,i)=>{let on=0,any=0;for(const d of DORD){const v=(lv[d]||[])[i]||0;r.d[d].style.width=Math.min(100,v/REF*100).toFixed(1)+'%';if(v>.3)on++;if(v>=.05)any++}r.f.textContent=i===0&&on>=2?'Two kicks!':i===0&&!any?'No kick':''});
+$('clock').innerHTML=`${Math.floor(t)+1}.${Math.floor((t%1)*4)+1} <small>of ${T.bars} bars</small>`;if((T.perf||T.gap)&&typeof perfMark==='function')perfMark();if(typeof decksNow==='function')decksNow(S,D);{const sc=$('setcd'),h=setClock();sc.hidden=!h;if(h&&sc.innerHTML!==h)sc.innerHTML=h}void``;
 if(document.activeElement!==$('scrub'))$('scrub').value=t;
-let si=0;T.steps.forEach((s,j)=>{if(t>=s[0])si=j});if(si!==curStep){curStep=si;computeChanges(si);if(mode==='step')setPlayLabel();const st=T.steps[si];$('now').innerHTML=`<b>Step ${si+1} of ${T.steps.length} · Bar ${Math.floor(st[0])+1}</b>`;$('now').append(st[1]);[...$('steps').children].forEach((li,j)=>li.classList.toggle('cur',j===si));const li=$('steps').children[si],c=li&&li.closest('.stepsc');if(c&&c.scrollHeight>c.clientHeight)c.scrollTo({top:Math.max(0,li.offsetTop-2),behavior:'smooth'})}
+let si=0;T.steps.forEach((s,j)=>{if(t>=s[0])si=j});if(si!==curStep){curStep=si;computeChanges(si);if(mode==='step')setPlayLabel();const st=T.steps[si];$('now').innerHTML=`<b>Step ${si+1} of ${T.steps.length} · Bar ${Math.floor(st[0])+1}</b>`;if(st[2]){const e=document.createElement('em');e.className='stag';e.textContent=st[2];$('now').append(e,' ')}$('now').append(st[1]);[...$('steps').children].forEach((li,j)=>li.classList.toggle('cur',j===si));const li=$('steps').children[si],c=li&&li.closest('.stepsc');if(c&&c.scrollHeight>c.clientHeight)c.scrollTo({top:Math.max(0,li.offsetTop-2),behavior:'smooth'})}
 const target=exView&&mode==='explore'?exView:customBox?fit(customBox):fit(follow?autoBox():VB[userView]);
 for(let i=0;i<4;i++)vb[i]=snap?target[i]:vb[i]+(target[i]-vb[i])*Math.min(1,dt*3.5);snap=false;svg.setAttribute('viewBox',vb.map(v=>v.toFixed(1)).join(' '));
 $('pill').textContent=mode==='explore'?(exSel?EXI[exSel.role].n+' · '+exFill(EXI[exSel.role].s,exSel.c):'Tap any part to learn it'):fmtSel(S);
