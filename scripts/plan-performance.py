@@ -285,6 +285,29 @@ def mash_scene(L, M, info, i, scenes_len, carry_deck, after=None):
                 decks=[dict(d=DBY[L['deck']], title=L['title'], sec=inS - 8 * bl, bpm=L['bpm']), dict(d=Z, title=M['title'], sec=M['B'] or 0, bpm=M['bpm'], startBar=8)],
                 clock=(L['clock'] or 0) + max(0, (inS - 8 * bl - (L['B'] or 0)) * L['bpm'] / (L['playAt'] or 140)), cues=[[8, f'B on CDJ {nZ}'], [28, 'the mashup out']])
 
+# ---------- Arc: each phase of the night borrows one DJ's way of moving ----------
+ARCMODE = {'Locked opening': 'weave', 'Orientation': 'weave', 'Groove formation': 'lead', 'First pressure wave': 'edit',
+           'Micro reset': 'hop', 'Second pressure wave': 'edit', 'Handoff': 'weave'}
+OKREL = ('same', 'relative', 'adjacent')
+def loop_window(r):
+    """The most loopable 2 bars of a track: kick on every beat-bar, busy tops, quiet mids (fewer melodic clashes), on a phrase line."""
+    p = P[r['cid']]; nb = p['nb']; bl = 240 / r['bpm']
+    if p['body'] == 0: return None
+    a0 = int(max(0, secbar(r, r['pads'].get('A', {}).get('sec', 0)))) + 16
+    hm, mm = float(np.median(p['hi'])), float(np.median(p['mid'])); best = None
+    for k in range(a0 - a0 % 8, int(nb * .85) - 2, 8):
+        if k < a0 or not p['kick'][k:k + 2].all(): continue
+        sc = float(np.mean(p['hi'][k:k + 2]) - hm) * .3 - float(np.mean(p['mid'][k:k + 2]) - mm) * .3 + float(p['kick'][max(0, k - 4):k + 6].mean())
+        if best is None or sc > best[0]: best = (sc, k)
+    return None if best is None else r['fb'] + best[1] * bl
+arc_aux = set()
+for i in range(len(leads) - 2):
+    x, y, z = leads[i], leads[i + 1], leads[i + 2]
+    if ARCMODE.get(y['phase']) != 'lead' or re.search(r'\b(CUT|SWAP):', y['note']) or not (x['playAt'] and y['playAt'] and z['playAt']): continue
+    if DBY[z['deck']] in (DBY[x['deck']], DBY[y['deck']]) or keyrel(y['key'], z['key']) not in OKREL: continue
+    if i in layer_of or (i + 1) in layer_of or (i - 1) in arc_aux or loop_window(z) is None: continue
+    arc_aux.add(i)
+
 def tdeck(dk, b):
     br = 240 / dk['bpm']
     if dk.get('loopAt') is not None and dk.get('loopSec') is not None and b >= dk['loopAt']: return dk['loopSec'] + ((b - dk['loopAt']) % (dk.get('loopLen') or 8)) * br
@@ -299,10 +322,16 @@ def build(ST):
         play = x['playAt'] or y['playAt'] or 125.0
         bx, by = 240 / x['bpm'], 240 / y['bpm']                      # track seconds per bar
         note = y['note']; typ = 'swap' if re.search(r'\bSWAP:', note) else 'cut' if re.search(r'\bCUT:', note) else 'blend'
+        am = ST.get('arc') and ARCMODE.get(y['phase']); LST = dict(ST)
+        if am == 'edit': LST.update(edit=True, fast=True, crunch=True, clip='alt')
+        if am == 'hop': LST.update(avoidH=True, core=True, lpf=True)
         late = 'cut its lows late' in note; hold = bool(re.search(r'= hold|YOUR PAIR|long blend', note))
         reasons, ears = [], []
         # incoming: bars from B to Bass in (prefer the xml markers)
         yB = y['pads'].get('B', {}).get('sec', y['B']); ybi = y['mem'].get('Bass in', y['bi'])
+        entC = False
+        if am == 'edit' and typ != 'cut' and 'C' in y['pads'] and yB is not None and y['pads']['C']['sec'] > yB + 8 * (240 / y['bpm']) and i not in layer_of:
+            skip = (y['pads']['C']['sec'] - yB) / (240 / y['bpm']); yB = y['pads']['C']['sec']; entC = True; ybi = None
         xbo = x['mem'].get('Bass out', x['bo']); xH = x['pads'].get('H', {}).get('sec', x['H'])
         Nb = int(round((ybi - yB) / by)) if ybi is not None and yB is not None else None
         est = False
@@ -312,9 +341,15 @@ def build(ST):
         else: sn = x['sn'] or (x['dur'] * .7); est = True
         if x['sn'] is not None and abs(x['sn'] - sn) > 2.5 and not moved: reasons.append(f'Start next recomputed from your rekordbox markers: {fmt(sn)} (sheet {fmt(x["sn"])}).')
         sw = 8 + Nb
-        # recommendation: swap on the outgoing breakdown
+        # Arc weave (Villalobos): one band per phrase over 2-4 phrases; Hawtin's lead changes use a 2-phrase weave
+        W = 0; rel_xy = keyrel(x['key'], y['key'])
+        if am in ('weave', 'lead') and typ == 'blend' and i not in layer_of and rel_xy in OKREL and (xbo is not None or xH is not None):
+            xB0 = x['pads'].get('B', {}).get('sec', x['B']) or 0; ref = xbo if xbo is not None else xH
+            W = (4 if rel_xy == 'same' else 3) if am == 'weave' else 2
+            Nb0 = Nb; sw = 8 + 16 * min(W - 1, 2)
+            reasons.append(f'Long weave (Villalobos): {W} phrases, one band changing hands per phrase. CDJ {nY} still starts on time ({fmt(sn)}); CDJ {nX} holds the 8 bars before its {"Bass out marker" if xbo is not None else "H loop"} on a loop, bass and all, until the low end changes hands {sw - 8} bars in. Each track keeps its slot on the sheet.')
         rec = None
-        if typ != 'cut' and i not in layer_of:
+        if typ != 'cut' and i not in layer_of and not W:
             for bk, src in P[x['cid']]['breaks']:
                 kb = 8 + ((x['fb'] + bk * bx) - sn) / bx
                 xB0 = x['pads'].get('B', {}).get('sec', x['B']) or 0
@@ -324,21 +359,22 @@ def build(ST):
         if rec and rec[0] == 'breakdown':
             reasons.append(f'Recommendation: CDJ {nX} breaks down at {fmt(sn + Nb * bx)} ({rec[1]}). Its bass drops out there, so start CDJ {nY} {abs(rec[2])} bars {"later" if rec[2] > 0 else "earlier"} (Start next {fmt(sn)}) and land the swap in the gap.' + (f' This plays {x["title"]} {abs(rec[2])} bars shorter.' if rec[2] < 0 else ''))
         elif rec: reasons.append(f'The planned swap already lands on CDJ {nX}\'s breakdown ({rec[1]}).')
-        s_ = sw + (4 if late else 0)
+        s_ = sw + (4 if late and not W else 0)
         # does the outgoing reach H (its Active Loop) inside the scene?
         kH = 8 + (xH - sn) / bx if xH is not None else None
-        tail = i in ST['tails'] and typ == 'blend'
+        tail = i in ST['tails'] and typ == 'blend' and not W
         xf = []
-        if ST.get('core') and x['cid'] in core and typ == 'blend': xf.append('core')
+        if LST.get('core') and x['cid'] in core and typ == 'blend': xf.append('core')
         if 'YOUR PAIR' in note and typ == 'blend': xf.append('pair')
         fe = 16 if ('core' in xf or 'pair' in xf) else 8 if hold else 4
-        parts = ST.get('parts') and typ == 'blend' and keyrel(x['key'], y['key']) in ('same', 'relative', 'adjacent')
-        bridge = ST.get('bridge') and typ in ('swap', 'cut') and sw >= 13
+        parts = LST.get('parts') and typ == 'blend' and keyrel(x['key'], y['key']) in ('same', 'relative', 'adjacent') and not W
+        bridge = LST.get('bridge') and typ in ('swap', 'cut') and sw >= 13
         endb = s_ + 2 + fe + 1
         if parts: endb = s_ + 6 + fe + 1
         if tail: endb = (s_ + 6 if parts else s_ + 2) + 16 + 4 + 1
         if bridge: endb = sw + 11
-        if ST.get('avoidH') and kH is not None and 8 < kH < endb - 1 and typ != 'cut' and not bridge:
+        if W: endb = {2: 41, 3: 57, 4: 73}[W]
+        if LST.get('avoidH') and kH is not None and 8 < kH < endb - 1 and typ != 'cut' and not bridge:
             dd = int(np.ceil(endb - kH + 1))
             xB = x['pads'].get('B', {}).get('sec', x['B']) or 0
             if dd <= 24 and sn - (dd + 8) * bx >= xB + 8 * bx:
@@ -352,6 +388,12 @@ def build(ST):
             loopAt = float(s_ + 6 if parts else s_ + 2)
             reasons.append(f'Texture: at bar {int(loopAt) + 1} put an 8-beat loop on CDJ {nX} (or press H early) to hold it under the new track.')
         loopSec = xH; loopLen = 8 if (kH is not None and loopAt is not None and abs(loopAt - kH) < .5) else 2
+        xloop = False
+        if W:
+            if xbo is not None and not (kH is not None and kH <= 8 + Nb0):
+                loopAt = float(max(0, Nb0)); loopSec = xbo - 8 * bx; loopLen = 8
+                reasons[:] = [r_ for r_ in reasons if 'Mix out 8 loop' not in r_]
+            xloop = am == 'lead'
         if bridge:
             lp = max(11, sw - 4); loopAt = float(lp); loopSec = sn + (lp - 8) * bx; loopLen = 2
         trim = 0
@@ -369,7 +411,7 @@ def build(ST):
         if loopAt is not None:
             T[X + '.loop'] = [[0, 0], [loopAt, loopLen]]
         if bridge:
-            xf.append('bridge'); bh = 4 if ST.get('fast') else 8
+            xf.append('bridge'); bh = 4 if LST.get('fast') else 8
             setup.update({cY + '.hi': -40, cY + '.hm': -27, cY + '.lm': -27, cY + '.lo': -40})
             T.update({cX + '.hm': [[lp - 2, 0], [lp, -27]], cX + '.lm': [[lp - 2, 0], [lp, -27]], cY + '.fader': [[8, 0], [9, .8]], cY + '.hi': [[9, -40], [lp, 0]],
                       cY + '.hm': [[lp, -27], [sw, 0]], cX + '.lo': [[sw, 0], [sw + .03, -40]], cY + '.lo': [[sw, -40], [sw + .03, 0]], cY + '.lm': [[sw, -27], [sw + .03, 0]],
@@ -395,6 +437,40 @@ def build(ST):
                 steps.append([s_ - 2, f'Loop roll on CDJ {nX}: a 4-beat loop, halved every half bar (2, 1, 1/2, 1/4 beat) so it tightens into the cut.'])
             endb = s_ + 4
             ears.append('Semitone or key-jump cut: check that the new track lands cleanly after the cut.')
+        elif W:
+            xf.append('weave'); P_ = 16
+            setup.update({cY + '.hi': -40, cY + '.hm': -27, cY + '.lm': -27, cY + '.lo': -40})
+            T[cY + '.fader'] = [[8, 0], [10, .8]]
+            if W == 2:
+                T.update({cY + '.hi': [[8, -40], [16, 0]], cY + '.hm': [[14, -27], [22, 0]], cX + '.hm': [[14, 0], [22, -10]],
+                          cX + '.lo': [[24, 0], [25, -40]], cY + '.lo': [[24, -40], [25, 0]], cY + '.lm': [[24, -27], [30, 0]], cX + '.lm': [[24, 0], [30, -20]],
+                          cX + '.fader': [[28, .8], [40, 0]], cX + '.hi': [[8, 0], [16, -3], [28, -3], [36, -15]]})
+                steps += [[8, f'Start next ({fmt(sn)}): press B on CDJ {nY}, every band down but the fader up.'], [9, f'Phrase 1: ride CH {nY} HI up over 8 bars, then its HI MID over the next 8, while CH {nX} HI MID eases down. No kills.'],
+                          [24, f'Phrase 2, on the 1: the low end changes hands (CH {nX} LO out, CH {nY} LO in), then LO MID crossfades over 6 bars.'],
+                          [28, f'Let CDJ {nX} recede: its tops thin out and its fader comes down over 12 bars.']]
+                fe_ = 40
+            else:
+                T.update({cY + '.hi': [[8, -40], [20, 0]], cX + '.hi': [[8, 0], [20, -4]],
+                          cY + '.hm': [[24, -27], [36, 0]], cX + '.hm': [[24, 0], [36, -10]],
+                          cX + '.lo': [[40, 0], [41, -40]], cY + '.lo': [[40, -40], [41, 0]], cY + '.lm': [[40, -27], [48, 0]], cX + '.lm': [[40, 0], [48, -20]]})
+                steps += [[8, f'Start next ({fmt(sn)}): press B on CDJ {nY}, every band down but the fader up.'],
+                          [9, f'Phrase 1: ride CH {nY} HI up over 12 bars. Its hats and air sit inside {x["title"]}; CH {nX} HI gives way a touch.'],
+                          [24, f'Phrase 2: CH {nY} HI MID up over 12 bars while CH {nX} HI MID eases to −10. Slow rides, no kills: the two tracks share the middle.'],
+                          [40, f'Phrase 3, on the 1: the low end changes hands (CH {nX} LO out, CH {nY} LO in), then LO MID crossfades over 8 bars.']]
+                if W == 3:
+                    T.update({cX + '.hi': [[8, 0], [20, -4], [44, -4], [56, -20]], cX + '.fader': [[44, .8], [56, 0]]})
+                    steps.append([44, f'CDJ {nX}\'s tops are the last of it: its fader comes down over 12 bars.'])
+                    fe_ = 56
+                else:
+                    T.update({cX + '.hi': [[8, 0], [20, -4], [56, -4], [68, -20]], cX + '.hm': [[24, 0], [36, -10], [56, -10], [64, -27]], cX + '.fader': [[60, .8], [72, 0]]})
+                    steps.append([56, f'Phrase 4: only CDJ {nX}\'s tops are left, floating over {y["title"]}. Thin them over 12 bars and let the fader follow.'])
+                    fe_ = 72
+            if loopAt is not None and not (kH is not None and abs(loopAt - kH) < .5):
+                steps.append([loopAt, f'Loop the 8 bars before CDJ {nX}\'s Bass out ({fmt(loopSec)}): it holds its groove, bass and all, for as long as the weave needs.'])
+            if xloop:
+                T.update({cX + '.gain': [[sw + 2, 0], [sw + 4, -4]]})
+                steps.append([sw + 2, f'Loop layer (Hawtin): CDJ {nX} keeps looping, but with LO gone, LO MID fading and GAIN −4 dB it recedes into texture under {y["title"]}, which leads unlooped.'])
+            endb = fe_ + 1
         elif typ == 'swap':
             setup.update({cY + '.hi': -40, cY + '.hm': -27, cY + '.lm': -27, cY + '.lo': -40})
             T.update({cY + '.fader': [[8, 0], [9, .8]], cY + '.hi': [[9, -40], [sw - 2, 0]], cY + '.hm': [[9, -27], [sw - 2, 0]],
@@ -409,9 +485,9 @@ def build(ST):
         else:
             setup.update({cY + '.hi': -40, cY + '.lo': -40})
             if parts: setup.update({cY + '.hm': -27, cY + '.lm': -27})
-            lmA = 2 if ST.get('fast') else 4
+            lmA = 2 if LST.get('fast') else 4
             hiEnd = max(12, min(sw - 1, 10 + Nb // 2))
-            lpf = ST.get('lpf') and not parts and i % 2 == 0
+            lpf = LST.get('lpf') and not parts and i % 2 == 0
             T.update({cY + '.fader': [[8, 0], [10, .8]], cY + '.hi': [[10, -40], [hiEnd, 0]], cX + '.lo': [[s_, 0], [s_ + .03, -40]], cY + '.lo': [[s_, -40], [s_ + .03, 0]]})
             if lpf:
                 xf.append('lpf'); setup.update({cY + '.hi': 0, cY + '.fa': 2, 'f2.on': 1, 'f2.mode': 'LPF', 'f2.freq': .3, 'f2.res': .25})
@@ -423,7 +499,7 @@ def build(ST):
             if late: steps.append([sw, f'Energy drops here: keep CDJ {nX}\'s low end 4 more bars.'])
             steps.append([s_, f'Bass swap on the 1: CH {nX} LO out, CH {nY} LO in.'])
             if parts:
-                xf.append('parts'); hE = hiEnd; hmAt = max(hE + 1, s_ - (4 if ST.get('fast') else 8))
+                xf.append('parts'); hE = hiEnd; hmAt = max(hE + 1, s_ - (4 if LST.get('fast') else 8))
                 if hmAt + 2 >= s_: hmAt = max(hE, s_ - 3)
                 T.update({cY + '.hm': [[hmAt, -27], [hmAt + 2, 0]], cX + '.hm': [[hmAt, 0], [hmAt + 2, -27]], cX + '.hi': [[hE, 0], [hE + 2, -6]],
                           cY + '.lm': [[s_ + lmA, -27], [s_ + lmA + 2, 0]], cX + '.lm': [[s_ + lmA, 0], [s_ + lmA + 2, -27]]})
@@ -435,14 +511,14 @@ def build(ST):
                 T.update({cX + '.fa': [[0, 0], [f0, 1]], 'f1.on': [[0, 0], [f0, 1]], 'f1.mode': [[0, 'HPF']], 'f1.freq': [[f0, .22], [f1, .5]], 'f1.res': [[f0, .25], [f1, .45]],
                           cX + '.hm': [[f0, 0], [f0 + 2, -8]], cX + '.fader': [[f0, .8], [f0 + 4, .5], [f1, .5], [f1 + 4, 0]]})
                 sc, rel = tail_score(x, y)
-                if ST.get('crunch'):
+                if LST.get('crunch'):
                     xf.append('crunch'); T.update({'f1.crunch': [[f0, 0], [f1, .35]], 'f1.res': [[f0, .3], [f1, .6]]})
-                steps.append([f0, f'Texture: CDJ {nX} keeps looping under {y["title"]}: Filter 1 on CH {nX} (HPF rising slowly), fader to half, HI MID down a touch.' + (' Add CRUNCH on Filter 1 as it rises: the loop turns to grit and resonance as it leaves.' if ST.get('crunch') else '')])
+                steps.append([f0, f'Texture: CDJ {nX} keeps looping under {y["title"]}: Filter 1 on CH {nX} (HPF rising slowly), fader to half, HI MID down a touch.' + (' Add CRUNCH on Filter 1 as it rises: the loop turns to grit and resonance as it leaves.' if LST.get('crunch') else '')])
                 steps.append([f1, f'Fade the texture out over 4 bars, exit the loop, load the next track on CDJ {nX}.'])
                 reasons.append(f'Recommendation (texture): {x["key"]} → {y["key"]} ({rel} key) and CDJ {nX}\'s outro loop is rich in tops, so it can ride under the new track for 16 bars with its LO cut.')
                 ears.append('Texture tail: listen for clashing melodies or vocals between the loop and the new track.')
                 endb = f1 + 5
-            elif ST.get('edit') and (not parts or ST.get('fast')) and loopAt is None and s_ >= 12 and 'core' not in xf:
+            elif LST.get('edit') and (not parts or LST.get('fast')) and loopAt is None and s_ >= 12 and 'core' not in xf:
                 xf += ['edit', 'roll', 'crunch']; ed = s_ + 5 if parts else s_
                 T.update({X + '.loop': [[0, 0], [ed - 2, 1], [ed - 1.5, .5], [ed - 1, .25], [ed - .5, .125], [ed - .25, .0625], [ed + .02, 0]],
                           cX + '.fa': [[0, 0], [ed - 2, 1]], 'f1.on': [[0, 0], [ed - 2, 1], [ed + .03, 0]], 'f1.mode': [[0, 'HPF']], 'f1.freq': [[ed - 2, .05], [ed, .35]],
@@ -459,10 +535,20 @@ def build(ST):
         # a layer still playing from the previous scene fades out on this change
         decks = [dict(d=X, title=x['title'], sec=sn - 8 * bx, bpm=x['bpm'], loopAt=loopAt, loopSec=loopSec, loopLen=loopLen),
                  dict(d=Y, title=y['title'], sec=yB, bpm=y['bpm'], startBar=8)]
-        if i in ST['aux'] and not (carry and carry['d'] not in (X, Y)):
+        if ST.get('arc') and i in arc_aux and am == 'lead' and not (carry and carry['d'] not in (X, Y)):
+            z = leads[i + 2]; Z = DBY[z['deck']]; cZ = DCH[Z]; nZ = DNUM[Z]; zsec = loop_window(z); a0 = 16; a1 = a0 + 28
+            setup.update({cZ + '.lo': -40, cZ + '.lm': -27, cZ + '.hm': -15, cZ + '.gain': -6})
+            T.update({Z + '.play': [[0, 0], [a0, 1], [a1, 0]], Z + '.loop': [[0, 0], [a0, 2], [a1, 0]], cZ + '.fader': [[a0, 0], [a0 + 4, .45], [a0 + 20, .45], [a1, 0]]})
+            steps.append([a0 - 1, f'Loop layer: cue CDJ {nZ} ({z["title"]}, two changes from now) at {fmt(zsec)}, its most loopable 2 bars. CH {nZ} stripped: LO and LO MID out, HI MID −15, GAIN −6 dB.'])
+            steps.append([a0, f'Loop it (BEAT LOOP 8) and bring CH {nZ} to just under half. It is percussion and air under the lead, not a third track.'])
+            steps.append([a0 + 20, f'Loop layer out over 8 bars; exit the loop and re-cue CDJ {nZ} to pad B for its own entry.'])
+            decks.append(dict(d=Z, title=z['title'], sec=zsec, bpm=z['bpm'], startBar=a0, loopAt=a0, loopSec=zsec, loopLen=2, role='loop'))
+            xf.append('loops'); endb = max(endb, a1 + 1)
+            reasons.append(f'Loops around a lead (Hawtin): {y["title"]} leads unlooped while a stripped 2-bar loop of {z["title"]} ({z["key"]}, {keyrel(y["key"], z["key"])} to {y["key"]}) sits under it. The 4th deck stays open.')
+        elif i in ST['aux'] and not (carry and carry['d'] not in (X, Y)):
             z = leads[i + 2]; Z = DBY[z['deck']]; cZ = DCH[Z]; nZ = DNUM[Z]; bz = 240 / z['bpm']
             bk = P[z['cid']]['breaks'][0][0]; zsec = z['fb'] + bk * bz; a0 = (s_ + 2) if typ != 'swap' else sw + 2
-            clip = ST.get('clip') and (ST['clip'] is True or i % 2 == 1) and z['pads'].get('E')
+            clip = LST.get('clip') and (ST['clip'] is True or i % 2 == 1) and z['pads'].get('E')
             if clip: zsec = z['pads']['E']['sec']
             setup.update({cZ + '.lo': -40, cZ + '.hm': -6, cZ + '.gain': -4})
             T.update({Z + '.play': [[0, 0], [a0, 1], [a0 + 16, 0]], cZ + '.fader': [[a0, 0], [a0 + 4, .45], [a0 + 12, .45], [a0 + 16, 0]]})
@@ -489,6 +575,13 @@ def build(ST):
             steps.append([min(s_, endb - 4), f'The layer on CDJ {DNUM[Z]} ({carry["title"]}) goes out with the old lead: CH {DNUM[Z]} down over 4 bars.'])
             reasons.append(f'Three decks: the layer on CDJ {DNUM[Z]} is still under {x["title"]} when the change starts.')
             carry = None
+        if entC:
+            for st_ in steps: st_[1] = st_[1].replace(f'press B on CDJ {nY}', f'press C on CDJ {nY}')
+            reasons.append(f'Part of the track (Temple): CDJ {nY} enters on pad C ({fmt(yB)}), skipping {int(round(skip))} bars of intro{" and edits out at the next change" if "edit" in xf else ""}.')
+            xf.append('window')
+        if am == 'hop' and len(decks) <= 2:
+            free = [DNUM[d] for d in 'CABD' if d not in [dk['d'] for dk in decks]]
+            reasons.append(f'Hopscotch (DVS1): two decks play, CDJ {free[0]} stays open for previewing or a utility loop.'); xf.append('open')
         steps.sort(key=lambda s: s[0])
         real_from_B = (sn - 8 * bx - (x['pads'].get('B', {}).get('sec', x['B']) or 0)) * x['bpm'] / play
         scenes.append(dict(id=f'f{len(scenes) + 1}', kind='loop' if loopAt is not None and typ != 'cut' and not bridge else typ, tail=tail, xf=xf, title=f'{x["title"]} → {y["title"]}',
@@ -496,7 +589,7 @@ def build(ST):
                            why=f'{y["phase"]}. {x["key"]} → {y["key"]} · {x["playAt"] or "free"} → {y["playAt"] or "free"} BPM · energy {x["E"]} → {y["E"]}. '
                                + ' · '.join(p for p in note.split(' · ') if not p.startswith('MIK:')),
                            reasons=reasons, ears=ears, decks=decks, clock=(x['clock'] or 0) + max(0, real_from_B), est=est,
-                           cues=[[8, f'B on CDJ {nY}'], [s_, 'the cut' if typ == 'cut' else 'the bass swap']] + ([[loopAt, f'H loop on CDJ {nX}']] if loopAt is not None else [])))
+                           W=W, cues=[[8, f'{"C" if entC else "B"} on CDJ {nY}'], [s_, 'the cut' if typ == 'cut' else 'the bass swap']] + ([[loopAt, f'H loop on CDJ {nX}']] if loopAt is not None else [])))
         # the sheet layer that comes in under the new lead
         if (i + 1) in layer_of:
             ly, info = layer_of[i + 1]; L = y; Z = DBY[ly['deck']]; cZ = DCH[Z]; nZ = DNUM[Z]
@@ -537,8 +630,8 @@ STYLES = [
          ST=dict(tails=pick_tails(B15), aux=set(), parts=True, bridge=True, crunch=True)),
     dict(id='temple', name='Edit & clip (Paula Temple)', desc='Producer-minded and restless: changes land like edits (loop roll, filter and CRUNCH build, the new track drops in on the 1), quick swaps and crossfader cuts, and short loops of coming tracks layered on a third deck like samples. Built from her published descriptions, adapted from her Ableton hybrid rig to CDJs.',
          ST=dict(tails=set(), aux=pick_aux(AUXB), edit=True, clip=True, crunch=True)),
-    dict(id='hybrid', name='Hybrid (DVS1 × Hawtin × Temple)', desc='Layered like DVS1 and Hawtin, moving like Temple: tracks trade part by part but quickly, then land with a roll and CRUNCH edit; key changes cross on short drum bridges; a third deck adds either an atmosphere (DVS1) or a short clip (Temple), built around a core rhythm, no loops on tracks about to end.',
-         ST=dict(tails=pick_tails(BUDGET), aux=pick_aux(AUXH), parts=True, bridge=True, core=True, avoidH=True, crunch=True, lpf=True, fast=True, edit=True, clip='alt')),
+    dict(id='arc', name='Arc (Villalobos · Hawtin · Temple · DVS1)', desc='Each phase of the night moves like one DJ. Opening, Orientation and Handoff: long Villalobos weaves, one band per phrase over 2 to 4 phrases, slow rides and no kills. Groove formation: Hawtin, one track leads unlooped while stripped 2-bar loops of other set tracks recede underneath. Pressure waves: Temple, tracks enter past their intros and leave as edits, so only part of each is used. Micro reset: DVS1 hopscotch, two decks play and one stays open. Key clashes still cross on drum bridges or short swaps. The set clock is re-timed to the actual overlaps.',
+         ST=dict(tails=set(), aux=set(), arc=True, bridge=True)),
 ]
 for stl in STYLES: stl['scenes'] = build(stl['ST'])
 scenes = [sc for stl in STYLES for sc in stl['scenes']]
@@ -547,8 +640,8 @@ KEYMOVE = [('⇈', 'a key lift (whole tone or minor third)'), ('⇊', 'a key dro
            ('!!', 'a key jump'), ('↔', 'a move to the relative key'), ('↕', 'a mood change (minor/major)'), ('↑', 'a lift one step up'), ('↓', 'a release one step down'), ('= hold', 'the same key')]
 FLAG = {'blend': 'Blend', 'long': 'Long blend', 'swap': 'Quick swap', 'cut': 'Cut', 'hloop': 'H loop', 'tail': 'Texture tail', 'brk': 'Breakdown swap',
         'late': 'Late lows', 'layer': 'Layer', 'three': '3 decks', 'trim': 'Gain trim', 'parts': 'Part by part', 'bridge': 'Drum bridge',
-        'aux': '3rd deck texture', 'early': 'Early start', 'core': 'Core rhythm', 'pair': 'Your pair', 'mik': 'MIK mashup', 'xfade': 'Crossfader cut', 'roll': 'Loop roll', 'hpf': 'HPF sweep', 'lpf': 'LPF reveal', 'crunch': 'Crunch', 'edit': 'Edit', 'clip': 'Clip layer'}
-TAGS = [(r'^Edit:', 'Edit'), (r'^Land it on the 1', 'Drop in'), (r'^Third deck clip', 'Clip'), (r'^Third deck in as a clip', 'Clip in'), (r'^Crossfader:', 'Crossfader'), (r'^Loop roll', 'Loop roll'), (r'slam the crossfader', 'Cut'), (r'^Filter 1 on CH \d+, HPF', 'HPF sweep'), (r'^Open Filter 2', 'LPF reveal'), (r'^Mashup in', 'Mashup in'), (r'^Mashup out', 'Mashup out'), (r'^Third deck out', 'Third deck out'), (r'^Third deck', 'Third deck'), (r'^Hand over the mids', 'Mids swap'), (r'^Last part: LO MID', 'Low mids swap'),
+        'aux': '3rd deck texture', 'early': 'Early start', 'core': 'Core rhythm', 'pair': 'Your pair', 'mik': 'MIK mashup', 'xfade': 'Crossfader cut', 'roll': 'Loop roll', 'hpf': 'HPF sweep', 'lpf': 'LPF reveal', 'crunch': 'Crunch', 'edit': 'Edit', 'clip': 'Clip layer', 'weave': 'Long weave', 'loops': 'Loop layer', 'window': 'Part of the track', 'open': 'Open deck'}
+TAGS = [(r'^Loop the 8 bars', 'Hold loop'), (r'^Phrase 1', 'Highs in'), (r'^Phrase 2: CH', 'Mids in'), (r'^Phrase [23], on the 1', 'Bass swap'), (r'^Phrase 4', 'Tops out'), (r'tops are the last|recede: its tops', 'Out'), (r'^Loop layer out', 'Loop out'), (r'^Loop layer \(Hawtin\)', 'Loop layer'), (r'^Loop layer: cue', 'Loop cue'), (r'^Loop it', 'Loop in'), (r'^Edit:', 'Edit'), (r'^Land it on the 1', 'Drop in'), (r'^Third deck clip', 'Clip'), (r'^Third deck in as a clip', 'Clip in'), (r'^Crossfader:', 'Crossfader'), (r'^Loop roll', 'Loop roll'), (r'slam the crossfader', 'Cut'), (r'^Filter 1 on CH \d+, HPF', 'HPF sweep'), (r'^Open Filter 2', 'LPF reveal'), (r'^Mashup in', 'Mashup in'), (r'^Mashup out', 'Mashup out'), (r'^Third deck out', 'Third deck out'), (r'^Third deck', 'Third deck'), (r'^Hand over the mids', 'Mids swap'), (r'^Last part: LO MID', 'Low mids swap'),
         (r'melody arrives', 'Mids in'), (r'^Low end on the 1', 'Bass swap'), (r'^CDJ \d+ (plays|leads)', 'Prep'), (r'Set CH \d+ GAIN', 'Trim'), (r'Key Shift', 'Key Shift'), (r'Start next|press B', 'Cue in'),
         (r'reaches H|H loop', 'H loop'), (r'Strip', 'Strip'), (r'Energy drops', 'Hold lows'), (r'Bass swap|Swap on the 1', 'Bass swap'), (r'Cut on the 1', 'Cut'),
         (r'^Texture:', 'Texture'), (r'Fade the texture', 'Texture out'), (r'goes out with the old lead', 'Layer out'), (r'Raise|Bring CH|bring CH', 'Blend in'),
@@ -561,13 +654,14 @@ for sc in scenes:
     elif sc['kind'] == 'cut': fl.append('cut')
     elif sc['kind'] == 'swap': fl.append('swap')
     elif 'edit' in xf: fl.append('edit')
+    elif 'weave' in xf: fl.append('weave')
     else: fl.append('long' if re.search(r'= hold|YOUR PAIR', note) else 'blend')
     if any('Mix out 8 loop' in r for r in sc['reasons']): fl.append('hloop')
     if sc['tail']: fl.append('tail')
     if any('breaks down' in r for r in sc['reasons']): fl.append('brk')
     if 'cut its lows late' in note: fl.append('late')
     if any('Three decks' in r for r in sc['reasons']): fl.append('three')
-    for f in ('pair', 'parts', 'aux', 'clip', 'core', 'early', 'xfade', 'roll', 'hpf', 'lpf', 'crunch'):
+    for f in ('pair', 'parts', 'loops', 'window', 'open', 'aux', 'clip', 'core', 'early', 'xfade', 'roll', 'hpf', 'lpf', 'crunch'):
         if f in xf: fl.append(f)
     if any(k.endswith('.gain') and not k.startswith(DCH[sc['pair'][0]]) for k in sc['tracks']) and sc['kind'] != 'layer' and 'aux' not in xf: fl.append('trim')
     km = next((t for sym, t in KEYMOVE if sym in note), 'a key change')
@@ -579,6 +673,7 @@ for sc in scenes:
             'edit': (f'{km[0].upper() + km[1:]}, layered then cut like an edit: the tracks trade parts quickly (mids, low end on the 1, low mids), then CDJ {nX} rolls and crunches out in 2 bars and CDJ {nY} carries on alone.' if 'parts' in xf else f'{km[0].upper() + km[1:]}, played like an edit: CDJ {nY} comes in under CDJ {nX}, then CDJ {nX} rolls and crunches for 2 bars and the new track drops in on the 1.'),
             'mik': f'A mashup you already marked in Mixed In Key: CDJ {nY} adds its parts over CDJ {nX} for 24 bars, LO cut so the lead keeps the low end, then leaves before the next change.',
             'layer': f'Build a third thing: CDJ {nY} rides under CDJ {nX} as a layer, its lows cut, the lead stays in front.',
+            'weave': f'{km[0].upper() + km[1:]}, woven over {sc.get("W") or 3} phrases: CDJ {nY}\'s highs come in first, then its mids, then the low end changes hands on a phrase line, and CDJ {nX}\'s tops leave last. Slow rides, no kills, so there is no single moment where the change happens.',
             'bridge': f'{km[0].upper() + km[1:]}: the melodies must not overlap, so the drums carry the floor across. CDJ {nX} loops its drums with the mids out, CDJ {nY}\'s melody arrives over them, then the low end swaps on the 1.'}[fl[0]]
     extra = []
     if 'hloop' in fl: extra.append(f'CDJ {nX} sits on its H loop, so there is no deadline')
@@ -595,9 +690,12 @@ for sc in scenes:
     if 'parts' in fl and 'edit' not in fl: extra.append('trade the tracks part by part: highs, then mids, then the low end on the 1, then the low mids')
     if 'core' in fl: extra.append(f'CDJ {nX} is this phase\'s core rhythm, so let it leave slowly')
     if 'early' in fl: extra.append(f'start CDJ {nY} earlier rather than loop the end of CDJ {nX}')
+    if 'loops' in fl: extra.append('a stripped 2-bar loop of a track still to come recedes under the lead, and the outgoing track turns into a loop layer too')
+    if 'window' in fl: extra.append(f'CDJ {nY} comes in on pad C, past its intro: only the part of it that works here is used')
+    if 'open' in fl: extra.append('only two decks play, so one CDJ stays open for previewing or a utility loop')
     if 'aux' in fl: extra.append('once it is stable, a third deck adds the breakdown of a track still to come as atmosphere, then goes back to its cue')
     LEARN = {'long': 'p1', 'blend': 'l1', 'swap': 'l4', 'hpf': 'l4', 'cut': 't5', 'xfade': 't5', 'roll': 't5', 'brk': 'p2', 'bridge': 't3', 'parts': 'l2', 'crunch': 't2',
-             'tail': 't2' if 'crunch' in fl else 'l4', 'edit': 't5', 'clip': 'p6', 'lpf': 't1', 'aux': 'p3', 'layer': 'p3', 'mik': 'p3', 'late': 'l2', 'hloop': 't3'}
+             'tail': 't2' if 'crunch' in fl else 'l4', 'edit': 't5', 'clip': 'p6', 'weave': 'p8', 'loops': 'p6', 'window': 't5', 'open': 'n1', 'lpf': 't1', 'aux': 'p3', 'layer': 'p3', 'mik': 'p3', 'late': 'l2', 'hloop': 't3'}
     sc['learn'] = list(dict.fromkeys(LEARN[f] for f in fl if f in LEARN))
     sc['flags'] = [dict(k=f, label=FLAG[f]) for f in fl]
     sc['intent'] = base + (' Then: ' + '; '.join(extra) + '.' if extra else '')
@@ -668,13 +766,50 @@ for stl in STYLES:
     n0 = len(stl['scenes']); stl['scenes'] = joins(stl['scenes']); JOINED[stl['id']] = n0 - len(stl['scenes'])
 print('joined', JOINED)
 
+# ---------- seams, and re-timing the clock for styles whose overlaps move the slots ----------
+def fval(sc, k, b):
+    tr = sc['tracks'].get(k); d = sc['setup'].get(k, 0)
+    return kval(tr, b, tr[0][1] if tr else d) if tr else d
+for stl in STYLES:
+    for sc in stl['scenes']:
+        n = 0
+        for q in range(int(sc['bars'] * 4)):
+            b = q / 4; up = 0
+            for d in sc['decks']:
+                c = DCH[d['d']]
+                if fval(sc, c + '.fader', b) > .3 and fval(sc, d['d'] + '.play', b) > .5: up += 1
+            if up >= 2: n += 1
+        sc['seam'] = round(n / 4)
+    sm = sorted(sc['seam'] for sc in stl['scenes'] if sc['kind'] != 'layer')
+    stl['seam'] = sm[len(sm) // 2] if sm else 0
+def played(sc):
+    """Minutes of music when the style is played straight through: scene lengths plus each lead's solo stretch."""
+    last, clock = {}, 0.0
+    for k_, s_ in enumerate(sc):
+        if k_:
+            L = s_['decks'][0]; prev = last.get(L['title']); ps = sc[k_ - 1]
+            if prev:
+                c0, dk, pv = prev; pe = tdeck(dk, pv['bars']); ec = c0 + pv['bars'] * 240 / (pv['playAt'] or 130)
+                clock = ec + max(0, (L['sec'] - pe) * L['bpm'] / (s_['playAt'] or 130)) if pe is not None else ec
+            else: clock = clock + ps['bars'] * 240 / (ps['playAt'] or 130)
+        for d in s_['decks']:
+            if d.get('role') != 'loop': last[d['title']] = (clock, d, s_)
+    return clock / 60
+PLAYED = {stl['id']: played(stl['scenes']) for stl in STYLES}
+for stl in STYLES:
+    if stl['ST'].get('arc'):
+        dm = round(PLAYED['sheet'] - PLAYED[stl['id']])
+        if dm > 2: stl['desc'] += f' Played straight through it uses about {dm} minutes less of the tracks than the Sheet style, mostly from skipped intros: plan a spare track or two, or longer loops.'
+print('seams', {stl['id']: stl['seam'] for stl in STYLES}, 'played', {k: round(v) for k, v in PLAYED.items()})
+
 phases = []
 for r in leads:
     if not phases or phases[-1]['name'] != r['phase']: phases.append(dict(name=r['phase'], clock=r['clock'] or 0))
 end = (leads[-1]['clock'] or 0) + (((leads[-1]['H'] or leads[-1]['dur']) - (leads[-1]['B'] or 0)) * leads[-1]['bpm'] / (leads[-1]['playAt'] or 140))
 out = dict(kind='xone96-performance', version=1, name=title, playlist=pl.get('Name'), assumptions=ASSUME, phases=phases, end=end,
            tracks=[dict(title=r['title'], artist=r['artist'], deck=r['deck'], key=r['key'], playAt=r['playAt'], clock=r['clock'], layer=r['layer']) for r in seq],
-           scenes=STYLES[0]['scenes'], styles=[dict(id=s_['id'], name=s_['name'], desc=s_['desc'], scenes=s_['scenes']) for s_ in STYLES])
+           scenes=STYLES[0]['scenes'], styles=[dict(id=s_['id'], name=s_['name'], desc=s_['desc'], seam=s_['seam'], scenes=s_['scenes'],
+                                                    ) for s_ in STYLES])
 json.dump(out, open(a.out, 'w'), ensure_ascii=False, indent=0)
 k = {}
 for s in scenes: k[s['kind']] = k.get(s['kind'], 0) + 1
