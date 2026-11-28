@@ -34,6 +34,9 @@ python3 -m http.server 8000
 
 ## Practice and your own library
 
+- **Two libraries** (switch at the top of the left column): **Techniques** holds the built-in techniques (Transitions, Low-end swaps, Phrasing & performance). **My set** holds your set: **Set preview** (the performance plan's scenes, continuous play, MP3 export) and **Sheet drills** (one drill per change from the set sheet, with loop and Key Shift versions, scores and phase runs). Learn, Practice and Explore work in both.
+- **Export MP3**: in Set preview, record the changes only (about an hour, 192 kbps, short fades between scenes) or the whole set continuous (5½ h, 128 kbps, slow). It renders offline with the lab's mixer model from your own tracks (rekordbox library + music folder) and saves a tracklist with timestamps and the flags for each change. The encoder (lamejs 1.2.1) loads from jsDelivr, unpkg as a fallback.
+
 - **Learn** watches the techniques (Animate or Step through). **Practice** has **Try it**, where you perform a technique on live audio with the mouse, touch or keys and get graded, and a **Beatmatch** trainer. **Explore** lets you tap any part of the gear.
 - Techniques come in three groups: Transitions, Low-end swaps, and Phrasing & performance.
 - **Rekordbox library**: in rekordbox choose File → Export Collection in xml format, open that file in the lab, then choose your music folder. Tracks play from your disk and are never uploaded; hot cues, memory cues, grid, BPM and key come from rekordbox. Folder picking works in Chrome, Edge, Safari and Firefox.
