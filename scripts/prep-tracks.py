@@ -50,7 +50,7 @@ def smooth(a, k):
     return np.convolve(a, np.ones(k) / k, 'same')
 
 
-def analyse(path, bpm):
+def analyze(path, bpm):
     x = decode(path)
     dur = len(x) / SR
     eps = SR / HOP                                       # envelope frames per second
@@ -225,7 +225,7 @@ def main():
         if not m:
             print(f'skip (no Key - BPM in name): {f}'); continue
         bpm = float(m.group(2))
-        r = analyse(os.path.join(d, f), bpm)
+        r = analyze(os.path.join(d, f), bpm)
         p = place(r)
         body = r['E'][(r['kick']) & (r['bass'])]
         r['energy_raw'] = float(np.mean(body) if len(body) else np.mean(r['E'])) * (0.6 + 0.4 * float(np.mean(r['H'] > 0.5)))

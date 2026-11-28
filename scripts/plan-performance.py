@@ -223,7 +223,7 @@ def pick_aux(budget):
             out.add(i)
     return out
 
-# ---------- mashups: her pairs file (Ableton rows + Mixed In Key favourites) ----------
+# ---------- mashups: her pairs file (Ableton rows + Mixed In Key favorites) ----------
 MASH = {}
 try:
     PAIRS = json.load(open(a.work.rstrip('/').rsplit('/', 1)[0] + '/pairs.json'))['pairs']
