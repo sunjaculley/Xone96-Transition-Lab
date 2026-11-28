@@ -84,7 +84,7 @@ body{height:100dvh;overflow:hidden}
 .app{display:grid;height:100dvh;padding:14px 14px 10px;gap:8px 12px;grid-template-columns:clamp(170px,15vw,210px) minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) clamp(150px,24vh,260px) auto;grid-template-areas:"hd hd" "list stage" "list side" "tr tr"}
 .hd{grid-area:hd;display:flex;align-items:center;gap:16px;flex-wrap:nowrap;overflow:hidden}.hd .snd{flex:none;flex-wrap:nowrap}.hd h1{flex:none}.hd h1{font-size:22px;white-space:nowrap}.sub{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .list{grid-area:list;flex-direction:column;overflow-y:auto;overflow-x:hidden;padding:0}
-.list .g{padding:10px 4px 2px}.list .g:first-child{padding-top:0}
+.list .g{padding:10px 4px 2px}.list .g:first-child{padding-top:0}.list .g.gp{padding:6px 4px 0;font-weight:500;font-style:italic}.chip.sc{font-size:13px;line-height:1.25}.setcd{font:500 14px "Barlow Semi Condensed",sans-serif;color:var(--mute);margin:2px 0 4px;font-variant-numeric:tabular-nums}.setcd b{color:var(--ink);font-weight:600}
 .chip{width:100%;flex:none;min-height:40px;padding:7px 12px;font-size:14px}
 .stage{grid-area:stage;min-height:0;position:relative}
 .fig{flex:1;aspect-ratio:auto;max-height:none;min-height:0}
@@ -171,7 +171,7 @@ body.expm .fig{user-select:none;-webkit-user-select:none}body.expm .fig>svg{touc
 @media(prefers-reduced-motion:reduce){.bt i{transition:none}}
 </style></head><body>
 <div class="app">
-<header class="hd"><h1>Xone:96 + CDJ-3000 transition lab</h1><div class="snd"><button id="sndBtn" aria-pressed="false" title="Play the techniques on real audio">Sound off</button><label>CDJ 2 <select id="trkA" aria-label="Track on CDJ 2"></select></label><label>CDJ 3 <select id="trkB" aria-label="Track on CDJ 3"></select></label><button id="miBtn" title="Connect a MIDI controller such as the DDJ-FLX4">MIDI</button><button id="libBtn" title="Load tracks from your rekordbox collection">Rekordbox library</button><span id="sndSt"></span></div><p class="sub">CDJ 2 → CH 2 · CDJ 3 → CH 3 · no send FX · 16-bar demos, time compressed · Space play/pause · ← → steps</p></header>
+<header class="hd"><h1>Xone:96 + CDJ-3000 transition lab</h1><div class="snd"><button id="sndBtn" aria-pressed="false" title="Play the techniques on real audio">Sound off</button><label>CDJ 2 <select id="trkA" aria-label="Track on CDJ 2"></select></label><label>CDJ 3 <select id="trkB" aria-label="Track on CDJ 3"></select></label><button id="miBtn" title="Connect a MIDI controller such as the DDJ-FLX4">MIDI</button><button id="libBtn" title="Load tracks from your rekordbox collection">Rekordbox library</button><button id="setBtn" title="Import a set sheet (.md) from the set builder and practise every change">Set sheet</button><input type="file" id="setFile" accept=".md,.markdown,.txt,text/markdown,text/plain" hidden><span id="sndSt"></span></div><p class="sub">CDJ 2 → CH 2 · CDJ 3 → CH 3 · no send FX · 16-bar demos, time compressed · Space play/pause · ← → steps</p></header>
 <div class="mipanel" id="mipanel" hidden role="dialog" aria-label="MIDI controller"><div class="libhd"><b>MIDI controller</b><button id="miclose" aria-label="Close">✕</button></div>
 <p class="mist" id="mist">Looking for controllers…</p>
 <p class="exs">Chrome or Edge. Quit rekordbox first so it doesn’t react to the same moves. The DDJ-FLX4 is mapped automatically: deck 1 drives CDJ 2 / CH 2, deck 2 drives CDJ 3 / CH 3. Moves play in Practice → Try it and the Beatmatch trainer; in Explore, touching a control shows what it is.</p>
@@ -193,7 +193,7 @@ body.expm .fig{user-select:none;-webkit-user-select:none}body.expm .fig>svg{touc
 <div class="under"><div class="views" id="views" role="toolbar" aria-label="Zoom"></div><div class="exz" role="toolbar" aria-label="Zoom in Explore"><button id="exZo" aria-label="Zoom out">−</button><button id="exZi" aria-label="Zoom in">+</button><button id="exZf">Fit</button></div><div class="pill" id="pill">Tap any control for its name and value</div></div>
 </section>
 <aside class="side">
-<div class="card nowc"><div class="tt" id="tt"></div><p class="now" id="now" aria-live="polite"></p><ul class="chg" id="chg" aria-label="What changes in this step"></ul></div>
+<div class="card nowc"><div class="tt" id="tt"></div><div class="setcd" id="setcd" hidden></div><p class="now" id="now" aria-live="polite"></p><ul class="chg" id="chg" aria-label="What changes in this step"></ul></div>
 <div class="card"><h2>Who owns each band</h2><div id="bands"></div>
 <div class="legend"><span><i style="background:var(--a)"></i>CDJ 2 → CH 2</span><span><i style="background:var(--b)"></i>CDJ 3 → CH 3</span></div></div>
 <div class="card prc" id="tryc"><div class="tt" id="trytt">Try it</div>
@@ -808,7 +808,10 @@ const hz=v=>{const f=20*Math.pow(1000,v);return f>=1000?(f/1000).toFixed(1)+' kH
 /* UI */
 const chips=$('chips');
 const GRP={T:'Transitions',L:'Low-end swaps',P:'Phrasing & performance'};
-chips.innerHTML=TECH.map((x,i)=>(i===0||TECH[i-1].g!==x.g?`<span class="g">${GRP[x.g]}</span>`:'')+`<button class="chip" data-i="${i}" aria-pressed="false"><span>${x.g}${x.n}</span>${x.title}</button>`).join('');
+const SET={name:'',rows:[],layers:{}};
+const sEsc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function renderChips(){let h='',lg='',lp='';TECH.forEach((x,i)=>{if(x.g!==lg){h+=`<span class="g">${x.g==='S'?'Set · '+sEsc(SET.name):GRP[x.g]}</span>`;lg=x.g;lp=''}if(x.g==='S'&&x.phase&&x.phase!==lp){h+=`<span class="g gp">${sEsc(x.phase)}</span>`;lp=x.phase}h+=`<button class="chip${x.g==='S'?' sc':''}" data-i="${i}" aria-pressed="${typeof T!=='undefined'&&x===T}"><span>${x.g}${x.n}</span>${sEsc(x.title)}</button>`});chips.innerHTML=h}
+renderChips();
 const bandsEl=$('bands');bandsEl.innerHTML=BANDS.map(b=>`<div class="row"><span>${b[0]}</span><div class="bt"><i class="ba"></i><i class="bb"></i></div><span class="fl"></span></div>`).join('');
 const rows=[...bandsEl.querySelectorAll('.row')].map(r=>({a:r.querySelector('.ba'),b:r.querySelector('.bb'),f:r.querySelector('.fl')}));
 const VB={rig:[541,0,1614,RH],all:[0,0,RW,RH],mixer:[1072,90,552,630],A:[541,0,521,RH],B:[1634,0,521,RH],C:[0,0,521,RH],D:[2175,0,521,RH]};let customBox=null,snap=false,exView=null;window.__lab={box(b){customBox=b;snap=true},clear(){customBox=null}};
@@ -820,13 +823,13 @@ function syncViews(){for(const b of views.children){const k=b.dataset.v;b.setAtt
 views.onclick=e=>{const k=e.target.dataset?.v;if(!k)return;customBox=null;exView=null;if(k==='follow')follow=!follow;else{userView=k;follow=false}syncViews()};
 let lastPrim=null,lastPrimT=null,measured=false,primSet=new Set(),curStep=-1,mode='anim',segEnd=null,chgSet=new Set();
 const ctlNum=(c,S)=>c.type==='btn'?+!!c.test(S[c.key],S):S[c.key];
-const KN={hi:'HI',hm:'HI MID',lm:'LO MID',lo:'LO',fader:'fader',fa:'FILTER assign',x:'XFADER assign',on:'ON',mode:'mode',freq:'FREQ',res:'RES',crunch:'CRUNCH',play:'play',loop:'loop',hot:'hot cue A'};
-function keyName(k){if(k==='tempo')return'Mix tempo';if(/\.spd$/.test(k))return(k[0]==='A'?'CDJ 2':'CDJ 3')+' brake';if(k==='xf')return'Crossfader';if(k==='curve')return'Crossfader curve';const[a,b]=k.split('.');const who=a[0]==='c'?'CH '+a.slice(1):a[0]==='f'?'Filter '+a.slice(1):a==='A'?'CDJ 2':'CDJ 3';return who+' '+(KN[b]||b)}
+const KN={hi:'HI',hm:'HI MID',lm:'LO MID',lo:'LO',gain:'GAIN',fader:'fader',fa:'FILTER assign',x:'XFADER assign',on:'ON',mode:'mode',freq:'FREQ',res:'RES',crunch:'CRUNCH',play:'play',loop:'loop',hot:'hot cue A'};
+function keyName(k){if(k==='tempo')return'Mix tempo';if(/\.spd$/.test(k))return DLBL(k[0])+' brake';if(k==='xf')return'Crossfader';if(k==='curve')return'Crossfader curve';const[a,b]=k.split('.');const who=a[0]==='c'?'CH '+a.slice(1):a[0]==='f'?'Filter '+a.slice(1):DLBL(a);return who+' '+(KN[b]||b)}
 function fmtV(k,v){const b=k.split('.')[1]||k;if(k==='tempo')return'+'+((mixR()-1)*v*100).toFixed(1)+' %';if(b==='spd')return Math.round(v*100)+'% speed';if(/^(hi|lo|hm|lm|gain)$/.test(b))return v<=-39.5?(b==='gain'?'off':'full kill'):(v>0?'+':'')+Math.round(v)+' dB';if(b==='fader')return(v*10).toFixed(1)+'/10';if(b==='freq')return hz(v);if(b==='res'||b==='crunch')return Math.round(v*100)+'%';if(b==='fa')return v?'Filter '+v:'off';if(b==='on')return v?'on':'off';if(b==='play')return v?'playing':'paused';if(b==='loop'){if(!(v>0))return'off';const bt=v*4;return bt>=1?bt+' beats':'1/'+Math.round(1/bt)+' beat'}if(b==='hot')return v?'set':'none';if(k==='xf')return v<.05?'full X':v>.95?'full Y':Math.round(v*100)+'% to Y';return String(v)}
 function stepRange(j){const a=T.steps[j][0],b=(T.steps[j+1]?T.steps[j+1][0]:T.bars)-.002;return[a,b]}
 function computeChanges(j){const[a,b]=stepRange(j),Sa=state(Math.max(0,a-.04)),Sb=state(b);chgSet=new Set(CTL.filter(c=>ctlNum(c,Sa)!==ctlNum(c,Sb)).map(c=>c.id));
 const starts=k=>{const tr=T.tracks[k];if(!tr)return false;const st=STEPK.test(k);return tr.some((f,i)=>f[0]>=a-.05&&f[0]<b&&(st||typeof f[1]!=='number'?(i>0&&tr[i-1][1]!==f[1])||(i===0&&f[1]!==(k in T.setup?T.setup[k]:DEF[k])):(i+1<tr.length&&Math.abs(tr[i+1][1]-f[1])>1e-6)))};primSet=new Set(CTL.filter(c=>chgSet.has(c.id)&&starts(c.key)).map(c=>c.id));if(!primSet.size)primSet=chgSet;if(!primSet.size&&lastPrim&&lastPrimT===T.id)primSet=lastPrim;if(primSet.size){lastPrim=primSet;lastPrimT=T.id}
-const out=[];for(const k in DEF){const x=Sa[k],y=Sb[k];if(typeof x==='number'?Math.abs(x-y)>.005:x!==y){const cls=/^(c2|A|f1)/.test(k)?'':/^(c3|B|f2)/.test(k)?'b':'n';out.push([cls,`${keyName(k)}: ${fmtV(k,x)} → ${fmtV(k,y)}`,starts(k)])}}
+const out=[];for(const k in DEF){const x=Sa[k],y=Sb[k];if(typeof x==='number'?Math.abs(x-y)>.005:x!==y){const[q0,q1]=T.pair||['A','B'],cls=k.startsWith(DCH[q0]+'.')||k.startsWith(q0+'.')||k.startsWith('f1')?'':k.startsWith(DCH[q1]+'.')||k.startsWith(q1+'.')||k.startsWith('f2')?'b':'n';out.push([cls,`${keyName(k)}: ${fmtV(k,x)} → ${fmtV(k,y)}`,starts(k)])}}
 const prim=out.filter(o=>o[2]),cont=out.filter(o=>!o[2]);const ul=$('chg');ul.innerHTML=prim.map(o=>`<li class="${o[0]}"></li>`).join('')+(cont.length?'<li class="cont"></li>':'');[...ul.children].forEach((li,i)=>li.textContent=i<prim.length?prim[i][1]:'Still moving: '+cont.map(o=>o[1].split(':')[0]).join(', '))}
 function setPlayLabel(){$('play').textContent=mode==='step'&&!playing?(curStep<T.steps.length-1?'Next step':'From top'):playing?'Pause':'Play'}
 function goStep(j){j=Math.max(0,Math.min(T.steps.length-1,j));t=T.steps[j][0]+.001;segEnd=stepRange(j)[1];playing=true;setPlayLabel()}
@@ -843,7 +846,7 @@ for(const c of CTL){let bb=rb(c.el);if((c.type==='fader'||c.type==='xf')&&c.cap)
 function autoBox(){const cs=CTL.filter(c=>primSet.has(c.id)&&c.bb);if(!cs.length)return VB.mixer;let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;for(const c of cs){x0=Math.min(x0,c.bb[0]);y0=Math.min(y0,c.bb[1]);x1=Math.max(x1,c.bb[2]);y1=Math.max(y1,c.bb[3])}x0-=24;y0-=24;x1+=24;y1+=24;let w=Math.max(190,x1-x0),h=Math.max(140,y1-y0);const cx=(x0+x1)/2,cy=(y0+y1)/2;w=Math.min(RW,w);h=Math.min(RH,h);return[Math.max(0,Math.min(RW-w,cx-w/2)),Math.max(0,Math.min(RH-h,cy-h/2)),w,h]}
 function fit(v){const r=figEl.clientWidth/Math.max(1,figEl.clientHeight);let[x,y,w,h]=v;if(DESK.matches){const pd=h*.17;y-=pd;h+=pd}if(w/h<r){const nw=Math.min(RW,h*r),cx=x+w/2;x=Math.max(0,Math.min(RW-nw,cx-nw/2));w=nw}else if(w/h>r){const nh=Math.min(RH*1.2,w/r),cy=y+h/2;y=cy-nh/2;h=nh}return[x,y,w,h]}
 function pick(i){T=TECH[i];t=0;curStep=-1;for(const c of CTL)c.last=undefined;for(const b of chips.querySelectorAll('.chip'))b.setAttribute('aria-pressed',b.dataset.i==i);
-$('tt').textContent=`${T.g}${T.n} · ${T.title}`;$('now').textContent='';$('why').textContent=T.why;$('gear').textContent='On the gear: '+T.gear;cueSrc();
+$('tt').textContent=`${T.g}${T.n} · ${T.title}`;{const[p0,p1]=T.pair||['A','B'],lg=document.querySelector('.legend');if(lg)lg.innerHTML=`<span><i style="background:var(--a)"></i>${DLBL(p0)} → CH ${DCH[p0].slice(1)}</span><span><i style="background:var(--b)"></i>${DLBL(p1)} → CH ${DCH[p1].slice(1)}</span>`}if(AU.on||T.set)auRates();if(T.set)setAutoLoad(T);{const cb=chips.querySelector(`.chip[data-i="${i}"]`);if(cb&&cb.scrollIntoViewIfNeeded)cb.scrollIntoViewIfNeeded()}$('now').textContent='';$('why').textContent=T.why;$('gear').textContent='On the gear: '+T.gear;cueSrc();
 $('steps').innerHTML=T.steps.map((s,j)=>`<li data-j="${j}"><b>Bar ${Math.floor(s[0])+1}${s[0]%1?'.'+(Math.floor((s[0]%1)*4)+1):''}</b><span></span></li>`).join('');
 [...$('steps').children].forEach((li,j)=>li.lastChild.textContent=T.steps[j][1]);
 $('scrub').max=T.bars;playing=true;if(mode==='step')goStep(0);else{segEnd=null;setPlayLabel()}}
@@ -930,7 +933,7 @@ function cueSrc(){const el=$('cuesrc');if(!el)return;const A=AU.trk.A,B=AU.trk.B
  const one=(d,tr)=>{if(!tr)return'';const b=startBar(d);return`CDJ ${d==='A'?1:2} starts at bar ${b+1}${pad(tr,b)}: ${ROLE_TXT[role(d)]}.`};
  el.textContent='On your tracks: '+[one('A',A),one('B',B)].filter(Boolean).join(' ');el.hidden=false}
 function roleOf(d){if(T.roles&&T.roles[d])return T.roles[d];return d==='A'?'mixOut':T.id==='t5'?'drop':T.id==='l5'?'kickIntro':/^l[1-4]$/.test(T.id)?'bassSwap':'mixIn'}
-function startBar(d){const tr=AU.trk[d];if(!tr)return T.start[d];const c=tr.cues[roleOf(d)];return Math.max(0,Math.min(tr.bars-(T.bars+2),c??T.start[d]))}
+function startBar(d){const tr=AU.trk[d];if(!tr)return T.start[d];if(T.set){const sb=setSecBar(d);if(sb!=null)return Math.min(sb,Math.max(0,tr.bars-2))}const c=tr.cues[roleOf(d)];return Math.max(0,Math.min(tr.bars-(T.bars+2),c??T.start[d]))}
 /* --- mix tempo: 'tempo' goes 0 → 1 from CDJ 2's tempo to CDJ 3's own (or +4 % when they match) --- */
 function mixR(){const A=AU.trk.A,B=AU.trk.B,r=A&&B?B.bpm/A.bpm:1;return Math.abs(r-1)>.005?r:1.04}
 function mixF(S){return 1+(S.tempo||0)*(mixR()-1)}
@@ -977,7 +980,7 @@ async function auAssign(d,id){const meta=AU.lib.find(m=>m.id===id);if(!meta)retu
  try{const tr=await auLoad(meta);AU.trk[d]=tr;auStop(d);auRates();
   for(const k of DECKS)auScreenInfo(k);cueSrc();miLeds();auStatus(AU.on?'':'Sound is off');}catch(e){auStatus('Could not load '+(meta.title||meta.file)+': '+e.message)}}
 function auStatus(s){const el=$('sndSt');if(el)el.textContent=s}
-function auRates(){const R=AU.trk[AU.ref]||AU.trk.A;for(const d of DECKS){const tr=AU.trk[d];AU.rate[d]=R&&tr?R.bpm/tr.bpm:1}if(AU.on)P.barSec=240/(R?R.bpm:130)}
+function auRates(){if(T&&T.set&&T.playAt){for(const d of DECKS){const tr=AU.trk[d];AU.rate[d]=tr?T.playAt/tr.bpm:1}if(AU.on)P.barSec=240/T.playAt;for(const k of DECKS)if(AU.trk[k])auScreenInfo(k);return}const R=AU.trk[AU.ref]||AU.trk.A;for(const d of DECKS){const tr=AU.trk[d];AU.rate[d]=R&&tr?R.bpm/tr.bpm:1}if(AU.on)P.barSec=240/(R?R.bpm:130)}
 function auLock(on){const P0=AU.p0||(AU.p0={speed:P.speed,barSec:P.barSec});if(on){P.speed=1;P.barSec=240/((AU.trk[AU.ref]||AU.trk.A)?(AU.trk[AU.ref]||AU.trk.A).bpm:130)}else{P.speed=P0.speed;P.barSec=P0.barSec;AU.p0=null}
  for(const id of['spd','bar','real']){const el=$(id);if(el)el.disabled=on}$('spd').value=P.speed;$('spdo').textContent=P.speed.toFixed(2)+'×';$('bar').value=P.barSec;$('baro').textContent=P.barSec.toFixed(2)+' s'}
 async function auToggle(){if(!AU.ctx)auGraph();AU.on=!AU.on;const b=$('sndBtn');b.setAttribute('aria-pressed',AU.on);b.textContent=AU.on?'Sound on':'Sound off';
@@ -1013,8 +1016,8 @@ function prTick(adt){PR._dt=adt;if(!PR.run){PR.held();return}
  else if(PR.kind==='beat')PR.beat.tick(db)}
 PR.tick=prTick;
 /* keyboard-held moves (faders, filter FREQ) */
-const HOLD={e:['c2.fader',1],d:['c2.fader',-1],i:['c3.fader',1],k:['c3.fader',-1],t:['f1.freq',1],g:['f1.freq',-1],y:['f2.freq',1],h:['f2.freq',-1]};
-PR.held=()=>{if(PR.kind!=='try')return;const dt=PR._dt||0;for(const ch of PR.keys){const h=HOLD[ch];if(!h)continue;const[k,s]=h;prSet(k,Math.max(0,Math.min(1,prVal(k)+s*dt/(k.endsWith('fader')?2.5:3))))}};
+const HOLD={e:[0,1],d:[0,-1],i:[1,1],k:[1,-1],t:['f1.freq',1],g:['f1.freq',-1],y:['f2.freq',1],h:['f2.freq',-1]};
+PR.held=()=>{if(PR.kind!=='try')return;const dt=PR._dt||0;for(const ch of PR.keys){const h=HOLD[ch];if(!h)continue;let[k,s]=h;if(typeof k==='number')k=DCH[(T.pair||['A','B'])[k]]+'.fader';prSet(k,Math.max(0,Math.min(1,prVal(k)+s*dt/(k.endsWith('fader')?2.5:3))))}};
 function prVal(k){return k in PR.user?PR.user[k]:state(Math.max(0,t))[k]}
 function prSet(k,v){if(PR.kind!=='try')return;PR.user[k]=v}
 /* deck actions, as on the CDJ-3000 */
@@ -1068,11 +1071,11 @@ function prTryStart(){if(!AU.on)auToggle();PR.kind='try';PR.live=true;PR.user={}
  PR.rec=[];PR.clips=0;PR.last=null;$('tryres').hidden=true;t=-1;prInitDeck(1);PR.run=true;playing=true;curStep=-1;setTryLabel();prLegend()}
 function prTryStop(){PR.run=false;playing=false;setTryLabel()}
 function setTryLabel(){const b=$('trygo');if(b)b.textContent=PR.run?'Stop':PR.last?'Run again':'Start'}
-function prLegend(){const ks=new Set(Object.keys(T.tracks));const L=[];const has=k=>ks.has(k);
+function prLegend(){const ks=new Set(Object.keys(T.tracks));const L=[];const has=k=>ks.has(k);const[P0,P1]=T.pair||['A','B'],k0=DCH[P0],k1=DCH[P1],n0=k0.slice(1),n1=k1.slice(1);
  const row=(a,b)=>L.push(`<span><kbd>${a}</kbd> ${b}</span>`);
- if(has('c2.hi')||has('c3.hi'))row('Q / P','HI kill CH 2 / CH 3');if(has('c2.hm')||has('c2.lm')||has('c3.hm')||has('c3.lm'))row('A / L','mids CH 2 / CH 3');if(has('c2.lo')||has('c3.lo'))row('Z / M','LO kill CH 2 / CH 3');
- if(has('c2.fader')||has('c3.fader'))row('E D / I K','faders up/down');if(has('f1.on')||has('f1.freq'))row('R · T G','Filter 1 on · FREQ');if(has('f2.on')||has('f2.freq'))row('U · Y H','Filter 2 on · FREQ');
- if(has('xf'))row('V / N','crossfader to X / Y');if(has('A.loop')||has('A.play'))row('1 2 3 4 5','CDJ 2: PLAY · 4 · 8 · EXIT · pad H');if(has('B.loop')||has('B.play'))row('7 8 9 0','CDJ 3: PLAY · 4 · 8 · EXIT');
+ if(has(k0+'.hi')||has(k1+'.hi'))row('Q / P',`HI kill CH ${n0} / CH ${n1}`);if(has(k0+'.hm')||has(k0+'.lm')||has(k1+'.hm')||has(k1+'.lm'))row('A / L',`mids CH ${n0} / CH ${n1}`);if(has(k0+'.lo')||has(k1+'.lo'))row('Z / M',`LO kill CH ${n0} / CH ${n1}`);
+ if(has(k0+'.fader')||has(k1+'.fader'))row('E D / I K','faders up/down');if(has('f1.on')||has('f1.freq'))row('R · T G','Filter 1 on · FREQ');if(has('f2.on')||has('f2.freq'))row('U · Y H','Filter 2 on · FREQ');
+ if(has('xf'))row('V / N','crossfader to X / Y');if(has(P0+'.loop')||has(P0+'.play'))row('1 2 3 4 5',DLBL(P0)+': PLAY · 4 · 8 · EXIT · pad H');if(has(P1+'.loop')||has(P1+'.play'))row('7 8 9 0',DLBL(P1)+': PLAY · 4 · 8 · EXIT');
  $('trykeys').innerHTML=L.join('')||'<span>Use the mouse or touch on the drawing.</span>'}
 /* what to do next, with a countdown */
 function prCoach(){if(PR.kind!=='try')return;const st=T.steps;let i=0;st.forEach((s,j)=>{if(t>=s[0])i=j});const nx=st.find(s=>s[0]>t+.01);
@@ -1108,10 +1111,10 @@ document.addEventListener('keydown',e=>{if(!PR.live||/INPUT|SELECT/.test(documen
  if(PR.kind==='beat'){if(PR.beat.key(e,true)){e.preventDefault();e.stopImmediatePropagation()}return}
  if(e.code==='Space'){e.preventDefault();e.stopImmediatePropagation();PR.run?prTryStop():prTryStart();return}
  if(e.repeat){if(HOLD[k]){e.preventDefault();e.stopImmediatePropagation()}return}
- const tog=(key,b)=>{const v=prVal(key);prSet(key,v>KILL[b]/2?KILL[b]:0)};
- const act={q:()=>tog('c2.hi','hi'),p:()=>tog('c3.hi','hi'),z:()=>tog('c2.lo','lo'),m:()=>tog('c3.lo','lo'),a:()=>{tog('c2.hm','hm');tog('c2.lm','lm')},l:()=>{tog('c3.hm','hm');tog('c3.lm','lm')},
+ const[P0,P1]=T.pair||['A','B'],k0=DCH[P0],k1=DCH[P1];const tog=(key,b)=>{const v=prVal(key);prSet(key,v>KILL[b]/2?KILL[b]:0)};
+ const act={q:()=>tog(k0+'.hi','hi'),p:()=>tog(k1+'.hi','hi'),z:()=>tog(k0+'.lo','lo'),m:()=>tog(k1+'.lo','lo'),a:()=>{tog(k0+'.hm','hm');tog(k0+'.lm','lm')},l:()=>{tog(k1+'.hm','hm');tog(k1+'.lm','lm')},
   r:()=>prSet('f1.on',prVal('f1.on')?0:1),u:()=>prSet('f2.on',prVal('f2.on')?0:1),v:()=>prSet('xf',0),n:()=>prSet('xf',1),
-  '1':()=>prDeck('A','play'),'2':()=>prDeck('A','bl4'),'3':()=>prDeck('A','bl8'),'4':()=>prDeck('A','exit'),'5':()=>prDeck('A','pad','H'),'7':()=>prDeck('B','play'),'8':()=>prDeck('B','bl4'),'9':()=>prDeck('B','bl8'),'0':()=>prDeck('B','exit')}[k];
+  '1':()=>prDeck(P0,'play'),'2':()=>prDeck(P0,'bl4'),'3':()=>prDeck(P0,'bl8'),'4':()=>prDeck(P0,'exit'),'5':()=>prDeck(P0,'pad','H'),'7':()=>prDeck(P1,'play'),'8':()=>prDeck(P1,'bl4'),'9':()=>prDeck(P1,'bl8'),'0':()=>prDeck(P1,'exit')}[k];
  if(act&&PR.kind==='try'){act();e.preventDefault();e.stopImmediatePropagation()}else if(HOLD[k]){PR.keys.add(k);e.preventDefault();e.stopImmediatePropagation()}},true);
 document.addEventListener('keyup',e=>{if(!PR.live)return;PR.keys.delete(e.key.toLowerCase());if(PR.kind==='beat')PR.beat.key(e,false)},true);
 /* beatmatching trainer */
@@ -1185,13 +1188,97 @@ function libRender(){const st=$('libst'),ul=$('liblist');if(!st)return;const hav
 async function libLoad(d,i){const tk=LIB.tracks[i],f=libFile(tk);if(!f)return;const id='rb:'+tk.rid;let m=AU.lib.find(x=>x.id===id);
  if(!m){m={id,file:URL.createObjectURL(f),title:tk.title,artist:tk.artist,bpm:tk.bpm,key:tk.key,firstBeat:tk.firstBeat,hotcues:tk.hotcues,memory:tk.memory,cues:tk.cues,rb:true};AU.lib.push(m);
   for(const dd of'AB'){const s=$('trk'+dd),o=document.createElement('option');o.value=id;o.textContent='Rekordbox · '+tk.title+(tk.artist?' · '+tk.artist:'')+` (${[tk.key,tk.bpm].filter(Boolean).join(' · ')})`;s.append(o)}}
- $('trk'+d).value=id;await auAssign(d,id);libRender()}
+ if($('trk'+d))$('trk'+d).value=id;await auAssign(d,id);libRender()}
 function libInit(){$('libBtn').onclick=()=>{$('libdlg').hidden=false;libRender()};$('libclose').onclick=()=>{$('libdlg').hidden=true};
  $('libxml').onchange=async e=>{const f=e.target.files[0];if(!f)return;try{const r=libParse(await f.text());LIB.tracks=r.tracks;LIB.lists=r.lists;LIB.sel='all'}catch(err){$('libst').textContent='Could not read it: '+err.message;return}libRender()};
  $('libdir').onchange=e=>libFiles(e.target.files);$('libq').oninput=e=>{LIB.q=e.target.value;libRender()};$('libpl').onchange=e=>{LIB.sel=e.target.value;libRender()};
  $('libcompat').onchange=e=>{LIB.compat=e.target.checked;libRender()};$('liblist').onclick=e=>{const b=e.target.closest('button[data-d]');if(b)libLoad(b.dataset.d,+b.dataset.i)}}
 libInit();
 /* ==== REGION library END ==== */
+/* ==== REGION set ==== */
+/* Set mode: import a dj-set-builder set sheet (markdown) and practise every change in it.
+   One drill per change, generated from the sheet's Start next, Bass in / Bass out, the change type in the
+   Note column (blend, SWAP, CUT, "cut its lows late") and the trim notes. Sheet deck n plays on CDJ n / CH n.
+   With the rekordbox library open, each drill loads its two tracks and starts them at the sheet's times. */
+const tsec=s=>{const m=String(s||'').match(/(\d+):(\d{2})/);return m?+m[1]*60+ +m[2]:null};
+const fmtT=s=>{s=Math.max(0,s);return Math.floor(s/60)+':'+String(Math.floor(s%60)).padStart(2,'0')};
+const sNorm=s=>String(s||'').toLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g,'').replace(/\(.*?\)|\[.*?\]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
+function setParse(md){const L=md.split(/\r?\n/);const h1=L.find(l=>/^# /.test(l));const name=h1?h1.replace(/^# /,'').replace(/\s*·\s*set sheet.*$/i,''):'Set';
+ const rows=[],layers={};let phase='',hdr=null;
+ for(const l of L){if(!/^\s*\|/.test(l))continue;const c=l.trim().split('|').slice(1,-1).map(x=>x.trim());if(!c.length||/^:?-+:?$/.test(c[0]))continue;
+  if(c[0]==='Clock'){hdr='set';continue}if(c[0]==='Lead'&&c[1]==='Layer'){hdr='lay';continue}if(c[0]==='Phase'){hdr=null;continue}
+  if(hdr==='set'){const ph=c[0].match(/^\*\*[\d:]+\s+(.+?)\*\*$/);if(ph){const p=ph[1].split(' · ')[0].toLowerCase();phase=p.charAt(0).toUpperCase()+p.slice(1);continue}
+   if(c.length<15||!+c[2])continue;const layer=/layer/i.test(c[1]);
+   rows.push({clock:c[0],n:layer?null:+c[1],layer,deck:+c[2],key:c[3],playAt:+c[4]||null,title:c[5],artist:c[6],E:+c[7]||0,B:tsec(c[8]),C:tsec(c[9]),bi:tsec(c[10]),bo:tsec(c[11]),sn:tsec(c[12]),snBars:+((c[12].match(/\((\d+) bars?\)/)||[])[1])||null,H:tsec(c[13]),note:c[14]||'',phase})}
+  else if(hdr==='lay'&&c.length>=7){const m=c[2].match(/in at lead bar (\d+) \(([\d:]+) on the lead\)/);const ks=(c[6].match(/Key Shift ([+\-−]?\d+) on the layer/)||[])[1];
+   layers[sNorm(c[1])]={lead:c[0],inBar:m?+m[1]:null,inSec:m?tsec(m[2]):null,adds:c[4],club:c[6],thin:/keep the layer thin/.test(c[2]),ks:ks?ks.replace('−','-'):null}}}
+ return{name,rows,layers,two:rows.length>0&&rows.every(r=>r.deck<=2)}}
+const sCut=(b,a,z)=>[[b,a],[b+.03,z]];
+function sTrim(note){const m=note.match(/([+\-−]\d+) dB vs previous: trim (down|up)/);if(m)return Math.max(-12,Math.min(10,-parseInt(m[1].replace('−','-'))));return/clips \(/.test(note)?-3:0}
+function sBase(X,Y,extra){const setup={'A.play':0,'B.play':0,'C.play':0,'D.play':0,'c1.fader':0,'c2.fader':0,'c3.fader':0,'c4.fader':0};setup[X+'.play']=1;setup[DCH[X]+'.fader']=.8;return Object.assign(setup,extra||{})}
+const sDeck=n=>(SET.two?{1:'A',2:'B'}:DBY)[n];
+function setChange(a,b,k){const X=sDeck(a.deck),Y=sDeck(b.deck);if(!X||!Y||X===Y)return null;const nX=DNUM[X],nY=DNUM[Y],cX=DCH[X],cY=DCH[Y];
+ const bpm=a.playAt||b.playAt||130,bar=240/bpm,note=b.note;const type=/\bSWAP:/.test(note)?'swap':/\bCUT:/.test(note)?'cut':'blend';const late=/cut its lows late/.test(note),hold=/= hold|YOUR PAIR|long blend/.test(note);
+ let sn=a.sn,N=a.snBars,est=false;if(sn==null){const base=a.bo!=null?a.bo:a.H;N=8;sn=base!=null?base-N*bar:null;est=true}N=Math.max(4,N||8);
+ const sw=8+N,s=sw+(late?4:0),g=sTrim(note);const tX=bb=>sn==null?null:sn+(bb-8)*bar,tY=bb=>b.B==null?null:b.B+(bb-8)*bar,at=(f,bb)=>{const v=f(bb);return v==null?'':` (${fmtT(v)})`};
+ const tracks={[Y+'.play']:[[0,0],[8,1]]},steps=[];let setup,bars;
+ const trimTxt=g?` Set CH ${nY} GAIN to ${g>0?'+':'−'}${Math.abs(g)} dB${/clips \(/.test(note)&&!/vs previous/.test(note)?' (it clips: keep it down)':` (${g<0?'it is louder than':'it is quieter than'} ${a.title})`}.`:'';
+ if(g)tracks[cY+'.gain']=[[2,0],[4,g]];
+ steps.push([0,`CDJ ${nX} plays ${a.title}${at(tX,0)}. ${b.title} is loaded on CDJ ${nY}, cued on pad B${b.B!=null?' ('+fmtT(b.B)+')':''}.${trimTxt}`]);
+ if(type==='cut'){setup=sBase(X,Y);bars=s+4;
+  tracks[cX+'.fader']=sCut(s,.8,0);tracks[cY+'.fader']=sCut(s,0,.8);
+  steps.push([8,`CDJ ${nX} reaches Start next${at(tX,8)}${est?' (estimated)':''}: press B on CDJ ${nY}. Keep CH ${nY} closed and listen to it in the headphones.`]);
+  steps.push([s,`Cut on the 1${at(tX,s)}: CH ${nX} fader down and CH ${nY} fader up in one move. The keys are a semitone apart, so they never overlap. Key Shift ±1 on CDJ ${nY} is the alternative if you want a blend.`])}
+ else if(type==='swap'){setup=sBase(X,Y,{[cY+'.hi']:-40,[cY+'.hm']:-27,[cY+'.lm']:-27,[cY+'.lo']:-40});bars=sw+4;
+  tracks[cY+'.fader']=[[8,0],[9,.8]];tracks[cY+'.hi']=[[9,-40],[sw-2,0]];tracks[cY+'.hm']=[[9,-27],[sw-2,0]];
+  tracks[cX+'.hm']=[[sw-4,0],[sw-1,-27]];tracks[cX+'.lm']=[[sw-4,0],[sw-1,-27]];
+  tracks[cX+'.lo']=sCut(sw,0,-40);tracks[cY+'.lo']=sCut(sw,-40,0);tracks[cY+'.lm']=sCut(sw,-27,0);tracks[cX+'.fader']=[[sw,.8],[sw+2,0]];
+  steps.push([8,`Start next${at(tX,8)}${est?' (estimated)':''}: press B on CDJ ${nY} and open CH ${nY} with every band down.`]);
+  steps.push([9,`Bring CH ${nY} HI and HI MID up over ${sw-11} bars. This is a key ${/minor-third/.test(note)?'minor-third':'whole-tone'} ${/⇊|drop/.test(note)?'drop':'lift'}, so keep the overlap short.`]);
+  steps.push([sw-4,`Strip CH ${nX} to drums: HI MID and LO MID down over 3 bars.`]);
+  steps.push([sw,`Swap on the 1: CDJ ${nX} Bass out${a.bo!=null?' '+fmtT(a.bo):''} meets CDJ ${nY} Bass in${b.bi!=null?' '+fmtT(b.bi):''}. CH ${nX} LO out, CH ${nY} LO and LO MID in, then close CH ${nX} over 2 bars. No layer on the change.`])}
+ else{setup=sBase(X,Y,{[cY+'.hi']:-40,[cY+'.lo']:-40});const fe=hold?8:4;bars=s+2+fe+1;
+  tracks[cY+'.fader']=[[8,0],[10,.8]];const hiEnd=Math.max(12,Math.min(sw-1,10+Math.round(N/2)));tracks[cY+'.hi']=[[10,-40],[hiEnd,0]];
+  tracks[cX+'.lo']=sCut(s,0,-40);tracks[cY+'.lo']=sCut(s,-40,0);tracks[cX+'.fader']=[[s+2,.8],[s+2+fe,0]];
+  steps.push([8,`Start next${at(tX,8)}${est?' (estimated: no Bass in marker on the next track)':''}: press B on CDJ ${nY}. Open CH ${nY} with its LO killed.`]);
+  steps.push([10,`Raise CH ${nY} HI over ${hiEnd-10} bars. ${hold?'Same key: a long blend, let the two tracks sit together.':`Key ${a.key} → ${b.key}.`}`]);
+  if(late)steps.push([sw,`The markers meet here${at(tX,sw)}, but the energy drops (${(note.match(/blend energy (\d→\d)/)||[])[1]||'down'}): keep CDJ ${nX}'s low end 4 bars longer.`]);
+  steps.push([s,`Bass swap on the 1${at(tX,s)}: CH ${nX} LO out, CH ${nY} LO in, one hand each.`]);
+  steps.push([s+2,`Fade CH ${nX} out over ${fe} bars. CDJ ${nX} is then free for the next load.`])}
+ steps.sort((p,q)=>p[0]-q[0]);
+ const why=`${b.phase}. ${a.key} → ${b.key} · ${a.playAt||'free'} → ${b.playAt||'free'} BPM · energy ${a.E} → ${b.E}. ${note.split(' · ').filter(x=>!/^MIK:/.test(x.trim())).join(' · ')}`;
+ return{id:'s'+k,g:'S',n:k,title:`${a.title} → ${b.title}`,phase:b.phase,pair:[X,Y],playAt:bpm,start:{A:32,B:0,C:32,D:0,[X]:32,[Y]:0},setup,tracks,steps,bars,
+  why,gear:`CDJ ${nX} → CH ${nX}, CDJ ${nY} → CH ${nY}. ${type==='cut'?'Channel faders.':'4-band EQ, GAIN, channel faders.'} Pad B on CDJ ${nY}.`,
+  set:{kind:type,a,b,sec:{[X]:sn==null?null:sn-8*bar,[Y]:b.B},tX,tY,nX,nY}}}
+function setLayer(lead,ly,k){const X=sDeck(lead.deck),Y=sDeck(ly.deck);if(!X||!Y||X===Y)return null;const nX=DNUM[X],nY=DNUM[Y],cX=DCH[X],cY=DCH[Y];
+ const info=SET.layers[sNorm(ly.title)]||{},bpm=lead.playAt||ly.playAt||130,bar=240/bpm,inS=info.inSec!=null?info.inSec:lead.C;
+ const g=info.thin?-6:-3,tX=bb=>inS==null?null:inS+(bb-8)*bar,at=bb=>{const v=tX(bb);return v==null?'':` (${fmtT(v)})`};
+ const setup=sBase(X,Y,{[cY+'.lo']:-40});
+ const tracks={[Y+'.play']:[[0,0],[8,1]],[cY+'.gain']:[[2,0],[4,g]],[cY+'.fader']:[[8,0],[12,.6],[32,.6],[36,0]],[cY+'.hm']:[[12,0],[16,-8]]};
+ const steps=[[0,`CDJ ${nX} leads with ${lead.title}${at(0)}. ${ly.title} is on CDJ ${nY}, cued on B. Kill CH ${nY} LO: the lead keeps the bassline.`],
+  [2,`Set CH ${nY} GAIN to −${Math.abs(g)} dB${info.thin?': the lead is at full strength, keep the layer thin':''}.`],
+  [8,`On the lead's phrase${at(8)}: press B on CDJ ${nY} and bring CH ${nY} up to about 6/10 over 4 bars.${info.ks?` The harmony sits better with Key Shift ${info.ks} on CDJ ${nY}.`:''}`],
+  [12,`Scoop CH ${nY} HI MID a little so the lead's melody stays in front. The layer adds ${info.adds||'texture'}.`],
+  [32,`Take the layer out over 4 bars, or leave it in and let it become the next track.`]];
+ return{id:'s'+k,g:'S',n:k,title:`Layer: ${ly.title} under ${lead.title}`,phase:ly.phase,pair:[X,Y],playAt:bpm,start:{A:32,B:0,C:32,D:0,[X]:32,[Y]:0},setup,tracks,steps,bars:38,
+  why:`${ly.phase}. ${ly.note} ${info.club?'Club (EQ): '+info.club:''}`.trim(),gear:`CDJ ${nX} → CH ${nX} leads, CDJ ${nY} → CH ${nY} layers. LO kill, GAIN, HI MID, fader.`,
+  set:{kind:'layer',a:lead,b:ly,sec:{[X]:inS==null?null:inS-8*bar,[Y]:ly.B},tX,tY:bb=>ly.B==null?null:ly.B+(bb-8)*bar,nX,nY}}}
+function setBuild(){for(let i=TECH.length-1;i>=0;i--)if(TECH[i].g==='S')TECH.splice(i,1);const out=[];let prev=null,k=0;
+ for(const r of SET.rows){if(r.layer){const info=SET.layers[sNorm(r.title)];const lead=info?SET.rows.find(x=>!x.layer&&sNorm(x.title)===sNorm(info.lead))||prev:prev;if(lead){const t=setLayer(lead,r,k+1);if(t){k++;out.push(t)}}continue}
+  if(prev){const t=setChange(prev,r,k+1);if(t){k++;out.push(t)}}prev=r}
+ TECH.unshift(...out);renderChips();$('setBtn').textContent=out.length?`Set: ${out.length} changes`:'Set sheet';return out.length}
+function setLoadText(md,save){const r=setParse(md);if(!r.rows.length){alert('No set table found in that file. Use a set sheet from the set builder (the table with Clock, Deck, Key, Play at…).');return}
+ Object.assign(SET,r);if(save)try{localStorage.setItem('xl_set',md)}catch(e){}const n=setBuild();const i=TECH.findIndex(x=>x.g==='S');if(mode==='try'||mode==='beat')setMode('anim');if(i>=0)pick(i)}
+function setTrackIdx(row){if(!LIB.tracks.length||!row)return -1;const t=sNorm(row.title),ar=sNorm(row.artist);let best=-1;
+ LIB.tracks.forEach((x,i)=>{if(best>=0&&sNorm(LIB.tracks[best].artist)===ar)return;if(sNorm(x.title)===t&&libFile(x))best=i});return best}
+async function setAutoLoad(tc){if(!tc||!tc.set)return;for(const[d,row]of[[tc.pair[0],tc.set.a],[tc.pair[1],tc.set.b]]){const i=setTrackIdx(row);if(i<0)continue;
+  const tk=LIB.tracks[i];if(AU.trk[d]&&AU.trk[d].meta.id==='rb:'+tk.rid)continue;await libLoad(d,i)}if(T===tc)auRates()}
+function setSecBar(d){const tr=AU.trk[d];if(!T.set||!tr||T.set.sec[d]==null)return null;const m=tr.meta||{},row=d===T.pair[0]?T.set.a:T.set.b;if(!(m.id||'').startsWith('rb:')||sNorm(m.title)!==sNorm(row.title))return null;return Math.max(0,(T.set.sec[d]-(tr.fb||0))*tr.bpm/240)}
+function setClock(){if(!T.set)return'';const s=T.set,x=s.tX(t),y=t>=8?s.tY(t):null;let h=`<b>CDJ ${s.nX}</b> ${x==null?'':fmtT(x)}`;if(t<8)h+=` · B on CDJ ${s.nY} in ${Math.ceil(8-t-1e-6)} bar${Math.ceil(8-t-1e-6)===1?'':'s'}`;else if(y!=null)h+=` · <b>CDJ ${s.nY}</b> ${fmtT(y)}`;return h}
+$('setBtn').onclick=()=>$('setFile').click();
+$('setFile').onchange=async e=>{const f=e.target.files[0];if(!f)return;setLoadText(await f.text(),true);e.target.value=''};
+try{const md=localStorage.getItem('xl_set');if(md){const r=setParse(md);if(r.rows.length){Object.assign(SET,r);setBuild()}}}catch(e){}
+/* ==== REGION set END ==== */
 /* ==== REGION midi ==== */
 /* MIDI controllers through Web MIDI (Chrome / Edge). Built-in map for the Pioneer DDJ-FLX4
    (message numbers from the Mixxx DDJ-FLX4 mapping), plus MIDI learn for anything else.
@@ -1329,7 +1416,7 @@ ladder(LEDS['m'+c.slice(1)],mx/REF*(.55+.45*pulse[d]),1);mxAll=Math.max(mxAll,mx
 ladder(LEDS.mmL,mxAll/REF*.82,2);ladder(LEDS.mmR,mxAll/REF*.82,2);
 if(AU.on){const am=auMeters();if(am){for(const d of DECKS){lv[d]=am[d];ladder(LEDS['m'+DCH[d].slice(1)],am['r'+d],1)}ladder(LEDS.mmL,am.rM,2);ladder(LEDS.mmR,am.rM,2)}}
 {const[p0,p1]=T.pair||['A','B'],la=lv[p0]||[],lb=lv[p1]||[];rows.forEach((r,i)=>{r.a.style.width=Math.min(100,(la[i]||0)/REF*100).toFixed(1)+'%';r.b.style.width=Math.min(100,(lb[i]||0)/REF*100).toFixed(1)+'%';r.f.textContent=i===0&&la[0]>.3&&lb[0]>.3?'Two kicks!':i===0&&la[0]<.05&&lb[0]<.05?'No kick':''})}
-$('clock').innerHTML=`${Math.floor(t)+1}.${Math.floor((t%1)*4)+1} <small>of ${T.bars} bars</small>`;
+$('clock').innerHTML=`${Math.floor(t)+1}.${Math.floor((t%1)*4)+1} <small>of ${T.bars} bars</small>`;{const sc=$('setcd'),h=setClock();sc.hidden=!h;if(h&&sc.innerHTML!==h)sc.innerHTML=h}void``;
 if(document.activeElement!==$('scrub'))$('scrub').value=t;
 let si=0;T.steps.forEach((s,j)=>{if(t>=s[0])si=j});if(si!==curStep){curStep=si;computeChanges(si);if(mode==='step')setPlayLabel();const st=T.steps[si];$('now').innerHTML=`<b>Step ${si+1} of ${T.steps.length} · Bar ${Math.floor(st[0])+1}</b>`;$('now').append(st[1]);[...$('steps').children].forEach((li,j)=>li.classList.toggle('cur',j===si));const li=$('steps').children[si],c=li&&li.closest('.stepsc');if(c&&c.scrollHeight>c.clientHeight)c.scrollTo({top:Math.max(0,li.offsetTop-2),behavior:'smooth'})}
 const target=exView&&mode==='explore'?exView:customBox?fit(customBox):fit(follow?autoBox():VB[userView]);

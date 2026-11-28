@@ -1,6 +1,6 @@
 # Xone:96 + CDJ-3000 transition lab
 
-An interactive, top-down drawing of an Allen & Heath Xone:96 between two Pioneer CDJ-3000s that walks through ten techno transition techniques (five transitions, five low-end swaps), step by step or animated, with real audio.
+An interactive, top-down drawing of an Allen & Heath Xone:96 with four Pioneer CDJ-3000s (standard order: CDJ 1, CDJ 2, mixer, CDJ 3, CDJ 4, with CDJ n on CH n) that walks through techno transition techniques step by step or animated, with real audio. The built-in techniques use the inner pair, CDJ 2 and CDJ 3.
 
 **Live:** https://sunjaculley.github.io/Xone96-Transition-Lab/
 
@@ -38,6 +38,7 @@ python3 -m http.server 8000
 - Techniques come in three groups: Transitions, Low-end swaps, and Phrasing & performance.
 - **Rekordbox library**: in rekordbox choose File → Export Collection in xml format, open that file in the lab, then choose your music folder. Tracks play from your disk and are never uploaded; hot cues, memory cues, grid, BPM and key come from rekordbox. Folder picking works in Chrome, Edge, Safari and Firefox.
 
+- **Set sheet**: import a set sheet (.md) from the set builder and every change in it becomes a drill under a Set group, sorted by phase. Sheet deck n plays on CDJ n / CH n (a 2-deck practice sheet uses CDJ 2 and CDJ 3, so the FLX4 and K2 maps line up). Each drill follows the sheet: the outgoing track starts 8 bars before Start next, you press B on the next track at Start next, and the bass swap lands where Bass out meets Bass in. The Note column sets the type: blend, SWAP (short overlap, outgoing stripped to drums), CUT, "cut its lows late" (swap 4 bars later), and trim notes become GAIN targets. `+ layer` rows become layer drills (layer LOW killed, gain down, in on the lead's phrase). With the rekordbox library open, each drill loads its two tracks, starts them at the sheet's times and plays them at the sheet's Play at tempo. The sheet is remembered in this browser.
 - **MIDI**: the DDJ-FLX4 and Xone:K2 are mapped automatically in Chrome or Edge (quit rekordbox first); other controllers via MIDI learn. Optional headphone cue on the FLX4's headphone output (channels 3-4). Message numbers come from the Mixxx DDJ-FLX4 mapping.
 
 Note: this repository is public, so anything in `tracks/` can be downloaded by anyone. The Rekordbox library option keeps your music on your computer.
