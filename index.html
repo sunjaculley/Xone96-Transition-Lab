@@ -1616,7 +1616,7 @@ miPanel();
 /* render */
 let last=performance.now();
 function frame(now){const dt=Math.min(.1,(now-last)/1000);last=now;
-const adt=audioDt(dt);if(PR.live)PR.tick(adt);else if(playing){t+=adt*P.speed/P.barSec*mixF({tempo:val('tempo',t)});if(mode==='step'&&segEnd!==null&&t>=segEnd){t=segEnd;playing=false;setPlayLabel()}else if(PERF.cont&&PERF.endAt.has(T)&&t>=PERF.endAt.get(T)){perfEnd()}else if(t>=T.bars){if(T.perf&&typeof perfEnd==='function'&&perfEnd()){}else if(repeat)t=0;else{t=T.bars;playing=false;setPlayLabel()}}}
+const adt=audioDt(dt);if(PR.live)PR.tick(adt);else if(playing){t+=adt*P.speed/P.barSec*mixF({tempo:val('tempo',t)});if(mode==='step'&&segEnd!==null&&t>=segEnd){t=segEnd;playing=false;setPlayLabel()}else if(PERF.cont&&PERF.endAt.has(T)&&t>=PERF.endAt.get(T)){perfEnd()}else if(t>=T.bars){if((T.perf||T.gap)&&typeof perfEnd==='function'&&perfEnd()){}else if(repeat)t=0;else{t=T.bars;playing=false;setPlayLabel()}}}
 const S=PR.live?PR.state():state(t),D={A:deckAt('A',t),B:deckAt('B',t),C:deckAt('C',t),D:deckAt('D',t)};if(AU.on)auTick(S,D);
 for(const c of CTL){const v=S[c.key];
 if(c.type==='knob'){const ang=-135+270*nrm(c.kind,v);c.v.setAttribute('d',arcD(c.ar,-135,ang));c.ind.setAttribute('transform',`rotate(${ang.toFixed(1)})`)}
