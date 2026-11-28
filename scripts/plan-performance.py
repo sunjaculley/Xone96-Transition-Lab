@@ -260,13 +260,15 @@ for ph, bud in MASHB.items():
     cs = sorted([(v[0], i) for i, v in MASH.items() if leads[i]['phase'].lower() == ph.lower() and i not in layer_of and v[0] >= 2], reverse=True)
     for sc_, i in cs[:bud]: mash_of[i] = MASH[i]
 
-def mash_scene(L, M, info, i, scenes_len, carry_deck):
+def mash_scene(L, M, info, i, scenes_len, carry_deck, after=None):
     # the partner rides on the deck the previous track just left
-    prev = leads[i - 1]; Z = DBY[prev['deck']]
-    if Z == DBY[L['deck']] or Z == carry_deck: Z = next(d for d in 'CABD' if d not in (DBY[L['deck']], DBY[leads[i + 1]['deck']], carry_deck))
+    prev = leads[i - 1]; busy = {DBY[L['deck']], DBY[prev['deck']], DBY[leads[i + 1]['deck']], carry_deck}
+    Z = next((d for d in 'CABD' if d not in busy), None)
+    if Z is None: return None
     cZ = DCH[Z]; nZ = DNUM[Z]; nL = DNUM[DBY[L['deck']]]; bl = 240 / L['bpm']
     C = L['pads'].get('C', {}).get('sec') or (L['B'] or 0) + 32 * bl; bo = L['mem'].get('Bass out', L['bo']) or (L['dur'] * .8)
     inS = max((L['B'] or 0) + 16 * bl, min(C + 16 * bl, bo - 56 * bl)); g = -4; ks = info['ks']
+    if after is not None: inS = max(inS, after + 8 * bl)
     su = {f'{d}.play': 0 for d in 'ABCD'}; su.update({f'c{n}.fader': 0 for n in (1, 2, 3, 4)}); su.update({DBY[L['deck']] + '.play': 1, DCH[DBY[L['deck']]] + '.fader': .8, cZ + '.lo': -40})
     TT = {Z + '.play': [[0, 0], [8, 1]], cZ + '.gain': [[2, 0], [4, g]], cZ + '.fader': [[8, 0], [12, .6], [28, .6], [32, 0]], cZ + '.hm': [[12, 0], [16, -6]]}
     st = [[0, f'CDJ {nL} leads with {L["title"]} ({fmt(inS - 8 * bl)}). Load {M["title"]} on CDJ {nZ} (your mashup partner, not in this set), cued on B, CH {nZ} LO killed.'],
@@ -282,6 +284,12 @@ def mash_scene(L, M, info, i, scenes_len, carry_deck):
                 ears=['Mashup: check vocals and melodies together by ear.'],
                 decks=[dict(d=DBY[L['deck']], title=L['title'], sec=inS - 8 * bl, bpm=L['bpm']), dict(d=Z, title=M['title'], sec=M['B'] or 0, bpm=M['bpm'], startBar=8)],
                 clock=(L['clock'] or 0) + max(0, (inS - 8 * bl - (L['B'] or 0)) * L['bpm'] / (L['playAt'] or 140)), cues=[[8, f'B on CDJ {nZ}'], [28, 'the mashup out']])
+
+def tdeck(dk, b):
+    br = 240 / dk['bpm']
+    if dk.get('loopAt') is not None and dk.get('loopSec') is not None and b >= dk['loopAt']: return dk['loopSec'] + ((b - dk['loopAt']) % (dk.get('loopLen') or 8)) * br
+    sb = dk.get('startBar') or 0
+    return None if b < sb else dk['sec'] + (b - sb) * br
 
 def build(ST):
     scenes, carry = [], None
@@ -309,7 +317,8 @@ def build(ST):
         if typ != 'cut' and i not in layer_of:
             for bk, src in P[x['cid']]['breaks']:
                 kb = 8 + ((x['fb'] + bk * bx) - sn) / bx
-                if -32 <= kb - sw <= 16 and abs(kb - sw) >= 2:
+                xB0 = x['pads'].get('B', {}).get('sec', x['B']) or 0
+                if -32 <= kb - sw <= 16 and abs(kb - sw) >= 2 and sn + (round(kb - sw) - 8) * bx >= xB0 + 8 * bx:
                     d = round(kb - sw); sn += d * bx; rec = ('breakdown', src, d); break
                 if abs(kb - sw) < 2: rec = ('already', src, 0); break
         if rec and rec[0] == 'breakdown':
@@ -331,7 +340,8 @@ def build(ST):
         if bridge: endb = sw + 11
         if ST.get('avoidH') and kH is not None and 8 < kH < endb - 1 and typ != 'cut' and not bridge:
             dd = int(np.ceil(endb - kH + 1))
-            if dd <= 24:
+            xB = x['pads'].get('B', {}).get('sec', x['B']) or 0
+            if dd <= 24 and sn - (dd + 8) * bx >= xB + 8 * bx:
                 sn -= dd * bx; kH += dd; xf.append('early')
                 reasons.append(f'DVS1 rule: no loop on a track that is about to end. CDJ {nX} would reach its H loop inside the change, so start CDJ {nY} {dd} bars earlier (Start next {fmt(sn)}) instead.')
         loopAt = None
@@ -509,7 +519,9 @@ def build(ST):
             carry = dict(d=Z, title=ly['title'], B=lB, leadIn=inS, bpm=ly['bpm'], gain=g)
         elif (i + 1) in mash_of:
             _, M, info = mash_of[i + 1]
-            scenes.append(mash_scene(y, M, info, i + 1, len(scenes), carry['d'] if carry else None))
+            last = scenes[-1]; dl = next((d for d in last['decks'] if d['title'] == y['title']), None)
+            ms = mash_scene(y, M, info, i + 1, len(scenes), carry['d'] if carry else None, tdeck(dl, last['bars']) if dl else None)
+            if ms: scenes.append(ms)
 
     return scenes
 
@@ -591,6 +603,70 @@ for sc in scenes:
     sc['intent'] = base + (' Then: ' + '; '.join(extra) + '.' if extra else '')
     for st in sc['steps']:
         st.append(next((tg for rx, tg in TAGS if re.search(rx, st[1])), ''))
+
+# ---------- joins: when the next change has to start before this one is over, play them as one scene ----------
+def kval(track, b, dflt):
+    v = dflt
+    for i_, (t_, x_) in enumerate(track):
+        if t_ <= b: v = x_
+        else:
+            if i_ and isinstance(x_, (int, float)) and isinstance(track[i_ - 1][1], (int, float)):
+                t0, x0 = track[i_ - 1]; v = x0 + (x_ - x0) * (b - t0) / (t_ - t0)
+            break
+    return v
+def merge(a_, b_, o):
+    m = json.loads(json.dumps(a_)); sh = lambda tr: [[t_ + o, x_] for t_, x_ in tr]
+    own = {d['d'] for d in b_['decks']}; ownc = {DCH[d] for d in own}
+    for k_, tr in b_['tracks'].items():
+        tr = sh(tr); first = b_['setup'].get(k_, tr[0][1] if tr else None)
+        if k_ in m['tracks']:
+            keep = [f for f in m['tracks'][k_] if f[0] < o]
+            m['tracks'][k_] = keep + [[o, kval(m['tracks'][k_], o, m['setup'].get(k_, first))]] + tr
+        else:
+            m['tracks'][k_] = [[0, m['setup'].get(k_, first)], [o, first]] + tr if k_ not in m['setup'] or m['setup'][k_] != first else tr
+    for k_, v in b_['setup'].items():                     # the new scene's own decks start where it says
+        d_ = k_.split('.')[0]
+        if (d_ in own or d_ in ownc) and k_ not in b_['tracks']:
+            cur = kval(m['tracks'].get(k_, []), o, m['setup'].get(k_, v))
+            if cur != v:
+                m['tracks'].setdefault(k_, [[0, m['setup'].get(k_, v)]]); m['tracks'][k_] = [f for f in m['tracks'][k_] if f[0] < o] + [[o, v]]
+            elif k_ not in m['setup']: m['setup'][k_] = v
+    for d in b_['decks']:
+        if any(x['d'] == d['d'] and x['title'] == d['title'] for x in m['decks']): continue
+        d = dict(d); d['startBar'] = (d.get('startBar') or 0) + o
+        if d.get('loopAt') is not None: d['loopAt'] += o
+        m['decks'].append(d)
+    m['steps'] = sorted(m['steps'] + [[t_ + o] + rest for t_, *rest in b_['steps']], key=lambda x: x[0])
+    m['cues'] = sorted(m['cues'] + [[c[0] + o, c[1]] for c in b_['cues']], key=lambda x: x[0])
+    m['bars'] = int(np.ceil(max(a_['bars'], o + b_['bars'])))
+    m['title'] = a_['title'] + ' → ' + b_['title'].split(' → ')[-1] if b_['kind'] != 'layer' else a_['title'] + ' + ' + b_['title']
+    fl = list({f['k']: f for f in a_['flags'] + b_['flags']}.values())
+    if not any(f['k'] == 'three' for f in fl) and len(m['decks']) > 2: fl.append(dict(k='three', label=FLAG['three']))
+    m['flags'] = fl; m['learn'] = list(dict.fromkeys(a_['learn'] + b_['learn']))
+    m['intent'] = a_['intent'] + ' Straight on: ' + b_['intent'][0].lower() + b_['intent'][1:]
+    m['reasons'] = a_['reasons'] + [f'Joined with the next change: it has to start {round(a_["bars"] - o)} bars before this one is over, so they play as one scene.'] + b_['reasons']
+    m['ears'] = a_['ears'] + b_['ears']; m['xf'] = list(dict.fromkeys(a_.get('xf', []) + b_.get('xf', [])))
+    return m
+def joins(sc):
+    out = []
+    for s_ in sc:
+        if out:
+            a_ = out[-1]; L = s_['decks'][0]
+            dk = next((x for x in a_['decks'] if x['d'] == L['d'] and x['title'] == L['title']), None)
+            if dk is not None:
+                br = 240 / dk['bpm']; o = (dk.get('startBar') or 0) + (L['sec'] - dk['sec']) / br
+                looping = dk.get('loopAt') is not None and o >= dk['loopAt']
+                if 0 <= o < a_['bars'] - .5 and not looping:
+                    out[-1] = merge(a_, s_, round(o * 4) / 4); continue
+                if o < 0 and a_['kind'] == 'layer' and -o < s_['bars'] - .5:
+                    out[-1] = merge(s_, a_, round(-o * 4) / 4); continue
+        out.append(s_)
+    for i_, s_ in enumerate(out): s_['id'] = f'f{i_ + 1}'
+    return out
+JOINED = {}
+for stl in STYLES:
+    n0 = len(stl['scenes']); stl['scenes'] = joins(stl['scenes']); JOINED[stl['id']] = n0 - len(stl['scenes'])
+print('joined', JOINED)
 
 phases = []
 for r in leads:
