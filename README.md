@@ -50,3 +50,12 @@ python3 -m http.server 8000
 - **MIDI**: the DDJ-FLX4 and Xone:K2 are mapped automatically in Chrome or Edge (quit rekordbox first); other controllers via MIDI learn. Optional headphone cue on the FLX4's headphone output (channels 3-4). Message numbers come from the Mixxx DDJ-FLX4 mapping.
 
 Note: this repository is public, so anything in `tracks/` can be downloaded by anyone. The Rekordbox library option keeps your music on your computer.
+
+## Moving around the booth (coming from the FLX4)
+
+- **Navigation & recovery** techniques (N1–N5) in the Techniques library: preview on a free deck, beat jump to the drop, loop to buy time, change direction, and beatmatch by ear. Each animates on the rig and has Try it. N5's Try it opens the Beatmatch trainer.
+  - The Xone:96 channel CUE buttons are live. With sound on, a cued channel plays quietly in the right ear while its fader is down, like SPLIT CUE.
+  - In Try it, use `X` / `C` for CUE, `[` `]` for BEAT JUMP and `;` `'` for CUE/LOOP CALL on the incoming deck, and tap the pads for hot cues. Jumps are graded by count and timing, so your own hot cue layout works.
+- **Free-deck hint** in the set preview names the CDJ nobody is hearing and the track due on it next, with links to N1 and (between changes) N3.
+- **Booth tips** (header button): previewing, moving inside a track, loops, tempo and key, an Xone:96 vs FLX4 table, habits that change, and eight FLX4 home drills with a Done counter saved on the device. Each tip links to its drill or to the control in Explore.
+- **Explore** shows a "Coming from the FLX4" line on most CDJ and mixer controls.
